@@ -1,0 +1,138 @@
+# Dependency directories
+/node_modules/
+/.pnp/
+.pnp.js
+
+# Compiled code
+/build
+/dist
+
+# Firebase cache and configuration
+/.firebase/
+/firebase.json
+/.firebaserc
+/firebase-debug.log*
+/.firebasehosting.*
+
+# misc
+.DS_Store
+.env*  # This line ensures that .env and any files with .env. prefix are ignored
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Operating System generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Testing
+/coverage
+
+# Build artifacts
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.seed
+*.swo
+*.swp
+*.tgz
+*.zip
+*.7z
+*.gz
+*.rar
+*.tar
+
+# Misc
+*.scssc
+*.sassc
+*.tsbuildinfo
+*.log.old
+*.log.[0-9]*
+*.dll
+*.exe
+*.cache
+*.pid.lock
+
+# Project-specific ignore files
+/public/assets/
+/src/assets/images/
+/docs/
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+*.test.tsx
+*.test.js
+*.test.jsx
+
+# Security
+*.pem
+*.key
+
+# Lock files
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# System specific
+*.class
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# Ignoring configuration files that may contain sensitive information
+config.js
+config.json
+
+# Ignore storybook static files
+/storybook-static/
+
+# Ignore local development tools
+/.netlify/
+/local/
+/deploy/
+/dev/
+
+# Ignore IDE and editor folders
+/.idea/
+*.iml
+*.iws
+*~
+*.bak
+*.swp
+*.tmp
+
+# Ignore OS generated files
+ehthumbs.db
+Icon?
+*.Trash-*
+
+# Ignore log files and databases
+*.log
+*.sql
+*.sqlite
+
+# Ignore compiled and minified files
+*.min.js
+*.min.css
+*.map
+*.gzip
+*.tgz

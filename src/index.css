@@ -1,0 +1,15 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Make App fill the viewport height */
+  overflow: hidden; /* Prevent scrolling within the App */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background-color: #000926; */
+}
