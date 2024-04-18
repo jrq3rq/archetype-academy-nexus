@@ -4,6 +4,7 @@ import { adjustColor, getTextColor, isColorLight } from "../utils/colorUtils";
 
 const CardContainer = styled.div`
   height: auto;
+  border: 1px solid #000;
   background: ${(props) =>
     props.color || "#ffffff"}; // Use color prop or default to white
   border-radius: 11.25px;
@@ -81,19 +82,20 @@ const HeadButton = styled.button`
   }
 `;
 
-const OptionCard = ({ title, content, onClick, color }) => {
+const OptionCard = ({ title, content, onClick, color, id }) => {
   return (
     <CardContainer>
-      <HeadButtonGroup>
-        <HeadButton color={color}>Personalize</HeadButton>
-      </HeadButtonGroup>
       {/* <Title>{title}</Title> */}
+      <HeadButtonGroup>
+        <HeadButton color={color}>{title}</HeadButton>
+        {/* Personalize */}
+      </HeadButtonGroup>
       <Content>{content}</Content>
       <ButtonGroup>
-        <ActionButton color={color}>Character Portal</ActionButton>
-        <ActionButton color={color}>Settings</ActionButton>
+        <ActionButton color={color}> Portal</ActionButton>
+        <ActionButton color={color}>Settings </ActionButton>
         <ActionButton color={color}>Edit</ActionButton>
-        <ActionButton color={color}>Mint</ActionButton>
+        <ActionButton color={color}>Mint </ActionButton>
       </ButtonGroup>
     </CardContainer>
   );
