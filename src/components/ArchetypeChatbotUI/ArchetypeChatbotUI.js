@@ -85,12 +85,12 @@ const ArchetypeChatbotUI = () => {
     talentsAndExpertise: "",
   });
   const [traitValues, setTraitValues] = useState({
-    intelligence: 0.8,
-    creativity: 0.9,
-    EQ: 0.7,
-    motivation: 0.8,
-    confidence: 0.9,
-    empathy: 0.6,
+    intelligence: 0.5,
+    creativity: 0.5,
+    EQ: 0.5,
+    motivation: 0.5,
+    confidence: 0.5,
+    empathy: 0.5,
   });
   const [chatMessages, setChatMessages] = useState([
     {
