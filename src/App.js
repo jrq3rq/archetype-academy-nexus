@@ -2,12 +2,13 @@
 import React from "react";
 import CardGrid from "./components/CardGrid";
 import "./index.css"; // Importing CSS file
+import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI/ArchetypeChatbotUI";
 
 const App = () => {
   return (
-    <div className="App">
-      <CardGrid />
-    </div>
+    <>
+      <ArchetypeChatbotUI />
+    </>
   );
 };
 

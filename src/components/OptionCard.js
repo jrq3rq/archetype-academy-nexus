@@ -94,8 +94,8 @@ const OptionCard = ({ title, content, onClick, color, id }) => {
       <ButtonGroup>
         <ActionButton color={color}> Portal</ActionButton>
         <ActionButton color={color}>Settings </ActionButton>
-        <ActionButton color={color}>Edit</ActionButton>
-        <ActionButton color={color}>Mint </ActionButton>
+        {/* <ActionButton color={color}>Edit</ActionButton> */}
+        {/* <ActionButton color={color}>Mint </ActionButton> */}
       </ButtonGroup>
     </CardContainer>
   );
