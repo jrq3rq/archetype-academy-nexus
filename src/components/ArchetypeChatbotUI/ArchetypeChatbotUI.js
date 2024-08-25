@@ -250,6 +250,7 @@ const ArchetypeChatbotUI = () => {
       marginBottom: "10px",
       resize: "vertical",
       boxSizing: "border-box",
+      fontSize: "16px", // Prevents zooming on mobile devices
     },
     button: {
       padding: "10px 15px",
@@ -339,7 +340,7 @@ const ArchetypeChatbotUI = () => {
       maxHeight: "200px",
       overflowY: "auto",
       whiteSpace: "pre-wrap",
-      wordBreak: "break-all", // Add this line to allow long lines to break
+      wordBreak: "break-all",
     },
   };
 

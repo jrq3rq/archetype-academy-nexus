@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+textarea {
+  font-size: 16px; /* Prevent zooming by setting the font size to 16px */
+}
+
 .App {
   display: flex;
   flex-direction: column;
