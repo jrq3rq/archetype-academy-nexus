@@ -94,8 +94,10 @@ const ArchetypeChatbotUI = () => {
   });
   const [chatMessages, setChatMessages] = useState([
     {
-      sender: "Chatbot",
+      sender: "Archédex",
       content: "Welcome! Please select an archetype to begin.",
+      color: "#2f3136", // Default color for the Archédex system message
+      textColor: "#ffffff",
     },
   ]);
   const [archetypes, setArchetypes] = useState([]);
@@ -152,9 +154,15 @@ const ArchetypeChatbotUI = () => {
 
   const handleSendMessage = () => {
     if (message.trim() && selectedArchetype) {
+      const textColor = getTextColor(selectedColor);
       setChatMessages((prev) => [
         ...prev,
-        { sender: "User", content: message },
+        {
+          sender: "User",
+          content: message,
+          color: "#36393f",
+          textColor: "#ffffff",
+        },
       ]);
       setMessage("");
       setTimeout(() => {
@@ -162,7 +170,9 @@ const ArchetypeChatbotUI = () => {
           ...prev,
           {
             sender: selectedArchetype,
-            content: `As a ${selectedArchetype}, I would approach this task by...`,
+            content: `My capabilities as ${selectedArchetype} are limited, but I’m here to help. Please provide more details so I can assist you better.`,
+            color: selectedColor,
+            textColor: textColor,
           },
         ]);
       }, 1000);
@@ -224,8 +234,7 @@ const ArchetypeChatbotUI = () => {
       margin: "0 auto",
     },
     chatWindow: {
-      backgroundColor: selectedColor,
-      color: getTextColor(selectedColor),
+      backgroundColor: "#2f3136",
       borderRadius: "5px",
       padding: "15px",
       marginBottom: "20px",
@@ -234,11 +243,11 @@ const ArchetypeChatbotUI = () => {
       boxSizing: "border-box",
     },
     message: {
-      backgroundColor: "#36393f",
-      color: "#ffffff",
       borderRadius: "5px",
       padding: "10px",
       marginBottom: "10px",
+      maxWidth: "70%",
+      wordWrap: "break-word",
     },
     input: {
       width: "100%",
@@ -254,8 +263,8 @@ const ArchetypeChatbotUI = () => {
     },
     button: {
       padding: "10px 15px",
-      backgroundColor: "#7289da",
-      color: "#ffffff",
+      backgroundColor: selectedColor, // Use the archetype's color
+      color: getTextColor(selectedColor),
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
@@ -266,8 +275,8 @@ const ArchetypeChatbotUI = () => {
     },
     sendButton: {
       padding: "10px 20px",
-      backgroundColor: "#f0883e",
-      color: "#ffffff",
+      backgroundColor: selectedColor, // Use the archetype's color
+      color: getTextColor(selectedColor), // Ensure the text color is readable
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
@@ -282,6 +291,38 @@ const ArchetypeChatbotUI = () => {
       width: "100%",
       boxSizing: "border-box",
     },
+    slider: {
+      width: "100%",
+      marginBottom: "15px",
+      accentColor: selectedColor, // Use the archetype's color for the slider
+    },
+    sliderThumb: {
+      appearance: "none",
+      width: "15px",
+      height: "15px",
+      backgroundColor: selectedColor, // Use the archetype's color for the thumb
+      borderRadius: "50%",
+      cursor: "pointer",
+    },
+    sliderTrack: {
+      width: "100%",
+      height: "5px",
+      backgroundColor: selectedColor, // Use the archetype's color for the track
+      borderRadius: "5px",
+    },
+    jsonDisplay: {
+      backgroundColor: "#2f3136",
+      color: "#ffffff",
+      borderRadius: "5px",
+      padding: "15px",
+      marginTop: "20px",
+      fontFamily: "monospace",
+      maxHeight: "200px",
+      overflowY: "auto",
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-all",
+    },
+
     dropdown: {
       width: "100%",
       padding: "10px",
@@ -325,23 +366,6 @@ const ArchetypeChatbotUI = () => {
       justifyContent: "space-between",
       marginBottom: "5px",
     },
-    slider: {
-      width: "100%",
-      marginBottom: "15px",
-      accentColor: "#7289da",
-    },
-    jsonDisplay: {
-      backgroundColor: "#2f3136",
-      color: "#ffffff",
-      borderRadius: "5px",
-      padding: "15px",
-      marginTop: "20px",
-      fontFamily: "monospace",
-      maxHeight: "200px",
-      overflowY: "auto",
-      whiteSpace: "pre-wrap",
-      wordBreak: "break-all",
-    },
   };
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -359,7 +383,15 @@ const ArchetypeChatbotUI = () => {
     <>
       <div style={styles.chatWindow} ref={chatWindowRef}>
         {chatMessages.map((msg, index) => (
-          <div key={index} style={styles.message}>
+          <div
+            key={index}
+            style={{
+              ...styles.message,
+              backgroundColor: msg.color,
+              color: msg.textColor,
+              alignSelf: msg.sender === "User" ? "flex-end" : "flex-start",
+            }}
+          >
             <strong>{msg.sender}:</strong> {msg.content}
           </div>
         ))}
@@ -449,7 +481,11 @@ const ArchetypeChatbotUI = () => {
                 onChange={(e) =>
                   handleTraitChange(trait, parseFloat(e.target.value))
                 }
-                style={styles.slider}
+                style={{
+                  ...styles.slider,
+                  accentColor: selectedColor, // Ensure the accent color is set dynamically
+                }}
+                className="custom-slider"
               />
             </div>
           ))}
@@ -484,7 +520,15 @@ const ArchetypeChatbotUI = () => {
         <div style={styles.desktopChatSection}>
           <div style={styles.chatWindow} ref={chatWindowRef}>
             {chatMessages.map((msg, index) => (
-              <div key={index} style={styles.message}>
+              <div
+                key={index}
+                style={{
+                  ...styles.message,
+                  backgroundColor: msg.color,
+                  color: msg.textColor,
+                  alignSelf: msg.sender === "User" ? "flex-end" : "flex-start",
+                }}
+              >
                 <strong>{msg.sender}:</strong> {msg.content}
               </div>
             ))}
