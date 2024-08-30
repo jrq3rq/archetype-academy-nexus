@@ -158,7 +158,7 @@ const ArchetypeChatbotUI = () => {
       setChatMessages((prev) => [
         ...prev,
         {
-          sender: "User",
+          sender: "Maker",
           content: message,
           color: "#36393f",
           textColor: "#ffffff",
