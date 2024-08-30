@@ -1,70 +1,57 @@
 <!-- [![Carl-XII](https://img.shields.io/badge/-Carl--XII-blue?style=for-the-badge)](https://carl-xii.web.app/) -->
 
-## AI Character Academy
+## The Archetype Character Academy
 
 ```markdown
-v2/
+AlphaV3/
 ├── public/
 │ ├── index.html
+│ ├── favicon.ico
+│ ├── logo192.png
+│ ├── logo512.png
+│ ├── manifest.json
 │ └── ...
 ├── src/
 │ ├── assets/ // Static files like images, fonts, etc.
-│ │ ├── images/
+│ │ ├── 64x64carlxiiLogo.ico
+│ │ ├── favicon.ico
+│ │ ├── logo192.png
+│ │ ├── logo512.png
 │ │ └── ...
 │ ├── components/ // Reusable components
-│ │ ├── common/ // Shared components like buttons, sliders
-│ │ │ ├── Button.js
-│ │ │ ├── Slider.js
-│ │ │ └── ...
-│ │ ├── portal/ // Components specific to the portal
-│ │ │ ├── Dashboard.js
-│ │ │ ├── Sidebar.js
-│ │ │ └── ...
-│ │ ├── character/ // Character-specific components
-│ │ │ ├── CharacterCard.js
-│ │ │ ├── CharacterView.js
-│ │ │ └── ...
+│ │ ├── ArchetypeChatbotUI.js
+│ │ ├── CardGrid.js
+│ │ ├── OptionCard.js
 │ │ └── ...
 │ ├── hooks/ // Custom hooks
-│ │ ├── useArchetype.js
 │ │ └── ...
 │ ├── pages/ // Page components
-│ │ ├── HomePage.js
-│ │ ├── CharacterPage.js
-│ │ └── ...
-│ ├── state/ // State management
-│ │ ├── context/ // Context API files
-│ │ │ ├── ArchetypeContext.js
-│ │ │ └── ...
 │ │ └── ...
 │ ├── services/ // API integration and services
 │ │ ├── archetypeService.js
 │ │ └── ...
+│ ├── state/ // State management
+│ │ └── ...
 │ ├── utils/ // Utility functions
-│ │ ├── helpers.js
+│ │ ├── colorUtils.js
 │ │ └── ...
 │ ├── App.js
+│ ├── App.css
 │ ├── index.js
+│ ├── index.css
 │ └── ...
-├── tests/ // Test files
-│ ├── components/
-│ │ └── ...
-│ ├── hooks/
-│ │ └── ...
-│ └── ...
-├── docs/ // Documentation
-│ ├── API_DOCUMENTATION.md
+├── test/
 │ └── ...
 ├── .env // Environment variables
 ├── .gitignore
+├── firebase.json
 ├── package.json
 ├── package-lock.json
-├── README.md
-└── ...
+└── README.md
 ```
 
 ```css
-                    [ Carl-XII-v2 ]
+            [ Archetype-Academy-nexus-v3 ]
                      /     |      \
                     /      |       \
                    /       |        \
