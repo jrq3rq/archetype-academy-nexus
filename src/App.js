@@ -1,14 +1,29 @@
-// src/App.js
 import React from "react";
-import CardGrid from "./components/CardGrid";
-import "./index.css"; // Importing CSS file
-import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI/ArchetypeChatbotUI";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
+import ArchetypeChatbotPage from "./pages/ArchetypeChatbotPage";
+import ArchetypeLibraryPage from "./pages/ArchetypeLibraryPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI";
+import ScrollToTop from "./components/ScrollToTop";
+import { ChatbotProvider } from "./state/ChatbotContext"; // Import the ChatbotProvider
 
 const App = () => {
   return (
-    <>
-      <ArchetypeChatbotUI />
-    </>
+    <ChatbotProvider>
+      <Router>
+        <ScrollToTop />
+        <Layout>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/chatbot" component={ArchetypeChatbotUI} />
+            <Route path="/library" component={ArchetypeLibraryPage} />
+            {/* <Route path="/profile" component={UserProfilePage} /> */}
+          </Switch>
+        </Layout>
+      </Router>
+    </ChatbotProvider>
   );
 };
 

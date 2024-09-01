@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import ChatbotContext from "../state/ChatbotContext";
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -66,6 +67,10 @@ const categories = {
 };
 
 const getTextColor = (bgColor) => {
+  if (!bgColor || typeof bgColor !== "string") {
+    return "#000000"; // Default to black if bgColor is invalid or undefined
+  }
+
   const r = parseInt(bgColor.slice(1, 3), 16);
   const g = parseInt(bgColor.slice(3, 5), 16);
   const b = parseInt(bgColor.slice(5, 7), 16);
@@ -74,9 +79,9 @@ const getTextColor = (bgColor) => {
 };
 
 const ArchetypeChatbotUI = () => {
+  const { state, dispatch } = useContext(ChatbotContext);
   const [message, setMessage] = useState("");
   const [showArchetypeSelector, setShowArchetypeSelector] = useState(false);
-  const [selectedArchetype, setSelectedArchetype] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categorySelections, setCategorySelections] = useState({
     coreTraits: "",
@@ -92,17 +97,7 @@ const ArchetypeChatbotUI = () => {
     confidence: 0.5,
     empathy: 0.5,
   });
-  const [chatMessages, setChatMessages] = useState([
-    {
-      sender: "Archédex",
-      content: "Welcome! Please select an archetype to begin.",
-      color: "#2f3136", // Default color for the Archédex system message
-      textColor: "#ffffff",
-    },
-  ]);
   const [archetypes, setArchetypes] = useState([]);
-  const [selectedColor, setSelectedColor] = useState("#282b30");
-  const [archetypeData, setArchetypeData] = useState({});
   const chatWindowRef = useRef(null);
 
   useEffect(() => {
@@ -114,31 +109,23 @@ const ArchetypeChatbotUI = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedArchetype) {
+    if (state.selectedArchetype) {
       const archetype = archetypes.find(
-        (a) => a.name.toLowerCase() === selectedArchetype.toLowerCase()
+        (a) => a.name.toLowerCase() === state.selectedArchetype.toLowerCase()
       );
       if (archetype) {
         setTraitValues(archetype.characteristics);
-        setSelectedColor(archetype.color);
-        setArchetypeData({
-          motto: archetype.motto,
-          mission: archetype.mission,
-          scores: archetype.scores,
-          traits: archetype.traits,
-          motivations: archetype.motivations,
-          behaviors: archetype.behaviors,
-          interests: archetype.interests,
-        });
+        dispatch({ type: "SET_SELECTED_COLOR", payload: archetype.color });
+        dispatch({ type: "SET_ARCHETYPE_DATA", payload: archetype });
       }
     }
-  }, [selectedArchetype, archetypes]);
+  }, [state.selectedArchetype, archetypes, dispatch]);
 
   useEffect(() => {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [chatMessages]);
+  }, [state.messages]);
 
   const handleCategorySelection = (value) => {
     setCategorySelections((prev) => ({
@@ -153,44 +140,46 @@ const ArchetypeChatbotUI = () => {
   };
 
   const handleSendMessage = () => {
-    if (message.trim() && selectedArchetype) {
-      const textColor = getTextColor(selectedColor);
-      setChatMessages((prev) => [
-        ...prev,
-        {
+    if (message.trim() && state.selectedArchetype) {
+      const textColor = getTextColor(state.selectedColor);
+      dispatch({
+        type: "ADD_MESSAGE",
+        payload: {
           sender: "Maker",
           content: message,
           color: "#36393f",
           textColor: "#ffffff",
         },
-      ]);
+      });
+
       setMessage("");
       setTimeout(() => {
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            sender: selectedArchetype,
-            content: `My capabilities as ${selectedArchetype} are limited, but I’m here to help. Please provide more details so I can assist you better.`,
-            color: selectedColor,
+        dispatch({
+          type: "ADD_MESSAGE",
+          payload: {
+            sender: state.selectedArchetype,
+            content: `My capabilities as ${state.selectedArchetype} are limited, but I’m here to help. Please provide more details so I can assist you better.`,
+            color: state.selectedColor,
             textColor: textColor,
           },
-        ]);
+        });
       }, 1000);
     }
   };
 
+  const handleArchetypeChange = (e) => {
+    dispatch({ type: "SET_ARCHETYPE", payload: e.target.value });
+  };
+
+  const handleClearChat = () => {
+    dispatch({ type: "CLEAR_MESSAGES" });
+  };
+
   const promptData = {
-    archetype: selectedArchetype,
+    archetype: state.selectedArchetype,
     traits: categorySelections,
     characteristics: traitValues,
     message: message,
-    motto: archetypeData.motto,
-    mission: archetypeData.mission,
-    scores: archetypeData.scores,
-    traitsData: archetypeData.traits,
-    motivations: archetypeData.motivations,
-    behaviors: archetypeData.behaviors,
-    interests: archetypeData.interests,
   };
 
   const styles = {
@@ -263,8 +252,8 @@ const ArchetypeChatbotUI = () => {
     },
     button: {
       padding: "10px 15px",
-      backgroundColor: selectedColor, // Use the archetype's color
-      color: getTextColor(selectedColor),
+      backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color
+      color: getTextColor(state.selectedColor || "#282b30"),
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
@@ -275,8 +264,8 @@ const ArchetypeChatbotUI = () => {
     },
     sendButton: {
       padding: "10px 20px",
-      backgroundColor: selectedColor, // Use the archetype's color
-      color: getTextColor(selectedColor), // Ensure the text color is readable
+      backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color
+      color: getTextColor(state.selectedColor || "#282b30"), // Ensure the text color is readable
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
@@ -294,20 +283,20 @@ const ArchetypeChatbotUI = () => {
     slider: {
       width: "100%",
       marginBottom: "15px",
-      accentColor: selectedColor, // Use the archetype's color for the slider
+      accentColor: state.selectedColor || "#282b30", // Use the archetype's color for the slider
     },
     sliderThumb: {
       appearance: "none",
       width: "15px",
       height: "15px",
-      backgroundColor: selectedColor, // Use the archetype's color for the thumb
+      backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color for the thumb
       borderRadius: "50%",
       cursor: "pointer",
     },
     sliderTrack: {
       width: "100%",
       height: "5px",
-      backgroundColor: selectedColor, // Use the archetype's color for the track
+      backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color for the track
       borderRadius: "5px",
     },
     jsonDisplay: {
@@ -348,8 +337,8 @@ const ArchetypeChatbotUI = () => {
     categoryButton: {
       flex: "1 0 calc(25% - 10px)",
       padding: "10px",
-      backgroundColor: selectedColor,
-      color: getTextColor(selectedColor),
+      backgroundColor: state.selectedColor || "#282b30",
+      color: getTextColor(state.selectedColor || "#282b30"),
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
@@ -359,7 +348,7 @@ const ArchetypeChatbotUI = () => {
       backgroundColor: "#7289da",
     },
     selectedButton: {
-      backgroundColor: selectedColor,
+      backgroundColor: state.selectedColor || "#282b30",
     },
     label: {
       display: "flex",
@@ -382,14 +371,14 @@ const ArchetypeChatbotUI = () => {
   const renderContent = () => (
     <>
       <div style={styles.chatWindow} ref={chatWindowRef}>
-        {chatMessages.map((msg, index) => (
+        {state.messages.map((msg, index) => (
           <div
             key={index}
             style={{
               ...styles.message,
               backgroundColor: msg.color,
               color: msg.textColor,
-              alignSelf: msg.sender === "User" ? "flex-end" : "flex-start",
+              alignSelf: msg.sender === "Maker" ? "flex-end" : "flex-start",
             }}
           >
             <strong>{msg.sender}:</strong> {msg.content}
@@ -399,8 +388,8 @@ const ArchetypeChatbotUI = () => {
 
       <select
         style={styles.dropdown}
-        value={selectedArchetype}
-        onChange={(e) => setSelectedArchetype(e.target.value)}
+        value={state.selectedArchetype}
+        onChange={handleArchetypeChange}
       >
         <option value="">Select an archetype</option>
         {archetypes.map((archetype) => (
@@ -463,9 +452,13 @@ const ArchetypeChatbotUI = () => {
         {showArchetypeSelector ? "Hide Trait Adjuster" : "Show Trait Adjuster"}
       </button>
 
+      <button style={styles.button} onClick={handleClearChat}>
+        Clear Chat
+      </button>
+
       {showArchetypeSelector && (
         <div style={styles.archetypeSelector}>
-          <h3>Fine-tune traits for {selectedArchetype}:</h3>
+          <h3>Fine-tune traits for {state.selectedArchetype}:</h3>
           {Object.entries(traitValues).map(([trait, value]) => (
             <div key={trait}>
               <div style={styles.label}>
@@ -483,7 +476,7 @@ const ArchetypeChatbotUI = () => {
                 }
                 style={{
                   ...styles.slider,
-                  accentColor: selectedColor, // Ensure the accent color is set dynamically
+                  accentColor: state.selectedColor || "#282b30", // Ensure the accent color is set dynamically
                 }}
                 className="custom-slider"
               />
@@ -505,8 +498,8 @@ const ArchetypeChatbotUI = () => {
       <div style={styles.desktopHeader}>
         <select
           style={styles.dropdown}
-          value={selectedArchetype}
-          onChange={(e) => setSelectedArchetype(e.target.value)}
+          value={state.selectedArchetype}
+          onChange={handleArchetypeChange}
         >
           <option value="">Select an archetype</option>
           {archetypes.map((archetype) => (
@@ -519,14 +512,14 @@ const ArchetypeChatbotUI = () => {
       <div style={styles.desktopMainContent}>
         <div style={styles.desktopChatSection}>
           <div style={styles.chatWindow} ref={chatWindowRef}>
-            {chatMessages.map((msg, index) => (
+            {state.messages.map((msg, index) => (
               <div
                 key={index}
                 style={{
                   ...styles.message,
                   backgroundColor: msg.color,
                   color: msg.textColor,
-                  alignSelf: msg.sender === "User" ? "flex-end" : "flex-start",
+                  alignSelf: msg.sender === "Maker" ? "flex-end" : "flex-start",
                 }}
               >
                 <strong>{msg.sender}:</strong> {msg.content}
@@ -587,9 +580,12 @@ const ArchetypeChatbotUI = () => {
               ? "Hide Trait Adjuster"
               : "Show Trait Adjuster"}
           </button>
+          <button style={styles.button} onClick={handleClearChat}>
+            Clear Chat
+          </button>
           {showArchetypeSelector && (
             <div style={styles.archetypeSelector}>
-              <h3>Fine-tune traits for {selectedArchetype}:</h3>
+              <h3>Fine-tune traits for {state.selectedArchetype}:</h3>
               {Object.entries(traitValues).map(([trait, value]) => (
                 <div key={trait}>
                   <div style={styles.label}>
@@ -613,7 +609,6 @@ const ArchetypeChatbotUI = () => {
               ))}
             </div>
           )}
-
           <div style={styles.jsonDisplay}>
             <pre>{JSON.stringify(promptData, null, 2)}</pre>
           </div>
