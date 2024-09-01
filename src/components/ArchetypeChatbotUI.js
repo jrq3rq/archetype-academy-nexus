@@ -172,7 +172,7 @@ const ArchetypeChatbotUI = () => {
   };
 
   const handleClearChat = () => {
-    dispatch({ type: "CLEAR_MESSAGES" });
+    dispatch({ type: "CLEAR_CHAT" }); // This now matches the action type in the reducer
   };
 
   const promptData = {

@@ -20,7 +20,7 @@ const HomePage = () => {
       alignItems: "center",
       maxWidth: "1200px",
       margin: "0 auto",
-      paddingTop: "100px",
+      paddingTop: "40px",
       width: "100%",
     },
     header: {
@@ -51,7 +51,7 @@ const HomePage = () => {
       display: "flex",
       justifyContent: "center",
       flexWrap: "wrap",
-      gap: "60px",
+      gap: "20px",
       margin: "20px 0",
       width: "100%",
       "@media (max-width: 768px)": {
@@ -69,6 +69,7 @@ const HomePage = () => {
       textAlign: "center",
       boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
       transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+      marginBottom: "40px", // Add margin-bottom to create space below the card
       "&:hover": {
         transform: "translateY(-10px)",
         boxShadow: "0 12px 24px rgba(0,0,0,0.3)",
@@ -120,8 +121,9 @@ const HomePage = () => {
       textAlign: "center",
       color: "#b9bbbe",
       marginTop: "auto",
-      padding: "40px 0",
+      padding: "20px 0", // Reduced padding to create space between the line and the text
       borderTop: "1px solid #40444b",
+      marginBottom: "20px", // Add margin-bottom to create space below the line
       width: "100%",
       "@media (max-width: 768px)": {
         fontSize: "16px",
@@ -133,16 +135,29 @@ const HomePage = () => {
   return (
     <div style={styles.container}>
       <div style={styles.contentWrapper}>
-        <h1 style={styles.header}>
-          Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
-          Potential
-        </h1>
-        <p style={styles.subheader}>
-          Discover your inner archetype, design your personal AI companion, and
-          embark on a transformative educational journey tailored just for you.
-        </p>
-
         <div style={styles.featuresContainer}>
+          <div style={styles.featureCard}>
+            <h2 style={styles.featureTitle}>Archedéx Chatbot Interface</h2>
+            <p style={styles.featureDescription}>
+              Interact with Archedéx, your AI-powered chatbot guide. Navigate
+              through personalized insights and engage in meaningful
+              conversations.
+            </p>
+            <Link to="/chatbot" style={styles.ctaButton}>
+              Chat with Archedéx
+            </Link>
+          </div>
+
+          <div style={styles.featureCard}>
+            <h2 style={styles.featureTitle}>Archetype Library</h2>
+            <p style={styles.featureDescription}>
+              Explore the comprehensive library of archetypes. Dive into their
+              characteristics, strengths, and how they influence your life.
+            </p>
+            <Link to="/library" style={styles.ctaButton}>
+              Explore the Library
+            </Link>
+          </div>
           {/* <div style={styles.featureCard}>
             <h2 style={styles.featureTitle}>Advanced Archetype Matching</h2>
             <p style={styles.featureDescription}>
@@ -166,33 +181,11 @@ const HomePage = () => {
               Meet Your AI Companion
             </Link>
           </div> */}
-
-          <div style={styles.featureCard}>
-            <h2 style={styles.featureTitle}>Archedéx Chatbot Interface</h2>
-            <p style={styles.featureDescription}>
-              Interact with Archedéx, your AI-powered chatbot guide. Navigate
-              through personalized insights and engage in meaningful
-              conversations.
-            </p>
-            <Link to="/chatbot" style={styles.ctaButton}>
-              Chat with Archedéx
-            </Link>
-          </div>
-
-          <div style={styles.featureCard}>
-            <h2 style={styles.featureTitle}>Archetype Library</h2>
-            <p style={styles.featureDescription}>
-              Explore the comprehensive library of archetypes. Dive into their
-              characteristics, strengths, and how they influence your life.
-            </p>
-            <Link to="/library" style={styles.ctaButton}>
-              Explore the Library
-            </Link>
-          </div>
         </div>
 
         <p style={styles.footer}>
-          Begin your journey of self-discovery and personal growth today!
+          Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
+          Potential
         </p>
       </div>
     </div>

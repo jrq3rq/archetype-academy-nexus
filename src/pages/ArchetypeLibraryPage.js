@@ -14,12 +14,44 @@ const getAllArchetypes = async () => {
   }
 };
 
+// Function to determine the text color based on the background color
 const getTextColor = (bgColor) => {
   const r = parseInt(bgColor.slice(1, 3), 16);
   const g = parseInt(bgColor.slice(3, 5), 16);
   const b = parseInt(bgColor.slice(5, 7), 16);
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
   return brightness > 128 ? "#000000" : "#ffffff";
+};
+
+// Map archetype names to their corresponding image filenames
+const archetypeStones = {
+  Caregiver: "/images/CaregiverStone.png",
+  Creator: "/images/CreatorStone.png",
+  Everyman: "/images/EverymanStone.png",
+  Explorer: "/images/ExplorerStone.png",
+  Hero: "/images/HeroStone.png",
+  Innocent: "/images/InnocentStone.png",
+  Joker: "/images/JokerStone.png",
+  Lover: "/images/LoverStone.png",
+  Magician: "/images/MagicianStone.png",
+  Rebel: "/images/RebelStone.png",
+  Ruler: "/images/RulerStone.png",
+  Sage: "/images/SageStone.png",
+};
+
+const archetypeImages = {
+  Caregiver: "/images/Caregiver.png",
+  Creator: "/images/Creator.png",
+  Everyman: "/images/Everyman.png",
+  Explorer: "/images/Explorer.png",
+  Hero: "/images/Hero.png",
+  Innocent: "/images/Innocent.png",
+  Joker: "/images/Joker.png",
+  Lover: "/images/Lover.png",
+  Magician: "/images/Magician.png",
+  Rebel: "/images/Rebel.png",
+  Ruler: "/images/Ruler.png",
+  Sage: "/images/Sage.png",
 };
 
 const ArchetypeLibraryPage = () => {
@@ -104,6 +136,7 @@ const ArchetypeLibraryPage = () => {
       color: "#ffffff",
       transform: "rotateY(180deg)",
     },
+
     cardTitle: {
       fontSize: "18px",
       fontWeight: "bold",
@@ -112,10 +145,31 @@ const ArchetypeLibraryPage = () => {
     cardMotto: {
       fontStyle: "italic",
       marginBottom: "10px",
+      //   fontSize: "18px",
     },
     cardInfo: {
       fontSize: "12px",
       marginTop: "auto",
+    },
+    imageSquare: {
+      width: "50px",
+      height: "50px",
+      margin: "0 auto 10px", // Center the image horizontally and add margin below it
+      borderRadius: "5px", // Optional: add a border-radius to match the card's style
+      objectFit: "cover", // Ensure the image fits within the square without distortion
+    },
+    colorSquare: {
+      width: "50px",
+      height: "50px",
+      margin: "0 auto 10px", // Center the square horizontally and add margin below it
+      borderRadius: "5px", // Optional: add a border-radius to match the card's style
+    },
+    cardContent: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%", // Ensure the content fills the card height
     },
   };
 
@@ -158,20 +212,40 @@ const ArchetypeLibraryPage = () => {
                   color: getTextColor(archetype.color),
                 }}
               >
-                <h2 style={styles.cardTitle}>{archetype.name}</h2>
-                <p style={styles.cardMotto}>{archetype.motto}</p>
-                <p>{archetype.mission}</p>
+                <div style={styles.cardContent}>
+                  <h2 style={styles.cardTitle}>{archetype.name}</h2>
+                  <img
+                    src={archetypeStones[archetype.name]}
+                    alt={`${archetype.name} Stone`}
+                    style={styles.imageSquare}
+                  />
+                  <p style={styles.cardMotto}>{archetype.motto}</p>
+                  <p style={styles.cardMission}>{archetype.mission}</p>
+                </div>
               </div>
-              <div style={{ ...styles.cardFace, ...styles.cardBack }}>
-                <h2 style={styles.cardTitle}>{archetype.name} Details</h2>
-                <div style={styles.cardInfo}>
-                  <p>ID: {archetype.id}</p>
-                  <p>
-                    Timestamp: {new Date(archetype.timestamp).toLocaleString()}
-                  </p>
-                  <p>Order: {archetype.order}</p>
-                  <p>Planet: {archetype.planet}</p>
-                  <p>Third Eye: {archetype.thirdEye}</p>
+              <div
+                style={{
+                  ...styles.cardFace,
+                  ...styles.cardBack,
+                }}
+              >
+                <div style={styles.cardContent}>
+                  <h2 style={styles.cardTitle}>{archetype.name} Details</h2>
+                  <img
+                    src={archetypeImages[archetype.name]}
+                    alt={`${archetype.name} Stone`}
+                    style={styles.imageSquare}
+                  />
+                  <div style={styles.cardInfo}>
+                    <p>Planet: {archetype.planet}</p>
+                    <p>Order: {archetype.order}</p>
+                    <p>Third Eye: {archetype.thirdEye}</p>
+                    <p>
+                      Timestamp:{" "}
+                      {new Date(archetype.timestamp).toLocaleString()}
+                    </p>
+                    <p>ID: {archetype.id}</p>
+                  </div>
                 </div>
               </div>
             </div>
