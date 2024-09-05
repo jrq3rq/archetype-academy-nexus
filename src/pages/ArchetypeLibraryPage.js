@@ -135,6 +135,7 @@ const ArchetypeLibraryPage = () => {
       backgroundColor: "#2f3136",
       color: "#ffffff",
       transform: "rotateY(180deg)",
+      border: "2px solid", // Add border style here
     },
 
     cardTitle: {
@@ -145,7 +146,6 @@ const ArchetypeLibraryPage = () => {
     cardMotto: {
       fontStyle: "italic",
       marginBottom: "10px",
-      //   fontSize: "18px",
     },
     cardInfo: {
       fontSize: "12px",
@@ -157,12 +157,6 @@ const ArchetypeLibraryPage = () => {
       margin: "0 auto 10px", // Center the image horizontally and add margin below it
       borderRadius: "5px", // Optional: add a border-radius to match the card's style
       objectFit: "cover", // Ensure the image fits within the square without distortion
-    },
-    colorSquare: {
-      width: "50px",
-      height: "50px",
-      margin: "0 auto 10px", // Center the square horizontally and add margin below it
-      borderRadius: "5px", // Optional: add a border-radius to match the card's style
     },
     cardContent: {
       display: "flex",
@@ -214,11 +208,11 @@ const ArchetypeLibraryPage = () => {
               >
                 <div style={styles.cardContent}>
                   <h2 style={styles.cardTitle}>{archetype.name}</h2>
-                  <img
+                  {/* <img
                     src={archetypeStones[archetype.name]}
                     alt={`${archetype.name} Stone`}
                     style={styles.imageSquare}
-                  />
+                  /> */}
                   <p style={styles.cardMotto}>{archetype.motto}</p>
                   <p style={styles.cardMission}>{archetype.mission}</p>
                 </div>
@@ -227,6 +221,7 @@ const ArchetypeLibraryPage = () => {
                 style={{
                   ...styles.cardFace,
                   ...styles.cardBack,
+                  borderColor: archetype.color, // Dynamic border color
                 }}
               >
                 <div style={styles.cardContent}>

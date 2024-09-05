@@ -185,7 +185,7 @@ const HomePage = () => {
 
         <p style={styles.footer}>
           Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
-          Potential
+          Personality
         </p>
       </div>
     </div>

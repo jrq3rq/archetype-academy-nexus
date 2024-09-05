@@ -45,10 +45,12 @@ const Header = () => {
       alignItems: "center",
     },
     logo: {
-      color: "#ffffff",
-      fontSize: "24px",
-      fontWeight: "bold",
-      textDecoration: "none",
+      display: "flex",
+      alignItems: "center",
+    },
+    logoImage: {
+      width: "30px", // Adjust the width of the logo to your preference
+      height: "30px", // Keep the aspect ratio intact
     },
     linkContainer: {
       display: isMobile ? "none" : "flex",
@@ -116,7 +118,11 @@ const Header = () => {
     <header style={styles.header}>
       <nav style={styles.nav}>
         <Link to="/" style={styles.logo}>
-          Archetype Academy Nexus
+          <img
+            src="/logo1.png"
+            alt="Archetype Academy Nexus Logo"
+            style={styles.logoImage}
+          />
         </Link>
         <div style={styles.linkContainer}>
           {links.map((link) => (
@@ -167,4 +173,5 @@ const Header = () => {
     </header>
   );
 };
+
 export default Header;
