@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const HomePage = () => {
   const styles = {
@@ -97,10 +98,20 @@ const HomePage = () => {
         fontSize: "16px",
       },
     },
+    featureDescription2: {
+      fontSize: "18px",
+      color: "#b9bbbe",
+      // marginBottom: "25px",
+      lineHeight: "1.6",
+      "@media (max-width: 768px)": {
+        fontSize: "16px",
+      },
+    },
     ctaButton: {
       display: "inline-block",
-      backgroundColor: "#7289da",
-      color: "#ffffff",
+      backgroundColor: "#ffffff",
+      // backgroundColor: "#7289da",
+      color: "#2f3136",
       padding: "14px 28px",
       borderRadius: "5px",
       textDecoration: "none",
@@ -158,36 +169,32 @@ const HomePage = () => {
               Explore the Library
             </Link>
           </div>
-          {/* <div style={styles.featureCard}>
+          <div style={styles.featureCard}>
             <h2 style={styles.featureTitle}>Advanced Archetype Matching</h2>
-            <p style={styles.featureDescription}>
+            <p style={styles.featureDescription2}>
               Experience our enhanced MindPulse personality test with deep
               analytics, offering accurate archetype matching tailored to your
               unique traits.
             </p>
-            <Link to="/archetype-matching" style={styles.ctaButton}>
+            {/* <Link to="/archetype-matching" style={styles.ctaButton}>
               Discover Your Archetype
-            </Link>
+            </Link> */}
           </div>
 
           <div style={styles.featureCard}>
             <h2 style={styles.featureTitle}>Design Your AI Companion</h2>
-            <p style={styles.featureDescription}>
+            <p style={styles.featureDescription2}>
               Create and customize your own AI companion. Design everything from
               appearance to behavior, making it a true reflection of your unique
               archetype.
             </p>
-            <Link to="/character-creation" style={styles.ctaButton}>
+            {/* <Link to="/character-creation" style={styles.ctaButton}>
               Meet Your AI Companion
-            </Link>
-          </div> */}
+            </Link> */}
+          </div>
         </div>
-
-        <p style={styles.footer}>
-          Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
-          Personality
-        </p>
       </div>
+      <Footer />
     </div>
   );
 };

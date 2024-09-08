@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Footer from "../components/Footer";
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -98,6 +99,7 @@ const ArchetypeLibraryPage = () => {
       width: "100%",
       maxWidth: "1200px",
       justifyContent: "center",
+      marginBottom: "20px",
     },
     card: {
       borderRadius: "5px",
@@ -130,12 +132,14 @@ const ArchetypeLibraryPage = () => {
     cardFront: {
       backgroundColor: "inherit",
       color: "inherit",
+      border: "5px double #2f3136", // Add border style here
     },
+
     cardBack: {
       backgroundColor: "#2f3136",
       color: "#ffffff",
       transform: "rotateY(180deg)",
-      border: "2px solid", // Add border style here
+      border: "5px double", // Add border style here
     },
 
     cardTitle: {
@@ -177,7 +181,7 @@ const ArchetypeLibraryPage = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.header}>Archetype Library</h1>
+      {/* <h1 style={styles.header}>Archetype Library</h1> */}
       <div style={styles.grid}>
         {archetypes.map((archetype) => (
           <div
@@ -247,6 +251,8 @@ const ArchetypeLibraryPage = () => {
           </div>
         ))}
       </div>
+      <div />
+      <Footer />
     </div>
   );
 };

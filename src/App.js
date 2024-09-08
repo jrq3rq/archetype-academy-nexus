@@ -8,6 +8,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI";
 import ScrollToTop from "./components/ScrollToTop";
 import { ChatbotProvider } from "./state/ChatbotContext"; // Import the ChatbotProvider
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
