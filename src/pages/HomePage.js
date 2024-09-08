@@ -24,30 +24,6 @@ const HomePage = () => {
       paddingTop: "40px",
       width: "100%",
     },
-    header: {
-      fontSize: "54px",
-      fontWeight: "bold",
-      marginBottom: "20px",
-      textAlign: "center",
-      color: "#7289da",
-      letterSpacing: "1.5px",
-      textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-      "@media (max-width: 768px)": {
-        fontSize: "36px",
-      },
-    },
-    subheader: {
-      fontSize: "22px",
-      marginBottom: "80px",
-      textAlign: "center",
-      color: "#b9bbbe",
-      maxWidth: "700px",
-      lineHeight: "1.8",
-      "@media (max-width: 768px)": {
-        fontSize: "18px",
-        marginBottom: "40px",
-      },
-    },
     featuresContainer: {
       display: "flex",
       justifyContent: "center",
@@ -69,8 +45,9 @@ const HomePage = () => {
       maxWidth: "400px",
       textAlign: "center",
       boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+      position: "relative", // To position the X and overlay
       transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-      marginBottom: "40px", // Add margin-bottom to create space below the card
+      marginBottom: "20px",
       "&:hover": {
         transform: "translateY(-10px)",
         boxShadow: "0 12px 24px rgba(0,0,0,0.3)",
@@ -101,7 +78,6 @@ const HomePage = () => {
     featureDescription2: {
       fontSize: "18px",
       color: "#b9bbbe",
-      // marginBottom: "25px",
       lineHeight: "1.6",
       "@media (max-width: 768px)": {
         fontSize: "16px",
@@ -110,7 +86,6 @@ const HomePage = () => {
     ctaButton: {
       display: "inline-block",
       backgroundColor: "#ffffff",
-      // backgroundColor: "#7289da",
       color: "#2f3136",
       padding: "14px 28px",
       borderRadius: "5px",
@@ -119,6 +94,7 @@ const HomePage = () => {
       fontSize: "16px",
       textAlign: "center",
       transition: "background-color 0.3s ease",
+      width: "80%",
       "&:hover": {
         backgroundColor: "#5a6eaf",
       },
@@ -127,14 +103,45 @@ const HomePage = () => {
         padding: "12px 24px",
       },
     },
+    xOverlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      pointerEvents: "none", // Ensure interaction with the card content
+      backdropFilter: "blur(5px) brightness(0.9)", // Adds blur and darkens the background
+      borderRadius: "12px",
+    },
+    // xLine: {
+    //   position: "absolute",
+    //   width: "70%", // Ensure the "X" spans the whole card diagonally
+    //   height: "1px", // Thickness of the line
+    //   backgroundColor: "#ffffff", // Red color
+    //   top: "50%",
+    //   left: "50%",
+    //   transform: "translate(-50%, -50%) rotate(45deg)", // Diagonal line
+    // },
+    // xLine2: {
+    //   position: "absolute",
+    //   width: "70%", // Ensures the second line spans the card diagonally
+    //   height: "1px", // Thickness of the line
+    //   backgroundColor: "#ffffff", // Red color
+    //   top: "50%",
+    //   left: "50%",
+    //   transform: "translate(-50%, -50%) rotate(-45deg)", // Opposite diagonal line
+    // },
     footer: {
       fontSize: "18px",
       textAlign: "center",
       color: "#b9bbbe",
       marginTop: "auto",
-      padding: "20px 0", // Reduced padding to create space between the line and the text
+      padding: "20px 0",
       borderTop: "1px solid #40444b",
-      marginBottom: "20px", // Add margin-bottom to create space below the line
+      marginBottom: "20px",
       width: "100%",
       "@media (max-width: 768px)": {
         fontSize: "16px",
@@ -170,27 +177,56 @@ const HomePage = () => {
             </Link>
           </div>
           <div style={styles.featureCard}>
+            <div style={styles.xOverlay}>
+              <div style={styles.xLine}></div>
+              <div style={styles.xLine2}></div>
+            </div>
             <h2 style={styles.featureTitle}>Advanced Archetype Matching</h2>
             <p style={styles.featureDescription2}>
               Experience our enhanced MindPulse personality test with deep
               analytics, offering accurate archetype matching tailored to your
               unique traits.
             </p>
-            {/* <Link to="/archetype-matching" style={styles.ctaButton}>
-              Discover Your Archetype
-            </Link> */}
           </div>
 
           <div style={styles.featureCard}>
+            <div style={styles.xOverlay}>
+              <div style={styles.xLine}></div>
+              <div style={styles.xLine2}></div>
+            </div>
             <h2 style={styles.featureTitle}>Design Your AI Companion</h2>
             <p style={styles.featureDescription2}>
               Create and customize your own AI companion. Design everything from
               appearance to behavior, making it a true reflection of your unique
               archetype.
             </p>
-            {/* <Link to="/character-creation" style={styles.ctaButton}>
-              Meet Your AI Companion
-            </Link> */}
+          </div>
+
+          <div style={styles.featureCard}>
+            <div style={styles.xOverlay}>
+              <div style={styles.xLine}></div>
+              <div style={styles.xLine2}></div>
+            </div>
+            <h2 style={styles.featureTitle}>Community Features</h2>
+            <p style={styles.featureDescription2}>
+              Connect with others who share your archetype and engage in
+              discussions. Explore shared experiences, exchange insights, and
+              grow together in our vibrant community of archetype enthusiasts.
+            </p>
+          </div>
+
+          {/* Card with "X" Overlay */}
+          <div style={styles.featureCard}>
+            <div style={styles.xOverlay}>
+              <div style={styles.xLine}></div>
+              <div style={styles.xLine2}></div>
+            </div>
+            <h2 style={styles.featureTitle}>Track Your Progress</h2>
+            <p style={styles.featureDescription2}>
+              Monitor your personal growth with our archetype progress tracker.
+              See how your traits evolve over time and gain deeper insights into
+              how your archetypes develop through your journey.
+            </p>
           </div>
         </div>
       </div>
