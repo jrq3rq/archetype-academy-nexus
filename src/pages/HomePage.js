@@ -114,13 +114,15 @@ const HomePage = () => {
       alignItems: "center",
       pointerEvents: "none", // Ensure interaction with the card content
       backdropFilter: "blur(5px) brightness(0.9)", // Adds blur and darkens the background
+      WebkitBackdropFilter: "blur(5px) brightness(0.9)", // Vendor-prefixed for Safari
       borderRadius: "12px",
+      background: "rgba(0, 0, 0, 0.3)", // Fallback for unsupported browsers
     },
     // xLine: {
     //   position: "absolute",
     //   width: "70%", // Ensure the "X" spans the whole card diagonally
-    //   height: "1px", // Thickness of the line
-    //   backgroundColor: "#ffffff", // Red color
+    //   height: "5px", // Thickness of the line
+    //   backgroundColor: "rgba(255, 0, 0, 0.8)", // Red color
     //   top: "50%",
     //   left: "50%",
     //   transform: "translate(-50%, -50%) rotate(45deg)", // Diagonal line
@@ -128,8 +130,8 @@ const HomePage = () => {
     // xLine2: {
     //   position: "absolute",
     //   width: "70%", // Ensures the second line spans the card diagonally
-    //   height: "1px", // Thickness of the line
-    //   backgroundColor: "#ffffff", // Red color
+    //   height: "5px", // Thickness of the line
+    //   backgroundColor: "rgba(255, 0, 0, 0.8)", // Red color
     //   top: "50%",
     //   left: "50%",
     //   transform: "translate(-50%, -50%) rotate(-45deg)", // Opposite diagonal line
