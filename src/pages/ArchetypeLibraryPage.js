@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import { borderRadius } from "polished";
+import { lighten, darken } from "polished"; // Import lighten from polished
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -140,12 +141,13 @@ const ArchetypeLibraryPage = () => {
       backgroundColor: "#2f3136",
       color: "#ffffff",
       transform: "rotateY(180deg)",
-      border: "5px double", // Add border style here
+      // border: "5px double", // Add border style here
     },
 
     cardTitle: {
       fontSize: "18px",
       fontWeight: "bold",
+      textTransform: "uppercase", // Corrected property spelling
       // marginBottom: "10px",
     },
     cardTitleBack: {
@@ -172,11 +174,12 @@ const ArchetypeLibraryPage = () => {
       height: "50px",
       margin: "10px auto 0px", // Center the image horizontally and add margin below it
       objectFit: "cover", // Ensure the image fits within the square without distortion
-      border: "4px double",
+      border: "1px dashed",
       padding: "4px",
       marginBottom: "10px",
-      borderRadius: "5px",
+      borderRadius: "50px",
     },
+
     cardContent: {
       display: "flex",
       flexDirection: "column",
@@ -189,6 +192,7 @@ const ArchetypeLibraryPage = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
+      fontSize: "8px",
     },
     imageContainer: {
       display: "flex",
@@ -269,6 +273,8 @@ const ArchetypeLibraryPage = () => {
                         ...styles.imageSquare,
                         ...styles.cardBack,
                         borderColor: archetype.color,
+                        backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                        color: getTextColor(archetype.color),
                       }}
                     />
                     <img
@@ -278,6 +284,8 @@ const ArchetypeLibraryPage = () => {
                         ...styles.imageSquare,
                         ...styles.cardBack,
                         borderColor: archetype.color,
+                        backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                        color: getTextColor(archetype.color),
                       }}
                     />
                   </div>
