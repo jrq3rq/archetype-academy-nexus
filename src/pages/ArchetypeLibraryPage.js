@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
+import { borderRadius } from "polished";
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -145,22 +146,36 @@ const ArchetypeLibraryPage = () => {
     cardTitle: {
       fontSize: "18px",
       fontWeight: "bold",
-      marginBottom: "10px",
+      // marginBottom: "10px",
+    },
+    cardTitleBack: {
+      fontSize: "14px",
+      fontWeight: "bold",
+      // marginBottom: "10px",
     },
     cardMotto: {
-      fontStyle: "italic",
+      // fontStyle: "italic",
       marginBottom: "10px",
+      // textDecoration: "underline",
+      // textUnderlineOffset: "5px", // Adjust the value as per your spacing requirement
+    },
+    cardInfoTop: {
+      fontSize: "12px",
+      marginTop: "auto",
     },
     cardInfo: {
-      fontSize: "12px",
+      fontSize: "10px",
       marginTop: "auto",
     },
     imageSquare: {
       width: "50px",
       height: "50px",
-      margin: "0 auto 10px", // Center the image horizontally and add margin below it
-      borderRadius: "5px", // Optional: add a border-radius to match the card's style
+      margin: "10px auto 0px", // Center the image horizontally and add margin below it
       objectFit: "cover", // Ensure the image fits within the square without distortion
+      border: "4px double",
+      padding: "4px",
+      marginBottom: "10px",
+      borderRadius: "5px",
     },
     cardContent: {
       display: "flex",
@@ -168,6 +183,19 @@ const ArchetypeLibraryPage = () => {
       alignItems: "center",
       justifyContent: "center",
       height: "100%", // Ensure the content fills the card height
+    },
+    cardContent2: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    imageContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "10px", // This creates space between the images
+      marginBottom: "0px",
     },
   };
 
@@ -212,13 +240,11 @@ const ArchetypeLibraryPage = () => {
               >
                 <div style={styles.cardContent}>
                   <h2 style={styles.cardTitle}>{archetype.name}</h2>
-                  {/* <img
-                    src={archetypeStones[archetype.name]}
-                    alt={`${archetype.name} Stone`}
-                    style={styles.imageSquare}
-                  /> */}
-                  <p style={styles.cardMotto}>{archetype.motto}</p>
+                  {/* <p>Order: {archetype.order}</p> */}
                   <p style={styles.cardMission}>{archetype.mission}</p>
+                </div>
+                <div style={styles.cardContent2}>
+                  <p>Galactic sector: {archetype.planet}</p>
                 </div>
               </div>
               <div
@@ -229,18 +255,35 @@ const ArchetypeLibraryPage = () => {
                 }}
               >
                 <div style={styles.cardContent}>
-                  <h2 style={styles.cardTitle}>{archetype.name} Details</h2>
-                  <img
-                    src={archetypeImages[archetype.name]}
-                    alt={`${archetype.name} Stone`}
-                    style={styles.imageSquare}
-                  />
+                  {/* <h2 style={styles.cardTitle}>{archetype.name} Details</h2> */}
+                  <p style={styles.cardMotto}> {archetype.motto}</p>
                   <div style={styles.cardInfo}>
-                    <p>Planet: {archetype.planet}</p>
                     <p>Order: {archetype.order}</p>
                     <p>Third Eye: {archetype.thirdEye}</p>
+                  </div>
+                  <div style={styles.imageContainer}>
+                    <img
+                      src={archetypeStones[archetype.name]}
+                      alt={`${archetype.name} Stone`}
+                      style={{
+                        ...styles.imageSquare,
+                        ...styles.cardBack,
+                        borderColor: archetype.color,
+                      }}
+                    />
+                    <img
+                      src={archetypeImages[archetype.name]}
+                      alt={`${archetype.name}`}
+                      style={{
+                        ...styles.imageSquare,
+                        ...styles.cardBack,
+                        borderColor: archetype.color,
+                      }}
+                    />
+                  </div>
+                  <div style={styles.cardInfo}>
                     <p>
-                      Timestamp:{" "}
+                      Gaia Timestamp:{" "}
                       {new Date(archetype.timestamp).toLocaleString()}
                     </p>
                     <p>ID: {archetype.id}</p>
