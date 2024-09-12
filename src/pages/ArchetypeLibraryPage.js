@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
-import { borderRadius } from "polished";
+import Modal from "react-modal";
+import { borderRadius, padding } from "polished";
 import { lighten, darken } from "polished"; // Import lighten from polished
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPaintBrush,
+  faCog,
+  faTools,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons"; // Importing the paintbrush icon
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -61,6 +69,7 @@ const ArchetypeLibraryPage = () => {
   const [archetypes, setArchetypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [flippedCards, setFlippedCards] = useState({});
+  const [modalsOpen, setModalsOpen] = useState({}); // Track open modals for each card
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,12 +84,22 @@ const ArchetypeLibraryPage = () => {
     setFlippedCards((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  // Function to open the modal for a specific card
+  const openModal = (id) => {
+    setModalsOpen((prev) => ({ ...prev, [id]: true }));
+  };
+
+  // Function to close the modal for a specific card
+  const closeModal = (id) => {
+    setModalsOpen((prev) => ({ ...prev, [id]: false }));
+  };
+
   const styles = {
     container: {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: "#1e2124",
+      backgroundColor: "#1e2124", // Dark background instead of white
       color: "#ffffff",
       fontFamily: "Arial, sans-serif",
       padding: "20px",
@@ -105,7 +124,7 @@ const ArchetypeLibraryPage = () => {
     },
     card: {
       borderRadius: "5px",
-      height: "200px",
+      height: "220px",
       perspective: "1000px",
       cursor: "pointer",
       transition: "transform 0.3s",
@@ -136,14 +155,6 @@ const ArchetypeLibraryPage = () => {
       color: "inherit",
       border: "5px double #2f3136", // Add border style here
     },
-
-    cardBack: {
-      backgroundColor: "#2f3136",
-      color: "#ffffff",
-      transform: "rotateY(180deg)",
-      // border: "5px double", // Add border style here
-    },
-
     cardTitle: {
       fontSize: "18px",
       fontWeight: "bold",
@@ -155,31 +166,10 @@ const ArchetypeLibraryPage = () => {
       fontWeight: "bold",
       // marginBottom: "10px",
     },
-    cardMotto: {
-      // fontStyle: "italic",
-      marginBottom: "10px",
-      // textDecoration: "underline",
-      // textUnderlineOffset: "5px", // Adjust the value as per your spacing requirement
-    },
     cardInfoTop: {
       fontSize: "12px",
       marginTop: "auto",
     },
-    cardInfo: {
-      fontSize: "10px",
-      marginTop: "auto",
-    },
-    imageSquare: {
-      width: "50px",
-      height: "50px",
-      margin: "10px auto 0px", // Center the image horizontally and add margin below it
-      objectFit: "cover", // Ensure the image fits within the square without distortion
-      border: "1px dashed",
-      padding: "4px",
-      marginBottom: "10px",
-      borderRadius: "50px",
-    },
-
     cardContent: {
       display: "flex",
       flexDirection: "column",
@@ -194,12 +184,139 @@ const ArchetypeLibraryPage = () => {
       justifyContent: "center",
       fontSize: "8px",
     },
+    cardBack: {
+      backgroundColor: "#2f3136",
+      color: "#ffffff",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      padding: "15px",
+      boxSizing: "border-box",
+      border: "2px solid", // Border based on the dynamic archetype color
+      borderRadius: "8px",
+    },
+
+    cardMotto: {
+      fontSize: "16px",
+      textAlign: "center",
+      marginBottom: "10px",
+    },
+
+    mainSection: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      // padding: "10px 0",
+    },
     imageContainer: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      gap: "10px", // This creates space between the images
-      marginBottom: "0px",
+      gap: "10px", // Space between images
+    },
+
+    imageSquare: {
+      width: "50px",
+      height: "50px",
+      borderRadius: "50%",
+      padding: "4px",
+      border: "1px solid", // Dashed border with dynamic color
+      objectFit: "cover",
+    },
+
+    cardInfo: {
+      fontSize: "10px",
+      marginTop: "10px",
+      textAlign: "center",
+    },
+    buttonContainer: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      // gap: "10px",
+      marginRight: "20px",
+    },
+
+    buttonLeft: {
+      width: "50px",
+      height: "50px",
+      borderRadius: "50%",
+      border: "none",
+      cursor: "pointer",
+      border: "2px dashed", // Dashed border with dynamic color
+      marginRight: "10px", // Space between images
+    },
+
+    buttonRight: {
+      width: "50px",
+      height: "50px",
+      borderRadius: "10%",
+      cursor: "pointer",
+      border: "2px dashed", // Dashed border with dynamic color
+      marginLeft: "10px", // Space between images
+    },
+    //vertical buttons
+    buttonTop: {
+      fontSize: "10px",
+      width: "50px",
+      height: "50px",
+      borderTopLeftRadius: "10px", // Only round the bottom-left corner
+      borderTopRightRadius: "10px", // Only round the bottom-right corner
+      border: "1px solid",
+      cursor: "pointer",
+      marginRight: "10px", // Space between images
+    },
+
+    buttonBottom: {
+      fontSize: "10px",
+      width: "50px",
+      height: "50px",
+      borderBottomLeftRadius: "10px", // Only round the bottom-left corner
+      borderBottomRightRadius: "10px", // Only round the bottom-right corner
+      border: "1px solid",
+      cursor: "pointer",
+      marginRight: "10px", // Space between images
+    },
+    modalContent: {
+      backgroundColor: "#2f3136", // Dark background
+      color: "#ffffff", // Light text for readability
+      padding: "20px", // Padding for space around content
+      borderRadius: "10px", // Rounded corners for smooth feel
+      maxWidth: "600px", // Max width on larger screens
+      width: "90%", // Responsive width for smaller screens
+      maxHeight: "80vh", // Modal height limited to 80% of viewport height
+      overflowY: "auto", // Scroll if content exceeds modal height
+      margin: "auto", // Center the modal
+      textAlign: "center", // Center text content
+      position: "relative", // For positioning the close button
+      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)", // Subtle shadow for depth
+      transition: "all 0.3s ease-in-out", // Smooth transitions
+    },
+    modalTitle: {
+      fontSize: "1.5rem", // Normal font size for title
+      fontWeight: "bold",
+      marginBottom: "20px",
+      color: lighten(0.2, "#ffffff"), // Slightly lighter title color
+    },
+    modalText: {
+      fontSize: "1rem", // Normal readable font size for content
+      lineHeight: "1.6",
+      marginBottom: "20px",
+    },
+    closeButton: {
+      position: "absolute",
+      top: "15px",
+      right: "15px",
+      backgroundColor: "transparent",
+      color: "#ffffff",
+      border: "none",
+      fontSize: "1.5rem", // Standard size for close button
+      cursor: "pointer",
+      padding: "10px",
+      transition: "color 0.2s ease",
+      "&:hover": {
+        color: lighten(0.3, "#ffffff"), // Lighter on hover
+      },
     },
   };
 
@@ -254,40 +371,146 @@ const ArchetypeLibraryPage = () => {
               <div
                 style={{
                   ...styles.cardFace,
-                  ...styles.cardBack,
-                  borderColor: archetype.color, // Dynamic border color
+                  ...styles.cardFront, // Add front card styles
+                  backgroundColor: archetype.color,
+                  color: getTextColor(archetype.color),
+                  backfaceVisibility: "hidden", // Ensure the front card is not visible when flipped
                 }}
               >
                 <div style={styles.cardContent}>
-                  {/* <h2 style={styles.cardTitle}>{archetype.name} Details</h2> */}
-                  <p style={styles.cardMotto}> {archetype.motto}</p>
+                  <h2 style={styles.cardTitle}>{archetype.name}</h2>
+                  <p style={styles.cardMission}>{archetype.mission}</p>
+                </div>
+                <div style={styles.cardContent2}>
+                  <p>Galactic sector: {archetype.planet}</p>
+                </div>
+              </div>
+              {/* back card */}
+              <div
+                style={{
+                  ...styles.cardFace,
+                  ...styles.cardBack, // Add back card styles
+                  borderColor: archetype.color, // Dynamic border color
+                  backfaceVisibility: "hidden", // Ensure the back card is not visible when not flipped
+                  transform: "rotateY(180deg)", // Rotate the back card to align properly
+                  backgroundColor: darken(0.2, archetype.color), // Make the background color lighter
+                }}
+              >
+                <div style={styles.cardContent}>
+                  <p style={styles.cardMotto}>{archetype.motto}</p>
+                  {/* Main section with vertical buttons and images */}
+                  <div style={styles.mainSection}>
+                    {/* Left vertical buttons */}
+                    <div style={styles.buttonContainer}>
+                      <button
+                        style={{
+                          ...styles.buttonTop, // Shared button style
+                          borderColor: archetype.color, // Ensure border color is set
+                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 40%
+                          borderWidth: "1px", // Ensure the border width is consistent
+                          borderStyle: "solid", // Explicitly set the border style
+                        }}
+                        onClick={(event) => {
+                          event.stopPropagation(); // Prevent card flip
+                          openModal(archetype.id); // Open modal specific to this card
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCog} // Tools icon
+                          style={{
+                            color: archetype.color, // Directly set icon color to archetype's color
+                            fontSize: "24px",
+                          }}
+                        />
+                      </button>
+                      <button
+                        style={{
+                          ...styles.buttonBottom, // Shared button style
+                          borderColor: archetype.color,
+                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 40%
+                        }}
+                        onClick={(event) => {
+                          event.stopPropagation(); // Prevent card flip
+                          console.log("Tools button clicked"); // Handle other functionality here
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faUser} // Paintbrush icon representing "Create"
+                          style={{
+                            color: archetype.color, // Directly set icon color to archetype's color
+                            fontSize: "24px",
+                          }}
+                        />
+                      </button>
+                      <Modal
+                        isOpen={modalsOpen[archetype.id]}
+                        onRequestClose={() => closeModal(archetype.id)}
+                        contentLabel={`${archetype.name} Modal`}
+                        style={{
+                          overlay: {
+                            backgroundColor: "rgba(0, 0, 0, 0.75)", // Dark overlay for focus
+                            display: "flex",
+                            alignItems: "center", // Vertically center modal
+                            justifyContent: "center", // Horizontally center modal
+                            padding: "10px", // Padding for mobile screens
+                          },
+                        }}
+                      >
+                        <div style={styles.modalContent}>
+                          <h2 style={styles.modalTitle}>
+                            {archetype.name} Details
+                          </h2>
+                          <p style={styles.modalText}>
+                            More information about {archetype.name} and its
+                            characteristics will be displayed here. You can
+                            explore various traits and deep insights related to
+                            this archetype.
+                          </p>
+                          <button
+                            onClick={() => closeModal(archetype.id)}
+                            style={styles.closeButton}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      </Modal>
+                    </div>
+                    {/* Center images */}
+                    <div style={styles.imageContainer}>
+                      <img
+                        src={archetypeStones[archetype.name]}
+                        alt={`${archetype.name} Stone`}
+                        style={{
+                          ...styles.imageSquare,
+                          borderColor: archetype.color,
+                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                          color: getTextColor(archetype.color),
+                        }}
+                      />
+                      <img
+                        src={archetypeImages[archetype.name]}
+                        alt={`${archetype.name}`}
+                        style={{
+                          ...styles.imageSquare,
+                          borderColor: archetype.color,
+                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                          color: getTextColor(archetype.color),
+                        }}
+                      />
+                    </div>
+                    {/* Right vertical buttons */}
+                    {/* <div style={styles.buttonContainer}>
+                      <button
+                        style={{
+                          ...styles.buttonRight,
+                          // backgroundColor: archetype.color, // Apply archetype color to the button
+                        }}
+                      ></button>
+                    </div> */}
+                  </div>
                   <div style={styles.cardInfo}>
                     <p>Order: {archetype.order}</p>
                     <p>Third Eye: {archetype.thirdEye}</p>
-                  </div>
-                  <div style={styles.imageContainer}>
-                    <img
-                      src={archetypeStones[archetype.name]}
-                      alt={`${archetype.name} Stone`}
-                      style={{
-                        ...styles.imageSquare,
-                        ...styles.cardBack,
-                        borderColor: archetype.color,
-                        backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
-                        color: getTextColor(archetype.color),
-                      }}
-                    />
-                    <img
-                      src={archetypeImages[archetype.name]}
-                      alt={`${archetype.name}`}
-                      style={{
-                        ...styles.imageSquare,
-                        ...styles.cardBack,
-                        borderColor: archetype.color,
-                        backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
-                        color: getTextColor(archetype.color),
-                      }}
-                    />
                   </div>
                   <div style={styles.cardInfo}>
                     <p>
