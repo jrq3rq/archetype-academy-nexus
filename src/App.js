@@ -9,6 +9,7 @@ import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI";
 import ScrollToTop from "./components/ScrollToTop";
 import { ChatbotProvider } from "./state/ChatbotContext"; // Import the ChatbotProvider
 import Footer from "./components/Footer";
+import EnhancedPersonalityTest from "./pages/EnhancedPersonalityTest";
 
 const App = () => {
   return (
@@ -20,7 +21,7 @@ const App = () => {
             <Route exact path="/" component={HomePage} />
             <Route path="/chatbot" component={ArchetypeChatbotUI} />
             <Route path="/library" component={ArchetypeLibraryPage} />
-            {/* <Route path="/profile" component={UserProfilePage} /> */}
+            <Route path="/assessment" component={EnhancedPersonalityTest} />
           </Switch>
         </Layout>
       </Router>

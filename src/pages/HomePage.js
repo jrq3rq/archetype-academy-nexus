@@ -179,18 +179,16 @@ const HomePage = () => {
             </Link>
           </div>
           <div style={styles.featureCard}>
-            <div style={styles.xOverlay}>
-              <div style={styles.xLine}></div>
-              <div style={styles.xLine2}></div>
-            </div>
             <h2 style={styles.featureTitle}>Advanced Archetype Matching</h2>
-            <p style={styles.featureDescription2}>
+            <p style={styles.featureDescription}>
               Experience our enhanced MindPulse personality test with deep
               analytics, offering accurate archetype matching tailored to your
               unique traits.
             </p>
+            <Link to="/assessment" style={styles.ctaButton}>
+              Explore MindPulse-150
+            </Link>
           </div>
-
           <div style={styles.featureCard}>
             <div style={styles.xOverlay}>
               <div style={styles.xLine}></div>

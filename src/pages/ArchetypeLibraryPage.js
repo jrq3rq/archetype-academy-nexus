@@ -219,7 +219,7 @@ const ArchetypeLibraryPage = () => {
       width: "50px",
       height: "50px",
       borderRadius: "50%",
-      padding: "4px",
+      padding: "8px",
       border: "1px solid", // Dashed border with dynamic color
       objectFit: "cover",
     },
@@ -234,7 +234,7 @@ const ArchetypeLibraryPage = () => {
       flexDirection: "column",
       justifyContent: "center",
       // gap: "10px",
-      marginRight: "20px",
+      marginRight: "0px",
     },
 
     buttonLeft: {
@@ -258,11 +258,15 @@ const ArchetypeLibraryPage = () => {
     //vertical buttons
     buttonTop: {
       fontSize: "10px",
-      width: "50px",
+      width: "70px",
       height: "50px",
       borderTopLeftRadius: "10px", // Only round the bottom-left corner
       borderTopRightRadius: "10px", // Only round the bottom-right corner
-      border: "1px solid",
+      borderBottomRightRadius: "10px", // Only round the bottom-left corner
+      borderRight: "1px solid",
+      borderBottom: "1px solid",
+      borderLeft: "1px solid",
+      borderTop: "1px solid",
       cursor: "pointer",
       marginRight: "10px", // Space between images
     },
@@ -273,7 +277,10 @@ const ArchetypeLibraryPage = () => {
       height: "50px",
       borderBottomLeftRadius: "10px", // Only round the bottom-left corner
       borderBottomRightRadius: "10px", // Only round the bottom-right corner
-      border: "1px solid",
+      borderRight: "1px solid",
+      borderBottom: "1px solid",
+      borderLeft: "1px solid",
+      borderTop: "0px solid",
       cursor: "pointer",
       marginRight: "10px", // Space between images
     },
@@ -438,7 +445,7 @@ const ArchetypeLibraryPage = () => {
                           icon={faUser} // Paintbrush icon representing "Create"
                           style={{
                             color: archetype.color, // Directly set icon color to archetype's color
-                            fontSize: "24px",
+                            fontSize: "18px",
                           }}
                         />
                       </button>
@@ -458,7 +465,7 @@ const ArchetypeLibraryPage = () => {
                       >
                         <div style={styles.modalContent}>
                           <h2 style={styles.modalTitle}>
-                            {archetype.name} Details
+                            {archetype.name} Builder
                           </h2>
                           <p style={styles.modalText}>
                             More information about {archetype.name} and its

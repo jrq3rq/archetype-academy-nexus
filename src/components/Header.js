@@ -111,6 +111,7 @@ const Header = () => {
     { to: "/", label: "Home" },
     { to: "/chatbot", label: "Chatbot" },
     { to: "/library", label: "Library" },
+    { to: "/assessment", label: "Assessment" },
     // { to: "/profile", label: "User Profile" },
   ];
 
