@@ -99,6 +99,9 @@ const ArchetypeChatbotUI = () => {
   });
   const [archetypes, setArchetypes] = useState([]);
   const chatWindowRef = useRef(null);
+  // New state for the AI model selection
+  const [selectedModel, setSelectedModel] = useState(""); // Empty string for initial state
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -175,8 +178,13 @@ const ArchetypeChatbotUI = () => {
     dispatch({ type: "CLEAR_CHAT" }); // This now matches the action type in the reducer
   };
 
+  const handleModelChange = (e) => {
+    setSelectedModel(e.target.value);
+  };
+
   const promptData = {
     archetype: state.selectedArchetype,
+    selectedModel, // Add selected model to the JSON data
     traits: categorySelections,
     characteristics: traitValues,
     message: message,
@@ -304,7 +312,7 @@ const ArchetypeChatbotUI = () => {
       color: "#ffffff",
       borderRadius: "5px",
       padding: "15px",
-      marginTop: "20px",
+      marginTop: "10px",
       fontFamily: "monospace",
       maxHeight: "200px",
       overflowY: "auto",
@@ -313,6 +321,24 @@ const ArchetypeChatbotUI = () => {
     },
 
     dropdown: {
+      width: "100%",
+      padding: "10px",
+      // marginBottom: "15px",
+      // marginBottom: windowWidth > 768 ? "10px" : "0px", // Desktop has 10px, mobile has 0px
+      backgroundColor: "#40444b",
+      color: "#ffffff",
+      border: "none",
+      borderRadius: "5px",
+      appearance: "none",
+      WebkitAppearance: "none",
+      MozAppearance: "none",
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "calc(100% - 10px) center",
+      paddingRight: "30px",
+    },
+
+    dropdown2: {
       width: "100%",
       padding: "10px",
       marginBottom: "15px",
@@ -327,6 +353,25 @@ const ArchetypeChatbotUI = () => {
       backgroundRepeat: "no-repeat",
       backgroundPosition: "calc(100% - 10px) center",
       paddingRight: "30px",
+    },
+    dropdownModelsSector: {
+      width: "100%",
+      padding: "10px",
+      marginTop: windowWidth > 768 ? "15px" : "15px",
+      marginBottom: windowWidth > 768 ? "15px" : "15px",
+      marginLeft: "0px",
+      marginRight: "0px",
+      backgroundColor: "#40444b",
+      color: "#ffffff",
+      border: "none",
+      borderRadius: "5px",
+      appearance: "none",
+      WebkitAppearance: "none",
+      MozAppearance: "none",
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`, // Add the dropdown arrow icon
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "calc(100% - 10px) center", // Ensure the arrow stays on the right
+      paddingRight: "30px", // Add padding to leave space for the arrow
     },
     categoryButtons: {
       display: "flex",
@@ -399,6 +444,23 @@ const ArchetypeChatbotUI = () => {
         ))}
       </select>
 
+      <select
+        style={styles.dropdownModelsSector}
+        value={selectedModel}
+        onChange={(e) => setSelectedModel(e.target.value)} // Update selected model
+      >
+        {/* Placeholder option with an empty value */}
+        <option value="" disabled>
+          Select Model
+        </option>
+
+        <option value="Grok-1">Grok-1</option>
+        <option value="Grok-2">Grok-2</option>
+        <option value="GPT-3">GPT-3</option>
+        <option value="GPT-4">GPT-4</option>
+        <option value="Claude">Claude</option>
+        <option value="LLaMA">LLaMA</option>
+      </select>
       <div style={styles.categoryButtons}>
         {Object.keys(categories).map((category) => (
           <button
@@ -418,7 +480,7 @@ const ArchetypeChatbotUI = () => {
 
       {selectedCategory && (
         <select
-          style={styles.dropdown}
+          style={styles.dropdown2}
           value={categorySelections[selectedCategory]}
           onChange={(e) => handleCategorySelection(e.target.value)}
         >
@@ -432,7 +494,6 @@ const ArchetypeChatbotUI = () => {
           ))}
         </select>
       )}
-
       <textarea
         style={styles.input}
         value={message}
@@ -451,11 +512,9 @@ const ArchetypeChatbotUI = () => {
       >
         {showArchetypeSelector ? "Hide Trait Adjuster" : "Show Trait Adjuster"}
       </button>
-
       <button style={styles.button} onClick={handleClearChat}>
         Clear Chat
       </button>
-
       {showArchetypeSelector && (
         <div style={styles.archetypeSelector}>
           <h3>Fine-tune traits for {state.selectedArchetype}:</h3>
@@ -507,6 +566,22 @@ const ArchetypeChatbotUI = () => {
               {archetype.name}
             </option>
           ))}
+        </select>
+        <select
+          style={styles.dropdownModelsSector}
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)} // Update selected model
+        >
+          {/* Placeholder option with an empty value */}
+          <option value="" disabled>
+            Select Model
+          </option>
+          <option value="Grok-1">Grok-1</option>
+          <option value="Grok-2">Grok-2</option>
+          <option value="GPT-3">GPT-3</option>
+          <option value="GPT-4">GPT-4</option>
+          <option value="Claude">Claude</option>
+          <option value="LLaMA">LLaMA</option>
         </select>
       </div>
       <div style={styles.desktopMainContent}>
@@ -580,6 +655,7 @@ const ArchetypeChatbotUI = () => {
               ? "Hide Trait Adjuster"
               : "Show Trait Adjuster"}
           </button>
+
           <button style={styles.button} onClick={handleClearChat}>
             Clear Chat
           </button>

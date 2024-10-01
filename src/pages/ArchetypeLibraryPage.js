@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Modal from "react-modal";
-import { borderRadius, padding } from "polished";
 import { lighten, darken } from "polished"; // Import lighten from polished
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -63,6 +62,21 @@ const archetypeImages = {
   Rebel: "/images/Rebel.png",
   Ruler: "/images/Ruler.png",
   Sage: "/images/Sage.png",
+};
+
+// Function to determine which background image to use based on the archetype name
+const getBackgroundImage = (archetypeName) => {
+  if (["Rebel", "Magician", "Hero"].includes(archetypeName)) {
+    return "/images/HexagonBG.png";
+  } else if (["Creator", "Ruler", "Caregiver"].includes(archetypeName)) {
+    return "/images/OctagonBG.png";
+  } else if (["Innocent", "Sage", "Explorer"].includes(archetypeName)) {
+    return "/images/TeardropBG.png";
+  } else if (["Lover", "Joker", "Everyman"].includes(archetypeName)) {
+    return "/images/DiamondBG.png";
+  } else {
+    return null; // Default case, no background image
+  }
 };
 
 const ArchetypeLibraryPage = () => {
@@ -156,9 +170,109 @@ const ArchetypeLibraryPage = () => {
       border: "5px double #2f3136", // Add border style here
     },
     cardTitle: {
-      fontSize: "18px",
+      fontSize: "20px",
       fontWeight: "bold",
       textTransform: "uppercase", // Corrected property spelling
+      letterSpacing: "4px",
+    },
+    cardMission: {
+      fontSize: "14px",
+    },
+    cardContent: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%", // Ensure the content fills the card height
+    },
+    cardBack: {
+      backgroundColor: "#2f3136",
+      color: "#ffffff",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      padding: "15px",
+      boxSizing: "border-box",
+      border: "2px solid", // Border based on the dynamic archetype color
+      borderRadius: "8px",
+    },
+    imageSquare: {
+      width: "50px",
+      height: "50px",
+      borderRadius: "50%",
+      padding: "8px",
+      border: "1px solid", // Dashed border with dynamic color
+      objectFit: "cover",
+    },
+    container: {
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh",
+      backgroundColor: "#1e2124", // Dark background instead of white
+      color: "#ffffff",
+      fontFamily: "Arial, sans-serif",
+      padding: "20px",
+      boxSizing: "border-box",
+      alignItems: "center",
+      overflowY: "auto",
+    },
+    header: {
+      fontSize: "24px",
+      fontWeight: "bold",
+      marginBottom: "20px",
+      textAlign: "center",
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+      gap: "20px",
+      width: "100%",
+      maxWidth: "1200px",
+      justifyContent: "center",
+      marginBottom: "20px",
+    },
+    card: {
+      borderRadius: "5px",
+      height: "220px",
+      perspective: "1000px",
+      cursor: "pointer",
+      transition: "transform 0.3s",
+    },
+    cardInner: {
+      position: "relative",
+      width: "100%",
+      height: "100%",
+      textAlign: "center",
+      transition: "transform 0.6s",
+      transformStyle: "preserve-3d",
+    },
+    cardFace: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      backfaceVisibility: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      padding: "15px",
+      boxSizing: "border-box",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      borderRadius: "5px",
+    },
+    cardFront: {
+      backgroundColor: "inherit",
+      color: "inherit",
+      border: "5px double #2f3136", // Add border style here
+    },
+    cardTitle: {
+      fontSize: "20px",
+      fontWeight: "bold",
+      textTransform: "uppercase", // Corrected property spelling
+      letterSpacing: "4px",
+      // marginBottom: "10px",
+    },
+    cardMission: {
+      fontSize: "14px",
       // marginBottom: "10px",
     },
     cardTitleBack: {
@@ -337,7 +451,6 @@ const ArchetypeLibraryPage = () => {
 
   return (
     <div style={styles.container}>
-      {/* <h1 style={styles.header}>Archetype Library</h1> */}
       <div style={styles.grid}>
         {archetypes.map((archetype) => (
           <div
@@ -358,30 +471,16 @@ const ArchetypeLibraryPage = () => {
                   : "rotateY(0)",
               }}
             >
+              {/* Front of the card */}
               <div
                 style={{
                   ...styles.cardFace,
                   ...styles.cardFront,
                   backgroundColor: archetype.color,
                   color: getTextColor(archetype.color),
-                }}
-              >
-                <div style={styles.cardContent}>
-                  <h2 style={styles.cardTitle}>{archetype.name}</h2>
-                  {/* <p>Order: {archetype.order}</p> */}
-                  <p style={styles.cardMission}>{archetype.mission}</p>
-                </div>
-                <div style={styles.cardContent2}>
-                  <p>Galactic sector: {archetype.planet}</p>
-                </div>
-              </div>
-              <div
-                style={{
-                  ...styles.cardFace,
-                  ...styles.cardFront, // Add front card styles
-                  backgroundColor: archetype.color,
-                  color: getTextColor(archetype.color),
-                  backfaceVisibility: "hidden", // Ensure the front card is not visible when flipped
+                  backgroundImage: `url(${getBackgroundImage(archetype.name)})`,
+                  backgroundSize: "200%", // Zoomed in by making the image size larger
+                  backgroundPosition: "center", // Keep the image centered
                 }}
               >
                 <div style={styles.cardContent}>
@@ -392,19 +491,23 @@ const ArchetypeLibraryPage = () => {
                   <p>Galactic sector: {archetype.planet}</p>
                 </div>
               </div>
-              {/* back card */}
+
+              {/* Back of the card */}
               <div
                 style={{
                   ...styles.cardFace,
                   ...styles.cardBack, // Add back card styles
-                  borderColor: archetype.color, // Dynamic border color
+                  // borderColor: archetype.color, // Dynamic border color
+
+                  border: "5px double #2f3136", // Same border style as the front card
                   backfaceVisibility: "hidden", // Ensure the back card is not visible when not flipped
                   transform: "rotateY(180deg)", // Rotate the back card to align properly
-                  backgroundColor: darken(0.2, archetype.color), // Make the background color lighter
+                  backgroundColor: darken(0.1, archetype.color), // Make the background color lighter
+                  color: getTextColor(archetype.color), // Match text color with front card
                 }}
               >
                 <div style={styles.cardContent}>
-                  <p style={styles.cardMotto}>{archetype.motto}</p>
+                  {/* <p style={styles.cardMotto}>{archetype.motto}</p> */}
                   {/* Main section with vertical buttons and images */}
                   <div style={styles.mainSection}>
                     {/* Left vertical buttons */}
@@ -413,7 +516,7 @@ const ArchetypeLibraryPage = () => {
                         style={{
                           ...styles.buttonTop, // Shared button style
                           borderColor: archetype.color, // Ensure border color is set
-                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 40%
+                          backgroundColor: darken(0.3, archetype.color), // Darken the background color by 40%
                           borderWidth: "1px", // Ensure the border width is consistent
                           borderStyle: "solid", // Explicitly set the border style
                         }}
@@ -434,7 +537,7 @@ const ArchetypeLibraryPage = () => {
                         style={{
                           ...styles.buttonBottom, // Shared button style
                           borderColor: archetype.color,
-                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 40%
+                          backgroundColor: darken(0.3, archetype.color), // Darken the background color by 40%
                         }}
                         onClick={(event) => {
                           event.stopPropagation(); // Prevent card flip
@@ -490,7 +593,7 @@ const ArchetypeLibraryPage = () => {
                         style={{
                           ...styles.imageSquare,
                           borderColor: archetype.color,
-                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                          backgroundColor: darken(0.3, archetype.color), // Darken the background color by 20%
                           color: getTextColor(archetype.color),
                         }}
                       />
@@ -500,7 +603,7 @@ const ArchetypeLibraryPage = () => {
                         style={{
                           ...styles.imageSquare,
                           borderColor: archetype.color,
-                          backgroundColor: darken(0.4, archetype.color), // Darken the background color by 20%
+                          backgroundColor: darken(0.3, archetype.color), // Darken the background color by 20%
                           color: getTextColor(archetype.color),
                         }}
                       />
@@ -532,7 +635,6 @@ const ArchetypeLibraryPage = () => {
           </div>
         ))}
       </div>
-      <div />
       <Footer />
     </div>
   );

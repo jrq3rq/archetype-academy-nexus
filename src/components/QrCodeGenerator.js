@@ -1,50 +1,79 @@
-import React, { useState } from "react";
+// src/components/QRCodeSection.jsx
+
+import React, { useRef } from "react";
+import styled from "styled-components";
 import { QRCodeCanvas } from "qrcode.react";
+import PropTypes from "prop-types";
 
-const QRCodeGenerator = ({ promptData, selectedArchetype }) => {
-  const [showQRCode, setShowQRCode] = useState(false);
+const QRContainer = styled.div`
+  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #333;
+  border-radius: 10px;
+`;
 
-  const handleGenerateQRCode = () => {
-    if (selectedArchetype) {
-      setShowQRCode(true);
-    } else {
-      alert("Please select an archetype first.");
+const DownloadButton = styled.button`
+  padding: 10px 20px;
+  background-color: #45fe47;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #66ff66;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const QRCodeSection = ({
+  qrCodeData,
+  generateQRCode,
+  isQRCodeGenerating,
+  qrButtonLabel,
+}) => {
+  const qrCodeRef = useRef(null);
+
+  const downloadQRCode = () => {
+    const canvas = qrCodeRef.current.querySelector("canvas");
+    if (canvas) {
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "ArchetypeAcademy-QRCode.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
-  const styles = {
-    qrCodeSection: {
-      marginTop: "20px",
-      textAlign: "center",
-    },
-    qrButton: {
-      padding: "10px 20px",
-      backgroundColor: "#7289da",
-      color: "#ffffff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontSize: "16px",
-    },
-    qrCodeContainer: {
-      marginTop: "20px",
-      display: "flex",
-      justifyContent: "center",
-    },
-  };
-
   return (
-    <div style={styles.qrCodeSection}>
-      <button style={styles.qrButton} onClick={handleGenerateQRCode}>
-        Generate QR Key
-      </button>
-      {showQRCode && (
-        <div style={styles.qrCodeContainer}>
-          <QRCodeCanvas value={JSON.stringify(promptData)} />
-        </div>
-      )}
-    </div>
+    <QRContainer>
+      <QRCodeCanvas
+        ref={qrCodeRef}
+        value={qrCodeData}
+        size={128}
+        level="H"
+        includeMargin={true}
+      />
+      <DownloadButton onClick={downloadQRCode}>Download QR Code</DownloadButton>
+    </QRContainer>
   );
 };
 
-export default QRCodeGenerator;
+QRCodeSection.propTypes = {
+  qrCodeData: PropTypes.string.isRequired,
+  generateQRCode: PropTypes.func.isRequired,
+  isQRCodeGenerating: PropTypes.bool.isRequired,
+  qrButtonLabel: PropTypes.string.isRequired,
+};
+
+export default QRCodeSection;
