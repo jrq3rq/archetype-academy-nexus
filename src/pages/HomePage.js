@@ -2,14 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
-const HomePage = () => {
+const HomePage = ({ isDarkMode, toggleTheme }) => {
   const styles = {
     container: {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: "#1e2124",
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#000000",
+      // backgroundColor: "#1e2124",
+      // color: "#ffffff",
       fontFamily: "Arial, sans-serif",
       padding: "0 20px",
       boxSizing: "border-box",
@@ -38,7 +40,7 @@ const HomePage = () => {
       },
     },
     featureCard: {
-      backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0",
       borderRadius: "12px",
       padding: "40px",
       width: "100%",
@@ -48,6 +50,7 @@ const HomePage = () => {
       position: "relative", // To position the X and overlay
       transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
       marginBottom: "20px",
+      border: "1px solid #2E3136",
       "&:hover": {
         transform: "translateY(-10px)",
         boxShadow: "0 12px 24px rgba(0,0,0,0.3)",
@@ -61,14 +64,16 @@ const HomePage = () => {
       fontSize: "26px",
       fontWeight: "bold",
       marginBottom: "20px",
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#000000",
+      // color: "#ffffff",
       "@media (max-width: 768px)": {
         fontSize: "22px",
       },
     },
     featureDescription: {
       fontSize: "18px",
-      color: "#b9bbbe",
+      color: isDarkMode ? "#b9bbbe" : "#000000",
+      // color: "#b9bbbe",
       marginBottom: "25px",
       lineHeight: "1.6",
       "@media (max-width: 768px)": {
@@ -85,8 +90,9 @@ const HomePage = () => {
     },
     ctaButton: {
       display: "inline-block",
-      backgroundColor: "#ffffff",
-      color: "#2f3136",
+      // backgroundColor: "#ffffff",
+      backgroundColor: isDarkMode ? "#ffffff" : "#2f3136",
+      color: isDarkMode ? "#000000" : "#ffffff",
       padding: "14px 28px",
       borderRadius: "5px",
       textDecoration: "none",
@@ -230,7 +236,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

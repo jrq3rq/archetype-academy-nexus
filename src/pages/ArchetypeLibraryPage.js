@@ -79,7 +79,7 @@ const getBackgroundImage = (archetypeName) => {
   }
 };
 
-const ArchetypeLibraryPage = () => {
+const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
   const [archetypes, setArchetypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [flippedCards, setFlippedCards] = useState({});
@@ -113,8 +113,8 @@ const ArchetypeLibraryPage = () => {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: "#1e2124", // Dark background instead of white
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",
       boxSizing: "border-box",
@@ -141,7 +141,14 @@ const ArchetypeLibraryPage = () => {
       height: "220px",
       perspective: "1000px",
       cursor: "pointer",
-      transition: "transform 0.3s",
+      transition: "transform 0.3s, box-shadow 0.3s", // Add transition for box-shadow
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Add initial shadow effect
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      "&:hover": {
+        // Hover effect
+        transform: "translateY(-10px)",
+        boxShadow: "0 12px 24px rgba(0, 0, 0, 0.3)", // Change shadow on hover
+      },
     },
     cardInner: {
       position: "relative",
@@ -204,77 +211,6 @@ const ArchetypeLibraryPage = () => {
       border: "1px solid", // Dashed border with dynamic color
       objectFit: "cover",
     },
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      minHeight: "100vh",
-      backgroundColor: "#1e2124", // Dark background instead of white
-      color: "#ffffff",
-      fontFamily: "Arial, sans-serif",
-      padding: "20px",
-      boxSizing: "border-box",
-      alignItems: "center",
-      overflowY: "auto",
-    },
-    header: {
-      fontSize: "24px",
-      fontWeight: "bold",
-      marginBottom: "20px",
-      textAlign: "center",
-    },
-    grid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-      gap: "20px",
-      width: "100%",
-      maxWidth: "1200px",
-      justifyContent: "center",
-      marginBottom: "20px",
-    },
-    card: {
-      borderRadius: "5px",
-      height: "220px",
-      perspective: "1000px",
-      cursor: "pointer",
-      transition: "transform 0.3s",
-    },
-    cardInner: {
-      position: "relative",
-      width: "100%",
-      height: "100%",
-      textAlign: "center",
-      transition: "transform 0.6s",
-      transformStyle: "preserve-3d",
-    },
-    cardFace: {
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      backfaceVisibility: "hidden",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      padding: "15px",
-      boxSizing: "border-box",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      borderRadius: "5px",
-    },
-    cardFront: {
-      backgroundColor: "inherit",
-      color: "inherit",
-      border: "5px double #2f3136", // Add border style here
-    },
-    cardTitle: {
-      fontSize: "20px",
-      fontWeight: "bold",
-      textTransform: "uppercase", // Corrected property spelling
-      letterSpacing: "4px",
-      // marginBottom: "10px",
-    },
-    cardMission: {
-      fontSize: "14px",
-      // marginBottom: "10px",
-    },
     cardTitleBack: {
       fontSize: "14px",
       fontWeight: "bold",
@@ -284,30 +220,12 @@ const ArchetypeLibraryPage = () => {
       fontSize: "12px",
       marginTop: "auto",
     },
-    cardContent: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100%", // Ensure the content fills the card height
-    },
     cardContent2: {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       fontSize: "8px",
-    },
-    cardBack: {
-      backgroundColor: "#2f3136",
-      color: "#ffffff",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      padding: "15px",
-      boxSizing: "border-box",
-      border: "2px solid", // Border based on the dynamic archetype color
-      borderRadius: "8px",
     },
 
     cardMotto: {
@@ -329,15 +247,6 @@ const ArchetypeLibraryPage = () => {
       gap: "10px", // Space between images
     },
 
-    imageSquare: {
-      width: "50px",
-      height: "50px",
-      borderRadius: "50%",
-      padding: "8px",
-      border: "1px solid", // Dashed border with dynamic color
-      objectFit: "cover",
-    },
-
     cardInfo: {
       fontSize: "10px",
       marginTop: "10px",
@@ -355,7 +264,7 @@ const ArchetypeLibraryPage = () => {
       width: "50px",
       height: "50px",
       borderRadius: "50%",
-      border: "none",
+      // border: "none",
       cursor: "pointer",
       border: "2px dashed", // Dashed border with dynamic color
       marginRight: "10px", // Space between images
@@ -635,7 +544,7 @@ const ArchetypeLibraryPage = () => {
           </div>
         ))}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

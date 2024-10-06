@@ -29,7 +29,7 @@ const traits = [
 // Define the cache outside the component
 const archetypesCache = {};
 
-const EnhancedPersonalityTest = () => {
+const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
   const [currentTraitIndex, setCurrentTraitIndex] = useState(0);
   const [currentTrait, setCurrentTrait] = useState({});
   const [questions, setQuestions] = useState([]);
@@ -178,14 +178,23 @@ const EnhancedPersonalityTest = () => {
     }
   };
 
+  const getQuestionContainerStyle = () => ({
+    backgroundColor: isDarkMode ? "#2E3136" : "#f0f0f0", // Change based on theme
+    color: isDarkMode ? "#ffffff" : "#000000", // Change text color
+    padding: "20px",
+    borderRadius: "10px",
+    marginBottom: "10px",
+    transition: "background-color 0.3s, color 0.3s", // Smooth transition
+  });
+
   // Define inline styles using Polished for dynamic colors
   const styles = {
     container: {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: "#1e2124", // Leave form background as default
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",
       boxSizing: "border-box",
@@ -199,13 +208,14 @@ const EnhancedPersonalityTest = () => {
       textAlign: "center",
     },
     questionContainer: {
-      backgroundColor: "#2E3136",
+      backgroundColor: isDarkMode ? "#2E3136" : "#f0f0f0", // Change based on theme
       padding: "20px",
       borderRadius: "10px",
       width: "auto",
       maxWidth: "600px",
       marginBottom: "20px",
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
+      border: "1px solid #2E3136",
     },
     navigationButtons: {
       display: "flex",
@@ -219,10 +229,11 @@ const EnhancedPersonalityTest = () => {
       borderRadius: "5px",
       border: "none",
       cursor: "pointer",
-      backgroundColor: "#282c34",
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#f0f0f0" : "#2E3136", // Change based on theme
+      color: isDarkMode ? "#2E3136" : "#f0f0f0", // Change text color
       transition: "background-color 0.3s",
       minWidth: "100px",
+      border: "1px solid #2E3136",
     },
     submitButton: {
       padding: "10px 20px",
@@ -233,6 +244,7 @@ const EnhancedPersonalityTest = () => {
       color: allQuestionsAnswered() ? "#282c34" : "#45FE47",
       transition: "background-color 0.3s",
       minWidth: "100px",
+      border: "1px solid #2E3136",
     },
   };
 
@@ -291,7 +303,6 @@ const EnhancedPersonalityTest = () => {
           />
         );
       })}
-
       <div style={styles.navigationButtons}>
         {currentTraitIndex > 0 && (
           <button style={styles.navButton} onClick={handlePrevTrait}>
@@ -304,8 +315,17 @@ const EnhancedPersonalityTest = () => {
             style={{
               ...styles.navButton,
               ...(allQuestionsAnswered()
-                ? {}
-                : { backgroundColor: "#555555", cursor: "not-allowed" }),
+                ? {
+                    // Normal styling if all questions are answered
+                    backgroundColor: isDarkMode ? "#f0f0f0" : "#282c34",
+                    color: isDarkMode ? "#282c34" : "#f0f0f0",
+                  }
+                : {
+                    // Styling when not all questions are answered
+                    backgroundColor: isDarkMode ? "#555555" : "#cccccc",
+                    color: "#ffffff", // Ensure text color is always visible
+                    cursor: "not-allowed",
+                  }),
             }}
             onClick={handleNextTrait}
             disabled={!allQuestionsAnswered()}

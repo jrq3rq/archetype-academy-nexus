@@ -78,7 +78,7 @@ const getTextColor = (bgColor) => {
   return brightness > 128 ? "#000000" : "#ffffff";
 };
 
-const ArchetypeChatbotUI = () => {
+const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
   const { state, dispatch } = useContext(ChatbotContext);
   const [message, setMessage] = useState("");
   const [showArchetypeSelector, setShowArchetypeSelector] = useState(false);
@@ -195,11 +195,12 @@ const ArchetypeChatbotUI = () => {
       display: "flex",
       flexDirection: "column",
       height: "100vh",
-      backgroundColor: "#1e2124",
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",
       boxSizing: "border-box",
+      border: "1px solid #2E3136",
     },
     desktopHeader: {
       marginBottom: "10px",
@@ -223,21 +224,23 @@ const ArchetypeChatbotUI = () => {
       overflowY: "auto",
     },
     mobileContainer: {
-      backgroundColor: "#1e2124",
-      color: "#ffffff",
+      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       padding: "20px",
       fontFamily: "Arial, sans-serif",
       maxWidth: "100%",
       margin: "0 auto",
+      border: "1px solid #2E3136",
     },
     chatWindow: {
-      backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0", // Change chat window color
       borderRadius: "5px",
       padding: "15px",
       marginBottom: "20px",
       height: "300px",
       overflowY: "auto",
       boxSizing: "border-box",
+      border: "1px solid #2E3136",
     },
     message: {
       borderRadius: "5px",
@@ -249,44 +252,51 @@ const ArchetypeChatbotUI = () => {
     input: {
       width: "100%",
       padding: "10px",
-      backgroundColor: "#40444b",
-      color: "#ffffff",
+      // backgroundColor: "#40444b",
+      backgroundColor: isDarkMode ? "#40444b" : "#f4f4f4", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       border: "none",
       borderRadius: "5px",
       marginBottom: "10px",
       resize: "vertical",
       boxSizing: "border-box",
       fontSize: "16px", // Prevents zooming on mobile devices
+      border: "1px solid #2E3136",
     },
     button: {
       padding: "10px 15px",
       backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color
       color: getTextColor(state.selectedColor || "#282b30"),
-      border: "none",
+      // border: "none",
       borderRadius: "5px",
       cursor: "pointer",
       transition: "background-color 0.3s",
       marginRight: "10px",
       width: "100%",
       marginTop: "10px",
+      border: "1px solid #2E3136",
     },
     sendButton: {
       padding: "10px 20px",
       backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color
       color: getTextColor(state.selectedColor || "#282b30"), // Ensure the text color is readable
-      border: "none",
+      // border: "none",
       borderRadius: "5px",
       cursor: "pointer",
       width: "100%",
       transition: "background-color 0.3s",
+      border: "1px solid #2E3136",
     },
     archetypeSelector: {
-      backgroundColor: "#2f3136",
+      // backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#40444b" : "#f4f4f4", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       padding: "15px",
       borderRadius: "5px",
       marginTop: "10px",
       width: "100%",
       boxSizing: "border-box",
+      border: "1px solid #2E3136",
     },
     slider: {
       width: "100%",
@@ -308,8 +318,9 @@ const ArchetypeChatbotUI = () => {
       borderRadius: "5px",
     },
     jsonDisplay: {
-      backgroundColor: "#2f3136",
-      color: "#ffffff",
+      // backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#40444b" : "#f4f4f4", // Change based on theme
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       borderRadius: "5px",
       padding: "15px",
       marginTop: "10px",
@@ -318,6 +329,7 @@ const ArchetypeChatbotUI = () => {
       overflowY: "auto",
       whiteSpace: "pre-wrap",
       wordBreak: "break-all",
+      border: "1px solid #2E3136",
     },
 
     dropdown: {
@@ -325,17 +337,21 @@ const ArchetypeChatbotUI = () => {
       padding: "10px",
       // marginBottom: "15px",
       // marginBottom: windowWidth > 768 ? "10px" : "0px", // Desktop has 10px, mobile has 0px
-      backgroundColor: "#40444b",
-      color: "#ffffff",
-      border: "none",
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0", // Change chat window color
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
+      // border: "none",
       borderRadius: "5px",
       appearance: "none",
       WebkitAppearance: "none",
       MozAppearance: "none",
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`,
+      // backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`,
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${
+        isDarkMode ? "white" : "black"
+      }"><path d="M7 10l5 5 5-5z"/></svg>')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "calc(100% - 10px) center",
       paddingRight: "30px",
+      border: "1px solid #2E3136",
     },
 
     dropdown2: {
@@ -349,7 +365,10 @@ const ArchetypeChatbotUI = () => {
       appearance: "none",
       WebkitAppearance: "none",
       MozAppearance: "none",
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`,
+      // backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`,
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${
+        isDarkMode ? "white" : "black"
+      }"><path d="M7 10l5 5 5-5z"/></svg>')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "calc(100% - 10px) center",
       paddingRight: "30px",
@@ -361,17 +380,21 @@ const ArchetypeChatbotUI = () => {
       marginBottom: windowWidth > 768 ? "15px" : "15px",
       marginLeft: "0px",
       marginRight: "0px",
-      backgroundColor: "#40444b",
-      color: "#ffffff",
-      border: "none",
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0", // Change chat window color
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
+      // border: "none",
       borderRadius: "5px",
       appearance: "none",
       WebkitAppearance: "none",
       MozAppearance: "none",
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`, // Add the dropdown arrow icon
+      // backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>')`, // Add the dropdown arrow icon
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${
+        isDarkMode ? "white" : "black"
+      }"><path d="M7 10l5 5 5-5z"/></svg>')`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "calc(100% - 10px) center", // Ensure the arrow stays on the right
       paddingRight: "30px", // Add padding to leave space for the arrow
+      border: "1px solid #2E3136",
     },
     categoryButtons: {
       display: "flex",
@@ -384,10 +407,11 @@ const ArchetypeChatbotUI = () => {
       padding: "10px",
       backgroundColor: state.selectedColor || "#282b30",
       color: getTextColor(state.selectedColor || "#282b30"),
-      border: "none",
+      // border: "none",
       borderRadius: "5px",
       cursor: "pointer",
       transition: "background-color 0.3s",
+      border: "1px solid #2E3136",
     },
     activeButton: {
       backgroundColor: "#7289da",
@@ -415,6 +439,7 @@ const ArchetypeChatbotUI = () => {
 
   const renderContent = () => (
     <>
+      {/* Include ToggleSwitch */}
       <div style={styles.chatWindow} ref={chatWindowRef}>
         {state.messages.map((msg, index) => (
           <div
@@ -430,7 +455,6 @@ const ArchetypeChatbotUI = () => {
           </div>
         ))}
       </div>
-
       <select
         style={styles.dropdown}
         value={state.selectedArchetype}
@@ -443,7 +467,6 @@ const ArchetypeChatbotUI = () => {
           </option>
         ))}
       </select>
-
       <select
         style={styles.dropdownModelsSector}
         value={selectedModel}
@@ -477,7 +500,6 @@ const ArchetypeChatbotUI = () => {
           </button>
         ))}
       </div>
-
       {selectedCategory && (
         <select
           style={styles.dropdown2}
@@ -501,11 +523,9 @@ const ArchetypeChatbotUI = () => {
         placeholder="Your message"
         rows={4}
       />
-
       <button style={styles.sendButton} onClick={handleSendMessage}>
         Send
       </button>
-
       <button
         style={styles.button}
         onClick={() => setShowArchetypeSelector(!showArchetypeSelector)}
@@ -543,7 +563,6 @@ const ArchetypeChatbotUI = () => {
           ))}
         </div>
       )}
-
       <div style={styles.jsonDisplay}>
         <pre>{JSON.stringify(promptData, null, 2)}</pre>
       </div>
