@@ -358,9 +358,9 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
       width: "100%",
       padding: "10px",
       marginBottom: "15px",
-      backgroundColor: "#40444b",
-      color: "#ffffff",
-      border: "none",
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0", // Change chat window color
+      color: isDarkMode ? "#ffffff" : "#000000", // Change text color
+      border: "1px solid #2E3136",
       borderRadius: "5px",
       appearance: "none",
       WebkitAppearance: "none",

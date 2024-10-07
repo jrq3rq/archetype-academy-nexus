@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({ isDarkMode }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const location = useLocation();
@@ -29,7 +29,7 @@ const Header = () => {
 
   const styles = {
     header: {
-      backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#2f3136" : "#ffffff", // Background color based on theme
       padding: "15px 20px",
       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       position: "fixed",
@@ -38,6 +38,7 @@ const Header = () => {
       right: 0,
       zIndex: 1000,
       boxSizing: "border-box",
+      borderBottom: `1px solid ${isDarkMode ? "#1F2124" : "#1F2124"}`, // Bottom border color based on theme
     },
     nav: {
       display: "flex",
@@ -57,20 +58,22 @@ const Header = () => {
       gap: "20px",
     },
     link: {
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#40444b", // Link color based on theme
       textDecoration: "none",
       fontSize: "16px",
       padding: "5px 10px",
       borderRadius: "5px",
       transition: "background-color 0.3s",
+      border: `1px solid ${isDarkMode ? "#2E3136" : "#40444b"}`, // Add border color based on theme
+      margin: "0 5px", // Optional: Add spacing between buttons
     },
     activeLink: {
-      backgroundColor: "#40444b",
+      backgroundColor: isDarkMode ? "#40444b" : "#dcdcdc", // Active link color based on theme
     },
     menuIcon: {
       display: isMobile ? "block" : "none",
       fontSize: "24px",
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#40444b", // Icon color based on theme
       cursor: "pointer",
       backgroundColor: "transparent",
       border: "none",
@@ -81,7 +84,7 @@ const Header = () => {
       left: 0,
       height: "100vh",
       width: "100%",
-      backgroundColor: "#2f3136",
+      backgroundColor: isDarkMode ? "#2f3136" : "#ffffff", // Mobile menu background
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -94,13 +97,13 @@ const Header = () => {
       top: "20px",
       right: "20px",
       fontSize: "24px",
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#40444b", // Close icon color based on theme
       cursor: "pointer",
       backgroundColor: "transparent",
-      border: "none",
+      border: "none", // No border on close icon
     },
     mobileLink: {
-      color: "#ffffff",
+      color: isDarkMode ? "#ffffff" : "#40444b", // Mobile link color based on theme
       fontSize: "24px",
       textDecoration: "none",
       marginBottom: "20px",
@@ -112,7 +115,6 @@ const Header = () => {
     { to: "/chatbot", label: "Chatbot" },
     { to: "/library", label: "Library" },
     { to: "/assessment", label: "Assessment" },
-    // { to: "/profile", label: "User Profile" },
   ];
 
   return (
@@ -120,7 +122,7 @@ const Header = () => {
       <nav style={styles.nav}>
         <Link to="/" style={styles.logo}>
           <img
-            src="/logo1.png"
+            src={isDarkMode ? "/logo1.png" : "/logo2.png"} // Change logo based on theme
             alt="Archetype Academy Nexus Logo"
             style={styles.logoImage}
           />

@@ -8,6 +8,7 @@ import { ChatbotProvider } from "./state/ChatbotContext";
 import Footer from "./components/Footer";
 import EnhancedPersonalityTest from "./pages/EnhancedPersonalityTest";
 import ArchetypeLibraryPage from "./pages/ArchetypeLibraryPage"; // Import your other pages here
+import Header from "./components/Header";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -17,7 +18,7 @@ const App = () => {
   };
 
   const appStyles = {
-    backgroundColor: isDarkMode ? "#2c2c2c" : "#ffffff",
+    backgroundColor: isDarkMode ? "#1F2124" : "#ffffff",
     color: isDarkMode ? "#ffffff" : "#000000",
     minHeight: "100vh",
     transition: "background-color 0.3s, color 0.3s",
@@ -27,6 +28,7 @@ const App = () => {
     <ChatbotProvider>
       <Router>
         <div style={appStyles}>
+          <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
           <ScrollToTop />
           <Layout>
             <Switch>

@@ -11,16 +11,17 @@ const Footer = ({ isDarkMode, toggleTheme }) => {
     marginTop: "auto",
     padding: "20px 0",
     width: "100%",
-    backgroundColor: isDarkMode ? "#1e2124" : "#f5f5f5", // Adjust footer background based on theme
-    borderTop: isDarkMode ? "1px solid #40444b" : "1px solid #ccc", // Border color based on theme
   };
-
   const textStyles = {
-    fontSize: "18px",
+    fontSize: "16px",
     color: isDarkMode ? "#b9bbbe" : "#40444b",
     textAlign: "center",
     transition: "color 0.3s",
     marginBottom: "20px",
+    width: "90%", // Responsive width
+    maxWidth: "700px", // Maximum width to avoid excessive stretching
+    minWidth: "300px", // Minimum width for better readability
+    boxSizing: "border-box", // Ensures padding is included in width
   };
 
   return (
@@ -29,7 +30,7 @@ const Footer = ({ isDarkMode, toggleTheme }) => {
         Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
         Personality
       </p>
-      <ToggleSwitch isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <ToggleSwitch isDarkMode={isDarkMode} toggleTheme={toggleTheme} />{" "}
     </div>
   );
 };
