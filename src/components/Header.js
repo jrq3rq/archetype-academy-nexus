@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaUniversity,
+  FaRobot,
+  FaBookOpen,
+  FaBook,
+  FaClipboardCheck,
+  FaGraduationCap,
+} from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
-import { MdLibraryAdd } from "react-icons/md";
-import { MdChatBubbleOutline } from "react-icons/md";
+import { MdLibraryAdd, MdAssessment } from "react-icons/md";
+import { MdChatBubbleOutline, MdLibraryBooks } from "react-icons/md";
 import { IoBulbOutline } from "react-icons/io5";
 
 const Header = ({ isDarkMode }) => {
@@ -35,22 +44,22 @@ const Header = ({ isDarkMode }) => {
     {
       to: "/",
       label: "Home",
-      icon: <AiOutlineHome size="1.5rem" />,
+      icon: <FaUniversity size="1.5rem" />,
     },
     {
       to: "/chatbot",
-      label: "Chatbot",
-      icon: <MdChatBubbleOutline size="1.5rem" />,
+      label: "Archédex Chatbot",
+      icon: <FaRobot size="1.5rem" />,
     },
     {
       to: "/library",
-      label: "Library",
-      icon: <MdLibraryAdd size="1.5rem" />,
+      label: "Character Library",
+      icon: <FaBookOpen size="1.5rem" />,
     },
     {
       to: "/assessment",
-      label: "Personality Assessment",
-      icon: <IoBulbOutline size="1.5rem" />,
+      label: "Admissions Assessment",
+      icon: <FaGraduationCap size="1.5rem" />,
     },
   ];
 

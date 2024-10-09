@@ -212,7 +212,7 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
       padding: "20px",
       borderRadius: "10px",
       width: "auto",
-      maxWidth: "600px",
+      maxWidth: "700px",
       marginBottom: "20px",
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       border: "1px solid #2E3136",
@@ -408,7 +408,8 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
               // display: "inline-block",
             }}
           >
-            Mind Pulse-150
+            {/* Mind Pulse-150 */}
+            Admissions Results
           </h2>
 
           {/* Displaying Final Scores */}

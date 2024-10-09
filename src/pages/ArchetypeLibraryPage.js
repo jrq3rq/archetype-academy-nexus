@@ -113,7 +113,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
+      backgroundColor: isDarkMode ? "#2E3136" : "#f0f0f0", // Card background based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",
