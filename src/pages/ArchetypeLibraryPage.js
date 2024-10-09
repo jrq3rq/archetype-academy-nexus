@@ -67,13 +67,13 @@ const archetypeImages = {
 // Function to determine which background image to use based on the archetype name
 const getBackgroundImage = (archetypeName) => {
   if (["Rebel", "Magician", "Hero"].includes(archetypeName)) {
-    return "/images/HexagonBG.png";
+    return "/images/HexagonBackgroundIMG.png"; // Ensure this path is correct
   } else if (["Creator", "Ruler", "Caregiver"].includes(archetypeName)) {
-    return "/images/OctagonBG.png";
+    return "/images/OctagonBackgroundIMG.png"; // Ensure this path is correct
   } else if (["Innocent", "Sage", "Explorer"].includes(archetypeName)) {
-    return "/images/TeardropBG.png";
+    return "/images/TeardropBackgroundIMG.png"; // Ensure this path is correct
   } else if (["Lover", "Joker", "Everyman"].includes(archetypeName)) {
-    return "/images/DiamondBG.png";
+    return "/images/DiamondBackgroundIMG.png"; // Ensure this path is correct
   } else {
     return null; // Default case, no background image
   }
@@ -113,7 +113,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: isDarkMode ? "#2E3136" : "#f0f0f0", // Card background based on theme
+      backgroundColor: isDarkMode ? "#1F2124" : "#f0f0f0", // Card background based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",

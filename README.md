@@ -19,18 +19,46 @@ AlphaV3/
 │ │ ├── logo512.png
 │ │ └── ...
 │ ├── components/ // Reusable components
+│ │ ├── ArchetypeCard.jsx
 │ │ ├── ArchetypeChatbotUI.js
 │ │ ├── CardGrid.js
+│ │ ├── ColorCyclingContainer.js
+│ │ ├── ErrorMessage.jsx
+│ │ ├── Footer.js
+│ │ ├── Header.js
+│ │ ├── Layout.js
+│ │ ├── LikertScale.js
+│ │ ├── LoadingSpinner.jsx
+│ │ ├── NavigationButtons.jsx
 │ │ ├── OptionCard.js
+│ │ ├── QrCodeGenerator.js
+│ │ ├── QuestionSection.jsx
+│ │ ├── ResultsModal.jsx
+│ │ ├── ScrollToTop.js
+│ │ ├── ToggleSwitch.js
+│ │ └── ...
+│ ├── data/
+│ │ ├── archetypes.js
 │ │ └── ...
 │ ├── hooks/ // Custom hooks
+│ │ ├── useFetchQuestions.js
+│ │ └── ...
+│ ├── images/ // Image files
+│ │ ├── index.js
+│ │ ├── index.css
 │ │ └── ...
 │ ├── pages/ // Page components
+│ │ ├── ArchetypeChatbotPage.js
+│ │ ├── ArchetypeLibraryPage.js
+│ │ ├── EnhancedPersonalityTest.js
+│ │ ├── HomePage.js
+│ │ ├── UserProfilePage.js
 │ │ └── ...
 │ ├── services/ // API integration and services
 │ │ ├── archetypeService.js
 │ │ └── ...
 │ ├── state/ // State management
+│ │ ├── ChatbotContext.js
 │ │ └── ...
 │ ├── utils/ // Utility functions
 │ │ ├── colorUtils.js
