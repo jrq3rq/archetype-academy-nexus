@@ -1,6 +1,5 @@
-// EnhancedPersonalityTest.jsx
-
 import React, { useState, useEffect, useRef } from "react";
+import styled, { createGlobalStyle } from "styled-components";
 import Modal from "react-modal";
 import { lighten, darken } from "polished";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +24,7 @@ const traits = [
   "Agreeableness",
   "Neuroticism",
 ];
+// Define the traits according to the museum personality API
 
 // Define the cache outside the component
 const archetypesCache = {};
@@ -50,20 +50,36 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
 
   const qrCodeRef = useRef(null);
 
+  // State for the automatic popup modal
+  const [showAutoPopup, setShowAutoPopup] = useState(false);
+
   // Fetch questions from the backend server using the API URL from the environment variable
   useEffect(() => {
     const fetchQuestions = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(QUESTIONS_API_URL);
-        // const response = await fetch(QUESTIONS_API_LOCAL);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const allTraitsData = await response.json();
+        console.log("API Response:", allTraitsData); // Log the response
+
+        // Check if the response has the expected structure
+        if (!Array.isArray(allTraitsData)) {
+          throw new Error("API response is invalid");
+        }
+
         const traitData = allTraitsData.find(
           (trait) => trait.trait === traits[currentTraitIndex]
         );
+        console.log("Trait Data:", traitData); // Log the found trait data
+
+        // Check if traitData is undefined
+        if (!traitData) {
+          throw new Error(`Trait "${traits[currentTraitIndex]}" not found`);
+        }
+
         setCurrentTrait(traitData);
         const shuffledQuestions = shuffleArray([...traitData.questions]);
         setQuestions(shuffledQuestions);
@@ -77,6 +93,16 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
     fetchQuestions();
     setAnsweredQuestions({});
   }, [currentTraitIndex]);
+
+  useEffect(() => {
+    // Automatically show the popup modal after 3 seconds
+    const timer = setTimeout(() => {
+      setShowAutoPopup(true);
+    }, 500);
+
+    // Clean up the timer
+    return () => clearTimeout(timer);
+  }, []);
 
   // Shuffle array utility
   function shuffleArray(array) {
@@ -246,6 +272,22 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
       minWidth: "100px",
       border: "1px solid #2E3136",
     },
+    autoPopup: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "#2E3136",
+      borderRadius: "12px",
+      padding: "20px",
+      width: "50%",
+      maxWidth: "600px",
+      height: "auto",
+      maxHeight: "80vh",
+      overflowY: "auto",
+      color: "#ffffff",
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+    },
   };
 
   if (isLoading) {
@@ -405,7 +447,6 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
               marginBottom: "20px",
               borderBottom: "1px solid #ffffff", // Adds a 2px solid white underline
               paddingBottom: "10px", // Adds 10px padding below the text
-              // display: "inline-block",
             }}
           >
             {/* Mind Pulse-150 */}
@@ -465,8 +506,186 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
           )}
         </div>
       </Modal>
+
+      {/* Automatic Popup Modal */}
+      <Modal
+        isOpen={showAutoPopup}
+        onRequestClose={() => setShowAutoPopup(false)}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            position: "fixed",
+            top: "0",
+            left: "0",
+            right: "0",
+            bottom: "0",
+            padding: "0",
+          },
+          content: {
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#2E3136",
+            borderRadius: "12px",
+            paddingTop: "0",
+            paddingRight: "20px",
+            paddingBottom: "0",
+            paddingLeft: "20px",
+            width: "80%", // Responsive width
+            maxWidth: "600px",
+            height: "60%",
+            maxHeight: "80vh",
+            overflowY: "auto",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+            color: "#ffffff",
+            margin: "0",
+            zIndex: "1000",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        }}
+      >
+        <button
+          onClick={() => setShowAutoPopup(false)}
+          style={{
+            position: "absolute",
+            top: "15px",
+            right: "15px",
+            backgroundColor: "transparent",
+            border: "none",
+            color: "#ffffff",
+            cursor: "pointer",
+            fontSize: "1.5rem",
+          }}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+
+        <h2
+          style={{
+            textAlign: "center",
+            paddingBottom: "20px",
+            fontSize: "20px", // Adjusted for better readability
+            margin: 0,
+            fontWeight: "bold",
+            marginTop: "40px",
+          }}
+        >
+          Unlock Your Path to the Archetype Academy!
+        </h2>
+
+        <p
+          style={{
+            textAlign: "left",
+            padding: "0 10px", // Consistent horizontal padding
+            marginBottom: "15px", // Increased margin for better spacing
+            fontSize: "16px", // Slightly larger for better readability
+          }}
+        >
+          MindPulse150 is a Big Five style personality assessment that reveals
+          your complementary archetype. This personalized experience will
+          enhance your journey by providing guided content and interactions that
+          align with your individual preferences and engagement style.
+        </p>
+
+        <p
+          style={{
+            textAlign: "left",
+            padding: "0 10px",
+            marginBottom: "15px",
+            fontSize: "16px",
+          }}
+        >
+          By uncovering your personality through the MindPulse150, you’ll gain
+          access to a diverse array of archetypes. This will guide you through
+          dynamic interactions tailored specifically to a unique score.
+        </p>
+
+        <p
+          style={{
+            textAlign: "left",
+            padding: "0 10px",
+            marginBottom: "15px",
+            fontSize: "16px",
+          }}
+        >
+          Embark on this exciting adventure and explore the enriching world of
+          The Archetype Academy Nexus MVP!
+        </p>
+      </Modal>
     </div>
   );
 };
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.5rem;
+`;
+
+const ModalTitle = styled.h2`
+  text-align: center;
+  padding: 20px 0; // Increased padding to ensure it doesn't get cut off
+  font-size: 20px;
+  margin: 0;
+  font-weight: bold;
+`;
+
+const ModalText = styled.p`
+  text-align: left;
+  padding: 0 10px; // Consistent horizontal padding
+  margin-bottom: 15px; // Increased margin for better spacing
+  font-size: 16px; // Slightly larger for better readability
+`;
+
+// Global styles for Modal
+const GlobalStyles = createGlobalStyle`
+  .Overlay {
+    background-color: rgba(0, 0, 0, 0.85);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+  }
+
+  .Modal {
+    position: relative; /* Relative positioning */
+    top: 20%; /* Offset from top */
+    left: 50%;
+    transform: translate(-50%, 0); /* Keep horizontal centering */
+    background-color: #2e3136; /* Dark gray for modal content */
+    border-radius: 12px;
+    padding: 20px; /* Padding for modal content */
+    width: 80%; /* Responsive width */
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    margin: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Changed to flex-start to prevent cutting off at the top */
+
+    /* Mobile styles */
+    @media (max-width: 480px) {
+      top: 30%; /* Adjust as needed for mobile */
+      padding: 10px; /* Reduce padding for smaller devices */
+    }
+  }
+`;
 
 export default EnhancedPersonalityTest;

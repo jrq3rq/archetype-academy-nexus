@@ -3,12 +3,7 @@ import Footer from "../components/Footer";
 import Modal from "react-modal";
 import { lighten, darken } from "polished"; // Import lighten from polished
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaintBrush,
-  faCog,
-  faTools,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons"; // Importing the paintbrush icon
+import { faCog, faUser } from "@fortawesome/free-solid-svg-icons"; // Importing the relevant icons
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -113,7 +108,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       display: "flex",
       flexDirection: "column",
       minHeight: "100vh",
-      backgroundColor: isDarkMode ? "#1F2124" : "#f0f0f0", // Card background based on theme
+      backgroundColor: isDarkMode ? "#1F2124" : "#ffffff", // Card background based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
       padding: "20px",
@@ -144,11 +139,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       transition: "transform 0.3s, box-shadow 0.3s", // Add transition for box-shadow
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Add initial shadow effect
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
-      "&:hover": {
-        // Hover effect
-        transform: "translateY(-10px)",
-        boxShadow: "0 12px 24px rgba(0, 0, 0, 0.3)", // Change shadow on hover
-      },
     },
     cardInner: {
       position: "relative",
@@ -170,11 +160,13 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       boxSizing: "border-box",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       borderRadius: "5px",
+      border: "1px solid #2E3136",
     },
     cardFront: {
       backgroundColor: "inherit",
       color: "inherit",
-      border: "5px double #2f3136", // Add border style here
+      border: "6px double #2f3136", // Add border style here
+      borderRadius: "5px",
     },
     cardTitle: {
       fontSize: "20px",
@@ -257,7 +249,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       flexDirection: "column",
       justifyContent: "center",
       // gap: "10px",
-      marginRight: "0px",
+      marginRight: "10px",
     },
 
     buttonLeft: {
@@ -308,7 +300,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       marginRight: "10px", // Space between images
     },
     modalContent: {
-      backgroundColor: "#2f3136", // Dark background
+      backgroundColor: "transparent", // Dark background
       color: "#ffffff", // Light text for readability
       padding: "20px", // Padding for space around content
       borderRadius: "10px", // Rounded corners for smooth feel
@@ -321,6 +313,11 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       position: "relative", // For positioning the close button
       boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)", // Subtle shadow for depth
       transition: "all 0.3s ease-in-out", // Smooth transitions
+      display: "flex", // Use flexbox layout
+      flexDirection: "column", // Stack children vertically
+      justifyContent: "center", // Center content vertically
+      alignItems: "center", // Center content horizontally
+      height: "100%", // Allow the modal content to take the full height
     },
     modalTitle: {
       fontSize: "1.5rem", // Normal font size for title
@@ -332,6 +329,8 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       fontSize: "1rem", // Normal readable font size for content
       lineHeight: "1.6",
       marginBottom: "20px",
+      padding: "20px",
+      // Remove the border style from here
     },
     closeButton: {
       position: "absolute",
@@ -384,7 +383,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
               <div
                 style={{
                   ...styles.cardFace,
-                  ...styles.cardFront,
                   backgroundColor: archetype.color,
                   color: getTextColor(archetype.color),
                   backgroundImage: `url(${getBackgroundImage(archetype.name)})`,
@@ -406,9 +404,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                 style={{
                   ...styles.cardFace,
                   ...styles.cardBack, // Add back card styles
-                  // borderColor: archetype.color, // Dynamic border color
-
-                  border: "5px double #2f3136", // Same border style as the front card
+                  border: `5px double ${archetype.color}`, // Dynamic border color
                   backfaceVisibility: "hidden", // Ensure the back card is not visible when not flipped
                   transform: "rotateY(180deg)", // Rotate the back card to align properly
                   backgroundColor: darken(0.1, archetype.color), // Make the background color lighter
@@ -416,10 +412,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                 }}
               >
                 <div style={styles.cardContent}>
-                  {/* <p style={styles.cardMotto}>{archetype.motto}</p> */}
-                  {/* Main section with vertical buttons and images */}
                   <div style={styles.mainSection}>
-                    {/* Left vertical buttons */}
                     <div style={styles.buttonContainer}>
                       <button
                         style={{
@@ -473,18 +466,48 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                             justifyContent: "center", // Horizontally center modal
                             padding: "10px", // Padding for mobile screens
                           },
+                          content: {
+                            backgroundColor: "rgba(0, 0, 0, 0.45)", // Dark overlay for focus
+                            color: "#ffffff", // Use a static white text color
+                            padding: "20px", // Padding for space around content
+                            borderRadius: "10px", // Rounded corners for smooth feel
+                            maxWidth: "600px", // Max width on larger screens
+                            width: "80%", // Responsive width for smaller screens
+                            maxHeight: "90vh", // Increase the max height (change to 90vh or a specific height)
+                            height: "auto", // Set to auto to allow it to expand based on content
+                            overflowY: "auto", // Scroll if content exceeds modal height
+                            textAlign: "center", // Center text content
+                            position: "absolute", // Change to absolute for centering
+                            top: "50%", // Position from the top
+                            left: "50%", // Position from the left
+                            transform: "translate(-50%, -50%)", // Center the modal
+                            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)", // Subtle shadow for depth
+                            transition: "all 0.3s ease-in-out", // Smooth transitions
+                            border: `2px solid ${archetype.color}`, // Dynamic border color for modal
+                          },
                         }}
                       >
                         <div style={styles.modalContent}>
-                          <h2 style={styles.modalTitle}>
+                          <h2
+                            style={{
+                              ...styles.modalTitle,
+                              color: ` ${archetype.color}`,
+                            }}
+                          >
                             {archetype.name} Builder
                           </h2>
-                          <p style={styles.modalText}>
+                          <p
+                            style={{
+                              ...styles.modalText,
+                              // border: `1px solid ${archetype.color}`, // Dynamic border color for modal text
+                            }}
+                          >
                             More information about {archetype.name} and its
                             characteristics will be displayed here. You can
                             explore various traits and deep insights related to
                             this archetype.
                           </p>
+
                           <button
                             onClick={() => closeModal(archetype.id)}
                             style={styles.closeButton}
@@ -494,7 +517,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                         </div>
                       </Modal>
                     </div>
-                    {/* Center images */}
                     <div style={styles.imageContainer}>
                       <img
                         src={archetypeStones[archetype.name]}
@@ -517,15 +539,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                         }}
                       />
                     </div>
-                    {/* Right vertical buttons */}
-                    {/* <div style={styles.buttonContainer}>
-                      <button
-                        style={{
-                          ...styles.buttonRight,
-                          // backgroundColor: archetype.color, // Apply archetype color to the button
-                        }}
-                      ></button>
-                    </div> */}
                   </div>
                   <div style={styles.cardInfo}>
                     <p>Order: {archetype.order}</p>

@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaRobot, FaBookOpen, FaGraduationCap } from "react-icons/fa"; // Import icons here
 import Footer from "../components/Footer";
+import MagazineLayout from "../components/MagazineLayout";
+import BackgroundImageComponent from "../components/BackgroundImageComponent";
+import HomeSection from "../components/HomeSection";
+import SectionSeparator from "../components/SectionSeparator";
 
 const HomePage = ({ isDarkMode, toggleTheme }) => {
   const styles = {
@@ -10,8 +15,6 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       minHeight: "100vh",
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff",
       color: isDarkMode ? "#ffffff" : "#000000",
-      // backgroundColor: "#1e2124",
-      // color: "#ffffff",
       fontFamily: "Arial, sans-serif",
       padding: "0 20px",
       boxSizing: "border-box",
@@ -47,7 +50,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       maxWidth: "400px",
       textAlign: "center",
       boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-      position: "relative", // To position the X and overlay
+      position: "relative",
       transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
       marginBottom: "20px",
       border: "1px solid #2E3136",
@@ -60,25 +63,48 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
         maxWidth: "90%",
       },
     },
+    featureCard2: {
+      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0",
+      borderRadius: "12px",
+      padding: "40px",
+      width: "100%",
+      maxWidth: "400px",
+      textAlign: "center",
+      boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+      position: "relative",
+      transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+      marginBottom: "20px",
+      border: "1px solid #2E3136",
+      display: "flex", // Added for flexbox layout
+      flexDirection: "column", // Arrange children in a column
+      justifyContent: "center", // Center vertically
+      alignItems: "center", // Center horizontally
+      height: "250px", // Set a fixed height for consistent spacing (adjust as needed)
+      "&:hover": {
+        transform: "translateY(-10px)",
+        boxShadow: "0 12px 24px rgba(0,0,0,0.3)",
+      },
+      "@media (max-width: 768px)": {
+        width: "90%",
+        maxWidth: "90%",
+      },
+    },
+
     featureTitle: {
       fontSize: "26px",
       fontWeight: "bold",
       marginBottom: "20px",
       color: isDarkMode ? "#ffffff" : "#000000",
-      // color: "#ffffff",
       "@media (max-width: 768px)": {
         fontSize: "22px",
       },
     },
     featureDescription: {
-      fontSize: "18px",
+      fontSize: "16px",
       color: isDarkMode ? "#b9bbbe" : "#000000",
-      // color: "#b9bbbe",
       marginBottom: "25px",
       lineHeight: "1.6",
-      "@media (max-width: 768px)": {
-        fontSize: "16px",
-      },
+      textAlign: "left", // Align text to the left
     },
     featureDescription2: {
       fontSize: "18px",
@@ -90,7 +116,6 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
     },
     ctaButton: {
       display: "inline-block",
-      // backgroundColor: "#ffffff",
       backgroundColor: isDarkMode ? "#ffffff" : "#2f3136",
       color: isDarkMode ? "#000000" : "#ffffff",
       padding: "14px 28px",
@@ -104,10 +129,6 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       "&:hover": {
         backgroundColor: "#5a6eaf",
       },
-      "@media (max-width: 768px)": {
-        fontSize: "14px",
-        padding: "12px 24px",
-      },
     },
     xOverlay: {
       position: "absolute",
@@ -118,30 +139,12 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      pointerEvents: "none", // Ensure interaction with the card content
-      backdropFilter: "blur(5px) brightness(0.9)", // Adds blur and darkens the background
-      WebkitBackdropFilter: "blur(5px) brightness(0.9)", // Vendor-prefixed for Safari
+      pointerEvents: "none",
+      backdropFilter: "blur(5px) brightness(0.9)",
+      WebkitBackdropFilter: "blur(5px) brightness(0.9)",
       borderRadius: "12px",
-      background: "rgba(0, 0, 0, 0.3)", // Fallback for unsupported browsers
+      background: "rgba(0, 0, 0, 0.3)",
     },
-    // xLine: {
-    //   position: "absolute",
-    //   width: "70%", // Ensure the "X" spans the whole card diagonally
-    //   height: "5px", // Thickness of the line
-    //   backgroundColor: "rgba(255, 0, 0, 0.8)", // Red color
-    //   top: "50%",
-    //   left: "50%",
-    //   transform: "translate(-50%, -50%) rotate(45deg)", // Diagonal line
-    // },
-    // xLine2: {
-    //   position: "absolute",
-    //   width: "70%", // Ensures the second line spans the card diagonally
-    //   height: "5px", // Thickness of the line
-    //   backgroundColor: "rgba(255, 0, 0, 0.8)", // Red color
-    //   top: "50%",
-    //   left: "50%",
-    //   transform: "translate(-50%, -50%) rotate(-45deg)", // Opposite diagonal line
-    // },
     footer: {
       fontSize: "18px",
       textAlign: "center",
@@ -156,88 +159,112 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
         padding: "20px 0",
       },
     },
+    iconStyle: {
+      display: "block",
+      margin: "0 auto 10px",
+      fontSize: "3rem", // Set icon size to be larger
+    },
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.contentWrapper}>
-        <div style={styles.featuresContainer}>
-          <div style={styles.featureCard}>
-            <h2 style={styles.featureTitle}>Archedéx Chatbot Interface</h2>
-            <p style={styles.featureDescription}>
-              Interact with Archedéx, your AI-powered chatbot guide. Navigate
-              through personalized insights and engage in meaningful
-              conversations.
-            </p>
-            <Link to="/chatbot" style={styles.ctaButton}>
-              Chat with Archedéx
-            </Link>
-          </div>
-
-          <div style={styles.featureCard}>
-            <h2 style={styles.featureTitle}>Archetype Library</h2>
-            <p style={styles.featureDescription}>
-              Explore the comprehensive library of archetypes. Dive into their
-              characteristics, strengths, and how they influence your life.
-            </p>
-            <Link to="/library" style={styles.ctaButton}>
-              Explore the Library
-            </Link>
-          </div>
-          <div style={styles.featureCard}>
-            <h2 style={styles.featureTitle}>Advanced Archetype Matching</h2>
-            <p style={styles.featureDescription}>
-              Experience our enhanced MindPulse personality test with deep
-              analytics, offering accurate archetype matching tailored to your
-              unique traits.
-            </p>
-            <Link to="/assessment" style={styles.ctaButton}>
-              Explore MindPulse-150
-            </Link>
-          </div>
-          <div style={styles.featureCard}>
-            <div style={styles.xOverlay}>
-              <div style={styles.xLine}></div>
-              <div style={styles.xLine2}></div>
+    <>
+      <HomeSection isDarkMode={isDarkMode} />
+      <SectionSeparator isDarkMode={isDarkMode} angle={0} />
+      <div style={styles.container}>
+        <div style={styles.contentWrapper}>
+          <div style={styles.featuresContainer}>
+            {/* First card with icon */}
+            <div style={styles.featureCard}>
+              <FaBookOpen style={styles.iconStyle} />{" "}
+              {/* Icon for the library */}
+              <h2 style={styles.featureTitle}>Character Library</h2>
+              <p style={styles.featureDescription}>
+                Explore the comprehensive library of archetypes. Dive into their
+                characteristics, strengths, and how they influence your life.
+              </p>
+              <Link to="/library" style={styles.ctaButton}>
+                Explore the Library
+              </Link>
             </div>
-            <h2 style={styles.featureTitle}>Design Your AI Companion</h2>
-            <p style={styles.featureDescription2}>
-              Create and customize your own AI companion. Design everything from
-              appearance to behavior, making it a true reflection of your unique
-              archetype.
-            </p>
-          </div>
-
-          <div style={styles.featureCard}>
-            <div style={styles.xOverlay}>
-              <div style={styles.xLine}></div>
-              <div style={styles.xLine2}></div>
+            {/* Second card with icon */}
+            <div style={styles.featureCard}>
+              <FaRobot style={styles.iconStyle} /> {/* Icon for the chatbot */}
+              <h2 style={styles.featureTitle}>Archedéx Chatbot Interface</h2>
+              <p style={styles.featureDescription}>
+                Interact with Archedéx, your AI-powered chatbot guide. Navigate
+                through personalized insights and engage in meaningful
+                conversations.
+              </p>
+              <Link to="/chatbot" style={styles.ctaButton}>
+                Chat with Archedéx
+              </Link>
             </div>
-            <h2 style={styles.featureTitle}>Community Features</h2>
-            <p style={styles.featureDescription2}>
-              Connect with others who share your archetype and engage in
-              discussions. Explore shared experiences, exchange insights, and
-              grow together in our vibrant community of archetype enthusiasts.
-            </p>
-          </div>
-
-          {/* Card with "X" Overlay */}
-          <div style={styles.featureCard}>
-            <div style={styles.xOverlay}>
-              <div style={styles.xLine}></div>
-              <div style={styles.xLine2}></div>
+            {/* Third card with icon */}
+            <div style={styles.featureCard}>
+              <FaGraduationCap style={styles.iconStyle} />{" "}
+              {/* Icon for the assessment */}
+              <h2 style={styles.featureTitle}>
+                Admissions Assessment: MindPulse 150
+              </h2>
+              <p style={styles.featureDescription}>
+                Gain access to the Archetype Academy through the MindPulse 150
+                personality questionnaire, designed to assess your unique Big
+                Five attributes. This assessment serves as your admissions ID,
+                guiding you towards personalized character development programs
+                that will shape your journey.
+              </p>
+              <Link to="/assessment" style={styles.ctaButton}>
+                Begin Your Admissions Journey
+              </Link>
             </div>
-            <h2 style={styles.featureTitle}>Track Your Progress</h2>
-            <p style={styles.featureDescription2}>
-              Monitor your personal growth with our archetype progress tracker.
-              See how your traits evolve over time and gain deeper insights into
-              how your archetypes develop through your journey.
-            </p>
+
+            {/* Fourth card without icon */}
+            <div style={styles.featureCard2}>
+              <div style={styles.xOverlay}>
+                <div style={styles.xLine}></div>
+                <div style={styles.xLine2}></div>
+              </div>
+              <h2 style={styles.featureTitle}>Design Your AI Companion</h2>
+              <p style={styles.featureDescription2}>
+                Create and customize your own AI companion. Design everything
+                from appearance to behavior, making it a true reflection of your
+                unique archetype.
+              </p>
+            </div>
+
+            {/* Fifth card without icon */}
+            <div style={styles.featureCard2}>
+              <div style={styles.xOverlay}>
+                <div style={styles.xLine}></div>
+                <div style={styles.xLine2}></div>
+              </div>
+              <h2 style={styles.featureTitle}>Community Features</h2>
+              <p style={styles.featureDescription2}>
+                Connect with others who share your archetype and engage in
+                discussions. Explore shared experiences, exchange insights, and
+                grow together in our vibrant community of archetype enthusiasts.
+              </p>
+            </div>
+
+            {/* Sixth card without icon */}
+            <div style={styles.featureCard2}>
+              <div style={styles.xOverlay}>
+                <div style={styles.xLine}></div>
+                <div style={styles.xLine2}></div>
+              </div>
+              <h2 style={styles.featureTitle}>Track Your Progress</h2>
+              <p style={styles.featureDescription2}>
+                Monitor your personal growth with our archetype progress
+                tracker. See how your traits evolve over time and gain deeper
+                insights into how your archetypes develop through your journey.
+              </p>
+            </div>
           </div>
         </div>
+        {/* <Footer /> */}
       </div>
-      {/* <Footer /> */}
-    </div>
+      <BackgroundImageComponent />
+    </>
   );
 };
 

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import ArchetypeChatbotUI from "./components/ArchetypeChatbotUI";
@@ -9,6 +14,7 @@ import Footer from "./components/Footer";
 import EnhancedPersonalityTest from "./pages/EnhancedPersonalityTest";
 import ArchetypeLibraryPage from "./pages/ArchetypeLibraryPage"; // Import your other pages here
 import Header from "./components/Header";
+import MuseumQuestionsTest from "./pages/MuseumQuestionsPage";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -43,6 +49,12 @@ const App = () => {
               </Route>
               <Route path="/assessment">
                 <EnhancedPersonalityTest isDarkMode={isDarkMode} />
+              </Route>
+              <Route path="/museum-assessment">
+                <MuseumQuestionsTest isDarkMode={isDarkMode} />
+              </Route>
+              <Route path="*">
+                <Redirect to="/" />
               </Route>
             </Switch>
           </Layout>

@@ -200,7 +200,10 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
       fontFamily: "Arial, sans-serif",
       padding: "20px",
       boxSizing: "border-box",
-      border: "1px solid #2E3136",
+      // borderTop: "1px solid #2E3136", // Keep top border
+      // borderLeft: "1px solid #2E3136", // Keep left border
+      // borderRight: "1px solid #2E3136", // Keep right border
+      // borderBottom: "none", // Remove bottom border
     },
     desktopHeader: {
       marginBottom: "10px",

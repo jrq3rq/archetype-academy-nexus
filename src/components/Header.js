@@ -9,6 +9,7 @@ import {
   FaBook,
   FaClipboardCheck,
   FaGraduationCap,
+  FaTicketAlt,
 } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdLibraryAdd, MdAssessment } from "react-icons/md";
@@ -43,23 +44,52 @@ const Header = ({ isDarkMode }) => {
   const links = [
     {
       to: "/",
-      label: "Home",
+      label: (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <FaUniversity size="2rem" style={{ marginLeft: "10px" }} />
+        </span>
+      ),
       icon: <FaUniversity size="1.5rem" />,
     },
     {
-      to: "/chatbot",
-      label: "Archédex Chatbot",
-      icon: <FaRobot size="1.5rem" />,
-    },
-    {
       to: "/library",
-      label: "Character Library",
+      label: (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          Library
+          <FaBookOpen size="2rem" style={{ marginLeft: "10px" }} />
+        </span>
+      ),
       icon: <FaBookOpen size="1.5rem" />,
     },
     {
+      to: "/chatbot",
+      label: (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <FaRobot size="2rem" style={{ marginRight: "10px" }} />
+          Archédex Chatbot
+        </span>
+      ),
+      icon: <FaRobot size="1.5rem" />,
+    },
+    {
       to: "/assessment",
-      label: "Admissions Assessment",
+      label: (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          Admissions
+          <FaGraduationCap size="2rem" style={{ marginLeft: "10px" }} />
+        </span>
+      ),
       icon: <FaGraduationCap size="1.5rem" />,
+    },
+    {
+      to: "/museum-assessment",
+      label: (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <FaTicketAlt size="2rem" style={{ marginRight: "10px" }} />
+          Kiosk
+        </span>
+      ),
+      icon: <FaTicketAlt size="1.5rem" />,
     },
   ];
 

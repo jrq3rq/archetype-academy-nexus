@@ -27,8 +27,9 @@ const Footer = ({ isDarkMode, toggleTheme }) => {
   return (
     <div style={footerStyles}>
       <p style={textStyles}>
-        Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
-        Personality
+        {/* Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
+        Personality */}
+        Where Learning Meets Your Unique Personality
       </p>
       <ToggleSwitch isDarkMode={isDarkMode} toggleTheme={toggleTheme} />{" "}
     </div>
