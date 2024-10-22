@@ -179,11 +179,13 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
               {/* Icon for the library */}
               <h2 style={styles.featureTitle}>Character Library</h2>
               <p style={styles.featureDescription}>
-                Explore the comprehensive library of archetypes. Dive into their
-                characteristics, strengths, and how they influence your life.
+                Unlock a comprehensive library of archetypes. Dive into their
+                characteristics, strengths, and discover how they can help shape
+                and influence your life.
               </p>
               <Link to="/library" style={styles.ctaButton}>
-                Explore the Library
+                Unlock the Archetypes
+                {/* Explore the Library */}
               </Link>
             </div>
             {/* Second card with icon */}
@@ -191,12 +193,13 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
               <FaRobot style={styles.iconStyle} /> {/* Icon for the chatbot */}
               <h2 style={styles.featureTitle}>Archedéx Chatbot Interface</h2>
               <p style={styles.featureDescription}>
-                Interact with Archedéx, your AI-powered chatbot guide. Navigate
-                through personalized insights and engage in meaningful
-                conversations.
+                Interact with Archedéx, your AI-powered chatbot guide. Get
+                personalized insights and engage in meaningful conversations
+                tailored to your journey.
               </p>
               <Link to="/chatbot" style={styles.ctaButton}>
-                Chat with Archedéx
+                Start Your Conversation
+                {/* Chat with Archedéx */}
               </Link>
             </div>
             {/* Third card with icon */}
@@ -207,14 +210,16 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
                 Admissions Assessment: MindPulse 150
               </h2>
               <p style={styles.featureDescription}>
-                Gain access to the Archetype Academy through the MindPulse 150
-                personality questionnaire, designed to assess your unique Big
-                Five attributes. This assessment serves as your admissions ID,
-                guiding you towards personalized character development programs
-                that will shape your journey.
+                Begin your journey with the MindPulse 150, your personalized
+                admissions assessment into The Archetype Academy. This
+                foundational questionnaire uncovers your unique Big Five
+                attributes, serving as your key to unlocking tailored character
+                development programs and immersive experiences designed just for
+                you.
               </p>
               <Link to="/assessment" style={styles.ctaButton}>
-                Begin Your Admissions Journey
+                Discover Your Archetype
+                {/* Begin Your Admissions Journey */}
               </Link>
             </div>
 
@@ -227,8 +232,9 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
               <h2 style={styles.featureTitle}>Design Your AI Companion</h2>
               <p style={styles.featureDescription2}>
                 Create and customize your own AI companion. Design everything
-                from appearance to behavior, making it a true reflection of your
-                unique archetype.
+                from appearance to behavior, reflecting your unique archetype.
+                Your guide can offer daily reflections, motivational prompts,
+                and tailored exercises to support your journey.
               </p>
             </div>
 
@@ -240,9 +246,9 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
               </div>
               <h2 style={styles.featureTitle}>Community Features</h2>
               <p style={styles.featureDescription2}>
-                Connect with others who share your archetype and engage in
-                discussions. Explore shared experiences, exchange insights, and
-                grow together in our vibrant community of archetype enthusiasts.
+                Connect with others who share your archetype. Engage in
+                discussions, explore shared experiences, and grow together in
+                our vibrant community of archetype enthusiasts.
               </p>
             </div>
 
@@ -254,9 +260,10 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
               </div>
               <h2 style={styles.featureTitle}>Track Your Progress</h2>
               <p style={styles.featureDescription2}>
-                Monitor your personal growth with our archetype progress
-                tracker. See how your traits evolve over time and gain deeper
-                insights into how your archetypes develop through your journey.
+                Track your personal growth with our archetype progress tracker.
+                Complete tailored challenges, unlock achievements, and earn
+                rewards as your traits evolve. Gain deeper insights into your
+                journey and reach new milestones based on your unique archetype.
               </p>
             </div>
           </div>

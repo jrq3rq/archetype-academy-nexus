@@ -15,6 +15,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { MdLibraryAdd, MdAssessment } from "react-icons/md";
 import { MdChatBubbleOutline, MdLibraryBooks } from "react-icons/md";
 import { IoBulbOutline } from "react-icons/io5";
+import { borderRadius, padding } from "polished";
 
 const Header = ({ isDarkMode }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,8 +66,8 @@ const Header = ({ isDarkMode }) => {
       to: "/chatbot",
       label: (
         <span style={{ display: "flex", alignItems: "center" }}>
-          <FaRobot size="2rem" style={{ marginRight: "10px" }} />
-          Archédex Chatbot
+          Chatbot
+          <FaRobot size="2rem" style={{ marginLeft: "10px" }} />
         </span>
       ),
       icon: <FaRobot size="1.5rem" />,
@@ -85,8 +86,8 @@ const Header = ({ isDarkMode }) => {
       to: "/museum-assessment",
       label: (
         <span style={{ display: "flex", alignItems: "center" }}>
-          <FaTicketAlt size="2rem" style={{ marginRight: "10px" }} />
           Kiosk
+          <FaTicketAlt size="2rem" style={{ marginLeft: "10px" }} />
         </span>
       ),
       icon: <FaTicketAlt size="1.5rem" />,
@@ -96,14 +97,14 @@ const Header = ({ isDarkMode }) => {
   const styles = {
     header: {
       backgroundColor: isDarkMode ? "#2f3136" : "#ffffff",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      // boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       position: "fixed",
       top: 0,
       left: 0,
       right: 0,
       zIndex: 1000,
       boxSizing: "border-box",
-      borderBottom: `1px solid ${isDarkMode ? "#1F2124" : "#1F2124"}`,
+      borderBottom: `1px solid ${isDarkMode ? "#2E3136" : "#1F2124"}`,
     },
     nav: {
       display: "flex",
@@ -132,7 +133,10 @@ const Header = ({ isDarkMode }) => {
       textDecoration: "none",
       fontSize: "16px",
       padding: "5px 10px",
-      borderRadius: "5px",
+      borderTopLeftRadius: "5px", // Only round the bottom-left corner
+      borderTopRightRadius: "5px", // Only round the bottom-right corner
+      borderBottomRightRadius: "5px", // Only round the bottom-left corner
+      borderBottomLeftRadius: "5px", // Only round the bottom-left corner
       margin: "0 5px",
       width: "100%",
       transition: "background-color 0.3s",
@@ -154,24 +158,25 @@ const Header = ({ isDarkMode }) => {
       alignItems: "center",
       transform: menuOpen ? "translateX(0)" : "translateX(-100%)",
       transition: "transform 0.3s ease-in-out",
-      boxShadow: isDarkMode
-        ? "0px 2px 10px rgba(0,0,0,0.5)"
-        : "0px 2px 10px rgba(0,0,0,0.1)",
+      // boxShadow: isDarkMode
+      //   ? "0px 2px 10px rgba(0,0,0,0.5)"
+      //   : "0px 2px 10px rgba(0,0,0,0.1)",
       zIndex: 999,
-      borderRight: "1px solid #2E3136",
+      // borderRight: "40px solid #2E3136",
+      borderRight: `1px solid ${isDarkMode ? "#dcdcdc" : "#1F2124"}`,
     },
     menuIcon: {
       display: isMobile ? "flex" : "none",
       justifyContent: "center",
       alignItems: "center",
       fontSize: "24px",
-      color: isDarkMode ? "#ffffff" : "#40444b",
+      color: isDarkMode ? "#F5F5F5" : "#40444b",
       cursor: "pointer",
       backgroundColor: "transparent",
       border: "none",
       margin: "18px",
       width: "40px",
-      height: "auto",
+      borderRadius: "4px",
     },
     closeIcon: {
       position: "absolute",
@@ -196,6 +201,11 @@ const Header = ({ isDarkMode }) => {
       transition: "background-color 0.3s, border 0.3s",
       width: "80%",
       border: `1px solid transparent`,
+    },
+    stylisticLine: {
+      backgroundColor: isDarkMode ? "#B8BBBE" : "#2E3136",
+      width: "100%",
+      height: "4px",
     },
   };
 
@@ -233,7 +243,7 @@ const Header = ({ isDarkMode }) => {
           <FaBars />
         </button>
       </nav>
-
+      {/* <div style={styles.stylisticLine} /> */}
       {isMobile && (
         <div style={styles.mobileMenu}>
           <button

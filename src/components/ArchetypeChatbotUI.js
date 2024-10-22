@@ -4,9 +4,19 @@ import ChatbotContext from "../state/ChatbotContext";
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
 
+const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
+};
+
 const getAllArchetypes = async () => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetchWithTimeout(BASE_URL);
+    // console.log("Fetching from:", BASE_URL);
     if (!response.ok) throw new Error("Network response was not ok");
     return await response.json();
   } catch (error) {

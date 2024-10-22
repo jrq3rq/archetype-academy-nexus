@@ -309,6 +309,26 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
 
   return (
     <div style={styles.container}>
+      <ContentContainer isDarkMode={isDarkMode}>
+        <h2>Unlock Your Path to the Archetype Academy!</h2>
+        <p>
+          The MindPulse150 is your admissions gateway—a Big Five personality
+          assessment that reveals your complementary archetype. This
+          foundational step unlocks a personalized journey filled with guided
+          content and tailored interactions designed to align with your unique
+          preferences and engagement style.
+        </p>
+        <p>
+          By uncovering your core traits through the MindPulse150, you gain
+          access to an evolving array of archetypes. Each archetype shapes
+          dynamic experiences and interactions, creating a journey that adapts
+          specifically to your results.
+        </p>
+        <p>
+          Embark on this exciting adventure and discover the enriching world of
+          The Archetype Academy Nexus MVP!
+        </p>
+      </ContentContainer>
       <div style={styles.questionContainer}>
         <h2
           style={{
@@ -506,119 +526,49 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
           )}
         </div>
       </Modal>
-
-      {/* Automatic Popup Modal */}
-      <Modal
-        isOpen={showAutoPopup}
-        onRequestClose={() => setShowAutoPopup(false)}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.85)",
-            position: "fixed",
-            top: "0",
-            left: "0",
-            right: "0",
-            bottom: "0",
-            padding: "0",
-          },
-          content: {
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#2E3136",
-            borderRadius: "12px",
-            paddingTop: "0",
-            paddingRight: "20px",
-            paddingBottom: "0",
-            paddingLeft: "20px",
-            width: "80%", // Responsive width
-            maxWidth: "600px",
-            height: "60%",
-            maxHeight: "80vh",
-            overflowY: "auto",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
-            color: "#ffffff",
-            margin: "0",
-            zIndex: "1000",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          },
-        }}
-      >
-        <button
-          onClick={() => setShowAutoPopup(false)}
-          style={{
-            position: "absolute",
-            top: "15px",
-            right: "15px",
-            backgroundColor: "transparent",
-            border: "none",
-            color: "#ffffff",
-            cursor: "pointer",
-            fontSize: "1.5rem",
-          }}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-
-        <h2
-          style={{
-            textAlign: "center",
-            paddingBottom: "20px",
-            fontSize: "20px", // Adjusted for better readability
-            margin: 0,
-            fontWeight: "bold",
-            marginTop: "40px",
-          }}
-        >
-          Unlock Your Path to the Archetype Academy!
-        </h2>
-
-        <p
-          style={{
-            textAlign: "left",
-            padding: "0 10px", // Consistent horizontal padding
-            marginBottom: "15px", // Increased margin for better spacing
-            fontSize: "16px", // Slightly larger for better readability
-          }}
-        >
-          MindPulse150 is a Big Five style personality assessment that reveals
-          your complementary archetype. This personalized experience will
-          enhance your journey by providing guided content and interactions that
-          align with your individual preferences and engagement style.
-        </p>
-
-        <p
-          style={{
-            textAlign: "left",
-            padding: "0 10px",
-            marginBottom: "15px",
-            fontSize: "16px",
-          }}
-        >
-          By uncovering your personality through the MindPulse150, you’ll gain
-          access to a diverse array of archetypes. This will guide you through
-          dynamic interactions tailored specifically to a unique score.
-        </p>
-
-        <p
-          style={{
-            textAlign: "left",
-            padding: "0 10px",
-            marginBottom: "15px",
-            fontSize: "16px",
-          }}
-        >
-          Embark on this exciting adventure and explore the enriching world of
-          The Archetype Academy Nexus MVP!
-        </p>
-      </Modal>
     </div>
   );
 };
+
+const ContentContainer = styled.div`
+  position: relative;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? "#2E3136" : "#f0f0f0"}; // Background color based on theme
+  color: ${({ isDarkMode }) =>
+    // isDarkMode ? "#ffffff" : "#000000"}; // Text color based on theme
+    isDarkMode ? "#f0f0f0" : "#2E3136"}; // Background color based on theme
+  border: 1px solid #2e3136; // Add border
+  border-radius: 12px;
+  padding: 40px 20px 20px 20px;
+  width: 80%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  @media (max-width: 480px) {
+    padding-top: 40px;
+    width: 90%;
+  }
+
+  h2 {
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  p {
+    text-align: left;
+    padding: 0 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+`;
 
 const CloseButton = styled.button`
   position: absolute;

@@ -2,6 +2,7 @@ import React from "react";
 import { FaUserCircle, FaPuzzlePiece, FaChartLine } from "react-icons/fa";
 import { Link } from "react-router-dom"; // <-- Add this import
 import styled from "styled-components";
+import BackgroundImageComponent from "./BackgroundImageComponent";
 
 // Styled components
 const Container = styled.div`
@@ -19,12 +20,34 @@ const ContentWrapper = styled.div`
   text-align: center;
 `;
 
-const Title = styled.h1`
-  font-size: 36px;
-  font-weight: bold;
+const HighlightedWord = styled.span`
+  /* text-transform: uppercase; */
+  background-color: ${(props) => (props.isDarkMode ? "#ffffff" : "#2E3136")};
+  color: ${(props) => (props.isDarkMode ? "#2E3136" : "#ffffff")};
+  padding: 200px 10px 0px 10px;
+`;
+
+// Update the Title component
+const Title = styled.div`
+  font-size: 4rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+  /* text-transform: uppercase; */
   margin-bottom: 20px;
-  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#000000")};
+  /* background-color: ${(props) =>
+    props.isDarkMode ? "#ffffff" : "#2E3136"}; */
+  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#2E3136")};
+  padding: 10px;
+  border-radius: 12px 12px 0px 0px;
+  /* letter-spacing: -2px; */
   @media (max-width: 768px) {
+    padding: 40px 10px 40px 10px;
+    font-size: 2rem;
+    letter-spacing: -1px;
+  }
+  @media (max-width: 480px) {
+    line-height: normal;
+    letter-spacing: 0px;
   }
 `;
 
@@ -128,28 +151,25 @@ const HomeSection = ({ isDarkMode }) => {
   return (
     <Container isDarkMode={isDarkMode}>
       <ContentWrapper>
-        <Title isDarkMode={isDarkMode}>Welcome to The Archetype Academy</Title>
+        <Title isDarkMode={isDarkMode}>
+          The{" "}
+          <HighlightedWord isDarkMode={isDarkMode}>Archetype</HighlightedWord>{" "}
+          Academy
+        </Title>
+        {/* <BackgroundImageComponent /> */}
         <Description isDarkMode={isDarkMode}>
-          {/* The Archetype Academy is an AI-driven platform that personalizes
-          museum experiences based on Jungian archetypes. Visitors engage with
-          exhibits tailored to their unique personality, enhancing their journey
-          through interactive storytelling, challenges, and guided paths.
-          Discover a whole new way to explore. */}
-          The Archetype Academy is focused on building a cutting-edge,
-          subscription-based engagement platform designed to revolutionize
-          interactive exhibits. Powered by AI and grounded in Jungian
-          archetypes, the platform will personalize each visitor’s journey by
-          adapting experiential spaces to match their unique personality.
-          Visitors will engage with these tailored experiences in new ways,
-          immersing themselves in personalized storytelling, interactive
-          challenges, and guided explorations. This dynamic platform will create
-          ever-evolving, meaningful connections with immersive content.
+          The Archetype Academy is a cutting-edge, subscription-based engagement
+          platform designed to revolutionize interactive exhibits. Powered by AI
+          and grounded in Jungian archetypes, the platform personalizes each
+          visitor’s journey by adapting experiential spaces to align with their
+          unique personality. Visitors immerse themselves in personalized
+          storytelling, interactive challenges, and guided explorations, forging
+          meaningful connections with immersive content.
         </Description>
-
         <Description2 isDarkMode={isDarkMode}>
-          For institutions and organizations, The Archetype Academy will unlock
-          new subscription-based models to enhance audience engagement, offering
-          fresh, personalized experiences with every interaction.
+          For institutions and organizations, The Archetype Academy unlocks
+          innovative, subscription-based models to elevate audience engagement,
+          providing fresh, personalized experiences with every interaction.
         </Description2>
 
         <FeaturesContainer>
@@ -161,10 +181,10 @@ const HomeSection = ({ isDarkMode }) => {
               Personalized Experiences
             </FeatureTitle>
             <FeatureDescription isDarkMode={isDarkMode}>
-              Each visitor takes the MindPulse150 personality test to uncover
-              their archetype. This determines their unique journey through
-              personalized interactions, tailored to their personality and
-              engagement style, offering custom experiences in any interactive
+              Begin your journey with the MindPulse150 personality assessment to
+              uncover your unique archetype. This foundational step guides you
+              through personalized interactions tailored to your preferences and
+              engagement style, offering custom experiences in every interactive
               space.
             </FeatureDescription>
           </FeatureCard>
@@ -177,10 +197,10 @@ const HomeSection = ({ isDarkMode }) => {
               AI-Driven Engagement
             </FeatureTitle>
             <FeatureDescription isDarkMode={isDarkMode}>
-              With Archédex, our AI-powered guide, visitors receive real-time
+              With Archédex, our AI-powered guide, you receive real-time,
               personalized guidance, dynamic storytelling, and interactive
-              challenges that adapt to their archetype, ensuring a tailored and
-              immersive experience.
+              challenges that adapt to your archetype. This ensures a fully
+              tailored and immersive experience designed for you.
             </FeatureDescription>
           </FeatureCard>
 
@@ -194,7 +214,7 @@ const HomeSection = ({ isDarkMode }) => {
             <FeatureDescription isDarkMode={isDarkMode}>
               Organizations can track visitor engagement through our analytics
               dashboard, gaining insights into behavior patterns, archetype
-              trends, and overall performance of interactive experiences.
+              trends, and the overall performance of interactive experiences.
             </FeatureDescription>
           </FeatureCard>
         </FeaturesContainer>

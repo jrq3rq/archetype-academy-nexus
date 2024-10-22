@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import LikertScale from "../components/LikertScale"; // Import LikertScale
+import { padding } from "polished";
+import {
+  saveDataToLocalStorage,
+  getDataFromLocalStorage,
+} from "../utils/localStorageUtils";
 
 // Access the API URL from environment variables
 const MUSEUM_QUESTIONS =
@@ -33,7 +38,18 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [answers, setAnswers] = useState({}); // State to store answers
+  const [totalScore, setTotalScore] = useState(0); // Store total score
   const [matchedArchetype, setMatchedArchetype] = useState(null); // Store matched archetype
+  const [storedData, setStoredData] = useState([]);
+
+  useEffect(() => {
+    const data = getDataFromLocalStorage();
+    if (data && data.length) {
+      const names = data.map((character) => character.name);
+      setCharacterNames(names);
+      setStoredData(data); // Store the data for displaying later
+    }
+  }, []);
 
   // Default archetype definition
   const defaultArchetype = {
@@ -41,6 +57,16 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
     color: "black",
     mission: "This is a default archetype.",
   };
+
+  const [characterNames, setCharacterNames] = useState([]);
+
+  useEffect(() => {
+    const storedData = getDataFromLocalStorage();
+    if (storedData && storedData.length) {
+      const names = storedData.map((character) => character.name); // Assuming each character object has a 'name' field
+      setCharacterNames(names);
+    }
+  }, []);
 
   // Fetch traits data from the backend server using the API URL from the environment variable
   useEffect(() => {
@@ -52,6 +78,7 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log("API Data:", data); // Log data to see the exact questions
         if (!Array.isArray(data)) {
           throw new Error("API response is invalid");
         }
@@ -81,9 +108,17 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
     setAnswers({ ...answers, [questionName]: value });
   };
 
-  // Trigger submission and set default archetype
+  // Trigger submission, calculate total score and set default archetype
   const handleSubmit = () => {
-    setMatchedArchetype(defaultArchetype);
+    // Calculate total score based on answers
+    const total = Object.values(answers).reduce((sum, value) => {
+      // Ensure that the value is a number
+      return sum + (typeof value === "number" ? value : 0);
+    }, 0);
+
+    setTotalScore(total); // Set the total score
+
+    setMatchedArchetype(defaultArchetype); // Set default archetype (replace with actual logic)
   };
 
   // Render the traits data
@@ -93,10 +128,11 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
     <div
       style={{
         ...styles.container,
-        backgroundColor: isDarkMode ? "#1F2124" : "#DCDCDC", // Match button background with navbar background
+        backgroundColor: isDarkMode ? "#1F2124" : "#DCDCDC",
         color: isDarkMode ? "#ffffff" : "#000000",
       }}
     >
+      {/* Render trait data */}
       {traitsData.map((trait) => (
         <div
           key={trait.trait}
@@ -140,7 +176,7 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
               color: isDarkMode ? "#ffffff" : "#000000",
             }}
           >
-            Question {`${questionCount++}: `}
+            Questions:
           </h4>
           <ul style={styles.questionsList}>
             {trait.questions.map((question, index) => {
@@ -162,17 +198,20 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
           </ul>
         </div>
       ))}
+
+      {/* Submit button */}
       <button
         onClick={handleSubmit}
         style={{
           ...styles.submitButton,
-          backgroundColor: isDarkMode ? "#2f3136" : "#ffffff", // Match button background with navbar background
-          color: isDarkMode ? "#ffffff" : "#000000", // Ensure text color is readable
+          backgroundColor: isDarkMode ? "#2f3136" : "#ffffff",
+          color: isDarkMode ? "#ffffff" : "#000000",
         }}
       >
         Submit Answers
       </button>
 
+      {/* Render matched archetype and stored data */}
       {matchedArchetype && (
         <div
           style={{
@@ -181,30 +220,36 @@ const MuseumQuestionsTest = ({ isDarkMode }) => {
             color: isDarkMode ? "#ffffff" : "#000000",
           }}
         >
-          <h2
-            style={{
-              ...styles.resultTitle,
-              backgroundColor: isDarkMode ? "#2f3136" : "#ffffff",
-              color: isDarkMode ? "#ffffff" : "#000000",
-            }}
-          >
-            Your Matching Archetype:
-          </h2>
-          <div
-            style={{
-              ...styles.archetypeDisplay,
-              backgroundColor: isDarkMode ? "#2f3136" : "#ffffff",
-              color: isDarkMode ? "#ffffff" : "#000000",
-            }}
-          >
+          <div>
+            <h3>Your Score: {totalScore}</h3> {/* Display total score */}
+          </div>
+          <h2 style={styles.resultTitle}>Your Matching Archetype:</h2>
+
+          <div style={styles.archetypeDisplay}>
             <div
               style={{
                 ...styles.archetypeColorBox,
                 backgroundColor: matchedArchetype.color,
               }}
             />
-            <p>{matchedArchetype.name}</p>
-            <p>{matchedArchetype.mission}</p>
+            {/* <p>{matchedArchetype.name}</p> */}
+            {/* <p>{matchedArchetype.mission}</p> */}
+            {/* <h3>Character Names and Scores:</h3> */}
+            {storedData.length > 0 ? (
+              storedData.map((character, index) => (
+                <p key={index} style={styles.characterInfo}>
+                  {character.name}: {/* Ensure space between name and scores */}
+                  {/* scores: */}
+                  {`Openness: ${character.scores?.Openness || "N/A"},
+          Conscientiousness: ${character.scores?.Conscientiousness || "N/A"},
+          Extraversion: ${character.scores?.Extraversion || "N/A"},
+          Agreeableness: ${character.scores?.Agreeableness || "N/A"},
+          Neuroticism: ${character.scores?.Neuroticism || "N/A"}`}
+                </p>
+              ))
+            ) : (
+              <p>No data available</p>
+            )}
           </div>
         </div>
       )}
@@ -217,12 +262,12 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "40px 20px",
+    padding: "20px 20px",
     fontFamily: "Arial, sans-serif",
     backgroundColor: "#f0f0f0",
     color: "#000",
     minHeight: "100vh",
-    borderTop: "1px solid #2E3136",
+    // borderTop: "1px solid #2E3136",
     borderBottom: "1px solid #2E3136",
   },
   loading: {
@@ -236,7 +281,6 @@ const styles = {
     textAlign: "center",
   },
   traitContainer: {
-    backgroundColor: "#fff",
     borderRadius: "10px",
     padding: "20px",
     marginBottom: "30px",
@@ -262,7 +306,6 @@ const styles = {
   questionsHeader: {
     fontSize: "20px",
     marginTop: "15px",
-    // marginBottom: "10px",
     color: "#444",
   },
   questionsList: {
@@ -279,15 +322,9 @@ const styles = {
     flexDirection: "column",
     alignItems: "start",
   },
-  questionText: {
-    fontWeight: "bold",
-    marginBottom: "0px",
-    color: "#222",
-  },
   likertContainer: {
     width: "100%",
     marginTop: "10px",
-    // marginBottom: "20px",
   },
   submitButton: {
     padding: "10px 20px",

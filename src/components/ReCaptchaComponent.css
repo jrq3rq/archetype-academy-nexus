@@ -1,0 +1,47 @@
+/* src/components/ReCaptchaComponent.css */
+
+/* Center the overlay */
+.recaptcha-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45); /* Dark overlay */
+  z-index: 500; /* Behind the reCAPTCHA but above the background */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}
+
+/* Center the container */
+.recaptcha-container {
+  display: flex;
+  flex-direction: column; /* Stack error message below the reCAPTCHA */
+  align-items: center; /* Center contents horizontally */
+  padding: 24px;
+  border-radius: 4px;
+  background-color: white; /* Background color for better visibility */
+  z-index: 1000; /* Ensure it appears above other content */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional: add some shadow for depth */
+  max-width: 90%; /* Responsive max width */
+  width: 400px; /* Fixed width for the container */
+}
+
+/* Additional styles for the error message */
+.error-message {
+  color: red; /* Color for error message */
+  margin-top: 10px; /* Space above the error message */
+  font-size: 14px; /* Font size for readability */
+  text-align: center; /* Center the error message */
+  width: 100%; /* Full width for centering */
+  max-width: 400px; /* Max width for better presentation */
+}
+
+select {
+  color: #1a1a1a; /* Color for <select> elements */
+}
+
+select option {
+  color: #1a1a1a; /* Color for <option> elements inside <select> */
+}
