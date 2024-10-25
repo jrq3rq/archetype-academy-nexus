@@ -33,9 +33,9 @@ const FloatingImage = styled.img`
 `;
 
 const FloatingGEM = styled.img`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  /* border-radius: 50%; */
   padding: 8px;
   object-fit: cover;
   animation: ${float} 3s ease-in-out infinite;
@@ -181,6 +181,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
   const [flippedCards, setFlippedCards] = useState({});
   const [modalsOpen, setModalsOpen] = useState({});
   const [isNotSignedIn, setIsNotSignedIn] = useState(false);
+  const [rotatingImages, setRotatingImages] = useState({}); // To track rotating state
 
   const handleChatClick = (event) => {
     event.stopPropagation();
@@ -326,6 +327,46 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       justifyContent: "center",
       alignItems: "center",
       gap: "10px", // Space between images
+      position: "relative", // Important for positioning the rotating image
+    },
+
+    rotatingImageWrapper: {
+      // width: "80px", // Size of the circle
+      // height: "80px",
+      perspective: "1000px", // Add 3D perspective
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      position: "relative", // For proper positioning of the static circle and image
+    },
+
+    staticCircle: {
+      position: "absolute", // Ensures the circle wraps around the image
+      width: "72px", // Size of the static circle
+      height: "72px",
+      borderRadius: "50%",
+      zIndex: "1", // Static circle behind the rotating image
+    },
+
+    rotatingImage: (isRotating, duration) => ({
+      width: "60px", // Inherit the size from the wrapper
+      height: "60px",
+      borderRadius: "50%",
+      objectFit: "cover",
+      transformStyle: "preserve-3d", // Ensures 3D space for rotation
+      zIndex: "2", // Ensures the rotating image is above the static circle
+      animation: isRotating
+        ? `rotateY360 ${duration}s infinite linear`
+        : "none", // Apply rotation only if isRotating is true
+    }),
+
+    "@keyframes rotateY360": {
+      from: {
+        transform: "rotateY(0deg)", // Start position
+      },
+      to: {
+        transform: "rotateY(360deg)", // Full rotation
+      },
     },
 
     cardInfo: {
@@ -486,6 +527,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
 
   const toggleCard = (id) => {
     setFlippedCards((prev) => ({ ...prev, [id]: !prev[id] }));
+    setRotatingImages((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const openModal = (id) => {
@@ -494,6 +536,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
 
   const closeModal = (id) => {
     setModalsOpen((prev) => ({ ...prev, [id]: false }));
+    setRotatingImages((prev) => ({ ...prev, [id]: false }));
   };
 
   if (loading) {
@@ -507,82 +550,88 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
   return (
     <div style={styles.container}>
       <div style={styles.grid}>
-        {archetypes.map((archetype) => (
-          <div
-            key={archetype.id}
-            style={{
-              ...styles.card,
-              transform: flippedCards[archetype.id]
-                ? "scale(1.05)"
-                : "scale(1)",
-            }}
-            onClick={() => toggleCard(archetype.id)}
-          >
-            <div
-              style={{
-                ...styles.cardInner,
-                transform: flippedCards[archetype.id]
-                  ? "rotateY(180deg)"
-                  : "rotateY(0)",
-              }}
-            >
-              {/* Front of the card */}
-              <div
-                style={{
-                  ...styles.cardFace,
-                  backgroundColor: archetype.color,
-                  color: getTextColor(archetype.color),
-                  backgroundImage: `url(${getBackgroundImage(archetype.name)})`,
-                  backgroundSize: "200%",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div style={styles.cardContent}>
-                  <h2 style={styles.cardTitle}>{archetype.name}</h2>
-                  <p style={styles.cardMission}>{archetype.mission}</p>
-                </div>
-                <div style={styles.cardContent2}>
-                  <p>Galactic sector: {archetype.planet}</p>
-                </div>
-              </div>
+        {archetypes.map((archetype) => {
+          const isRotating = rotatingImages[archetype.id] || false;
+          const randomDuration = Math.floor(Math.random() * 5) + 8;
 
-              {/* Back of the card */}
+          return (
+            <div
+              key={archetype.id}
+              style={{
+                ...styles.card,
+                transform: flippedCards[archetype.id]
+                  ? "scale(1.05)"
+                  : "scale(1)",
+              }}
+              onClick={() => toggleCard(archetype.id)}
+            >
               <div
                 style={{
-                  ...styles.cardFace,
-                  ...styles.cardBack,
-                  border: `5px double ${archetype.color}`,
-                  backfaceVisibility: "hidden",
-                  transform: "rotateY(180deg)",
-                  backgroundColor: darken(0.1, archetype.color),
-                  color: getTextColor(archetype.color),
+                  ...styles.cardInner,
+                  transform: flippedCards[archetype.id]
+                    ? "rotateY(180deg)"
+                    : "rotateY(0)",
                 }}
               >
-                <div style={styles.cardContent}>
-                  <div style={styles.mainSection}>
-                    <div style={styles.buttonContainer}>
-                      <button
-                        style={{
-                          ...styles.buttonTop,
-                          borderColor: archetype.color,
-                          backgroundColor: darken(0.3, archetype.color),
-                          borderWidth: "1px",
-                          borderStyle: "solid",
-                        }}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          openModal(archetype.id);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faCog}
+                {/* Front of the card */}
+                <div
+                  style={{
+                    ...styles.cardFace,
+                    backgroundColor: archetype.color,
+                    color: getTextColor(archetype.color),
+                    backgroundImage: `url(${getBackgroundImage(
+                      archetype.name
+                    )})`,
+                    backgroundSize: "200%",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div style={styles.cardContent}>
+                    <h2 style={styles.cardTitle}>{archetype.name}</h2>
+                    <p style={styles.cardMission}>{archetype.mission}</p>
+                  </div>
+                  <div style={styles.cardContent2}>
+                    <p>Galactic sector: {archetype.planet}</p>
+                  </div>
+                </div>
+
+                {/* Back of the card */}
+                <div
+                  style={{
+                    ...styles.cardFace,
+                    ...styles.cardBack,
+                    border: `5px double ${archetype.color}`,
+                    backfaceVisibility: "hidden",
+                    transform: "rotateY(180deg)",
+                    backgroundColor: darken(0.1, archetype.color),
+                    color: getTextColor(archetype.color),
+                  }}
+                >
+                  <div style={styles.cardContent}>
+                    <div style={styles.mainSection}>
+                      <div style={styles.buttonContainer}>
+                        <button
                           style={{
-                            color: archetype.color,
-                            fontSize: "24px",
+                            ...styles.buttonTop,
+                            borderColor: archetype.color,
+                            backgroundColor: darken(0.3, archetype.color),
+                            borderWidth: "1px",
+                            borderStyle: "solid",
                           }}
-                        />
-                      </button>
-                      {/* <button
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            openModal(archetype.id);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCog}
+                            style={{
+                              color: archetype.color,
+                              fontSize: "24px",
+                            }}
+                          />
+                        </button>
+                        {/* <button
                         style={{
                           ...styles.buttonBottom,
                           borderColor: archetype.color,
@@ -601,117 +650,153 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                           }}
                         />
                       </button> */}
-                      <Modal
-                        isOpen={modalsOpen[archetype.id]}
-                        onRequestClose={() => closeModal(archetype.id)}
-                        contentLabel={`${archetype.name} Modal`}
-                        style={{
-                          overlay: {
-                            backgroundColor: "rgba(0, 0, 0, 0.75)", // Dark overlay for focus
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: "10px",
-                          },
-                          content: {
-                            backgroundColor: darken(0.4, archetype.color),
-                            // backgroundColor: "rgba(0, 0, 0, 0.65)", // Dark overlay for focus
-                            color: "#ffffff", // Use a static white text color
-                            padding: "20px",
-                            borderRadius: "10px",
-                            maxWidth: "600px",
-                            width: "80%",
-                            maxHeight: "90vh",
-                            height: "70%",
-                            overflowY: "auto",
-                            textAlign: "center",
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)",
-                            transition: "all 0.3s ease-in-out",
-                            border: `1px solid ${archetype.color}`, // Dynamic border color for modal
-                          },
-                        }}
-                      >
-                        <button
-                          onClick={() => closeModal(archetype.id)}
-                          style={styles.closeButton}
+                        <Modal
+                          isOpen={modalsOpen[archetype.id]}
+                          onRequestClose={() => closeModal(archetype.id)}
+                          contentLabel={`${archetype.name} Modal`}
+                          style={{
+                            overlay: {
+                              backgroundColor: "rgba(0, 0, 0, 0.75)", // Dark overlay for focus
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: "10px",
+                            },
+                            content: {
+                              backgroundColor: darken(0.4, archetype.color),
+                              color: "#ffffff", // Use a static white text color
+                              padding: "20px",
+                              borderRadius: "10px",
+                              maxWidth: "600px",
+                              width: "80%",
+                              maxHeight: "90vh",
+                              height: "70%",
+                              overflowY: "auto",
+                              textAlign: "center",
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)",
+                              transition: "all 0.3s ease-in-out",
+                              border: `1px solid ${archetype.color}`, // Dynamic border color for modal
+                            },
+                          }}
                         >
-                          &times;
-                        </button>
-                        <div style={styles.modalContent}>
-                          <p style={{ marginBottom: "10px" }}>
-                            <b
-                              style={{
-                                color: archetype.color,
-                                textTransform: "uppercase",
-                              }}
-                            >
-                              {archetype.name}
-                            </b>{" "}
-                            Student ID:
-                          </p>
-                          <FloatingGEM
-                            src={archetypeStones[archetype.name]}
-                            alt={`${archetype.name}`}
-                            style={{
-                              borderColor: archetype.color,
-                              // backgroundColor: darken(0.3, archetype.color),
-                            }}
-                          />
-
-                          <ContentContainer bgColor={archetype.color}>
-                            <StyledNormalText>
-                              <StyledParagraph
-                                color={getTextColor(archetype.color)}
+                          <button
+                            onClick={() => closeModal(archetype.id)}
+                            style={styles.closeButton}
+                          >
+                            &times;
+                          </button>
+                          <div style={styles.modalContent}>
+                            <p style={{ marginBottom: "10px" }}>
+                              <b
+                                style={{
+                                  color: archetype.color,
+                                  textTransform: "uppercase",
+                                }}
                               >
-                                {archetype.id}
-                              </StyledParagraph>
-                            </StyledNormalText>
-                          </ContentContainer>
-                          {/* <p style={styles.modalText}>
+                                {archetype.name}
+                              </b>{" "}
+                              Student ID:
+                            </p>
+                            <FloatingGEM
+                              src={archetypeImages[archetype.name]}
+                              alt={`${archetype.name}`}
+                              style={{
+                                borderColor: archetype.color,
+                              }}
+                            />
+
+                            <ContentContainer bgColor={archetype.color}>
+                              <StyledNormalText>
+                                <StyledParagraph
+                                  color={getTextColor(archetype.color)}
+                                >
+                                  {archetype.id}
+                                </StyledParagraph>
+                              </StyledNormalText>
+                            </ContentContainer>
+                            {/* <p style={styles.modalText}>
                             More information about{" "}
                             <b style={{ color: archetype.color }}>
                               {archetype.name}
                             </b>{" "}
                             and its characteristics will be displayed here.
                           </p> */}
-                          <div
-                            style={{
-                              // border: `1px solid ${archetype.color}`,
-                              padding: "20px",
-                              borderRadius: "10px",
-                              marginTop: "20px",
-                            }}
-                          >
-                            {" "}
-                            {archetype.motivations && (
-                              <div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: "4px",
-                                    color: archetype.color,
-                                    justifyContent: "start", // Centers items horizontally
-                                    alignItems: "start", // Centers items vertically (if necessary)
-                                    padding: "4px",
-                                    marginLeft: "10px",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  <b
+                            <div
+                              style={{
+                                padding: "20px",
+                                borderRadius: "10px",
+                                marginTop: "20px",
+                              }}
+                            >
+                              {archetype.motivations && (
+                                <div>
+                                  <div
                                     style={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: "4px",
                                       color: archetype.color,
-                                      textTransform: "uppercase",
+                                      justifyContent: "start",
+                                      alignItems: "start",
+                                      padding: "4px",
+                                      marginLeft: "10px",
+                                      fontSize: "12px",
                                     }}
                                   >
-                                    Motivations:
-                                  </b>
-                                  {archetype.motivations.map(
-                                    (behavior, index) => (
+                                    <b
+                                      style={{
+                                        color: archetype.color,
+                                        textTransform: "uppercase",
+                                      }}
+                                    >
+                                      Motivations:
+                                    </b>
+                                    {archetype.motivations.map(
+                                      (behavior, index) => (
+                                        <span
+                                          key={index}
+                                          style={{
+                                            whiteSpace: "nowrap",
+                                          }}
+                                        >
+                                          {behavior}
+                                          {index <
+                                            archetype.motivations.length - 1 &&
+                                            ","}{" "}
+                                        </span>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                              {archetype.traits && (
+                                <div>
+                                  <div
+                                    style={{
+                                      color: archetype.color,
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: "4px",
+                                      justifyContent: "start",
+                                      alignItems: "start",
+                                      padding: "4px",
+                                      marginLeft: "10px",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    <b
+                                      style={{
+                                        color: darken(0, archetype.color),
+                                        textTransform: "uppercase",
+                                      }}
+                                    >
+                                      Traits:
+                                    </b>
+                                    {archetype.traits.map((behavior, index) => (
                                       <span
                                         key={index}
                                         style={{
@@ -719,122 +804,79 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                                         }}
                                       >
                                         {behavior}
-                                        {index <
-                                          archetype.motivations.length - 1 &&
+                                        {index < archetype.traits.length - 1 &&
                                           ","}{" "}
-                                        {/* Add comma except for the last item */}
                                       </span>
-                                    )
-                                  )}
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            {archetype.traits && (
-                              <div>
-                                <div
-                                  style={{
-                                    color: archetype.color,
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: "4px",
-                                    justifyContent: "start", // Centers items horizontally
-                                    alignItems: "start", // Centers items vertically (if necessary)
-                                    padding: "4px",
-                                    marginLeft: "10px",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  {" "}
-                                  <b
+                              )}
+                              {archetype.behaviors && (
+                                <div>
+                                  <div
                                     style={{
-                                      color: darken(0, archetype.color),
-                                      textTransform: "uppercase",
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: "4px",
+                                      marginLeft: "10px",
+                                      color: archetype.color,
+                                      justifyContent: "start",
+                                      alignItems: "start",
+                                      padding: "4px",
+                                      fontSize: "12px",
                                     }}
                                   >
-                                    Traits:
-                                  </b>
-                                  {archetype.traits.map((behavior, index) => (
-                                    <span
-                                      key={index}
+                                    <b
                                       style={{
-                                        whiteSpace: "nowrap",
+                                        color: darken(0, archetype.color),
+                                        textTransform: "uppercase",
                                       }}
                                     >
-                                      {behavior}
-                                      {index < archetype.traits.length - 1 &&
-                                        ","}{" "}
-                                      {/* Add comma except for the last item */}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                            {archetype.behaviors && (
-                              <div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: "4px",
-                                    marginLeft: "10px",
-                                    color: archetype.color,
-                                    justifyContent: "start", // Centers items horizontally
-                                    alignItems: "start", // Centers items vertically (if necessary)
-                                    padding: "4px",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  <b
-                                    style={{
-                                      color: darken(0, archetype.color),
-                                      textTransform: "uppercase",
-                                    }}
-                                  >
-                                    Behaviors:
-                                  </b>
-                                  {archetype.behaviors.map(
-                                    (behavior, index) => (
-                                      <span
-                                        key={index}
-                                        style={{ whiteSpace: "nowrap" }}
-                                      >
-                                        {behavior}
-                                        {index <
-                                          archetype.behaviors.length - 1 &&
-                                          ","}{" "}
-                                        {/* Add comma except for the last item */}
-                                      </span>
-                                    )
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            {/* Chat icon container */}
-                            <div
-                              style={styles.chatIconContainer}
-                              onClick={handleChatClick}
-                            >
-                              <FontAwesomeIcon
-                                icon={faComments}
-                                style={{
-                                  ...styles.chatIcon,
-                                  color: archetype.color,
-                                  fontSize: "32px",
-                                }}
-                              />
-
-                              {/* Conditionally render the message below the chat icon */}
-                              {isNotSignedIn && (
-                                <div style={styles.message}>
-                                  Must be signed in to access chat functionality
+                                      Behaviors:
+                                    </b>
+                                    {archetype.behaviors.map(
+                                      (behavior, index) => (
+                                        <span
+                                          key={index}
+                                          style={{ whiteSpace: "nowrap" }}
+                                        >
+                                          {behavior}
+                                          {index <
+                                            archetype.behaviors.length - 1 &&
+                                            ","}{" "}
+                                        </span>
+                                      )
+                                    )}
+                                  </div>
                                 </div>
                               )}
                             </div>
-                          </div>
-                          {/* </BionaryContainer> */}
-                          {/* <StyledText>
+                            <div>
+                              {/* Chat icon container */}
+                              <div
+                                style={styles.chatIconContainer}
+                                onClick={handleChatClick}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faComments}
+                                  style={{
+                                    ...styles.chatIcon,
+                                    color: archetype.color,
+                                    fontSize: "32px",
+                                  }}
+                                />
+
+                                {/* Conditionally render the message below the chat icon */}
+                                {isNotSignedIn && (
+                                  <div style={styles.message}>
+                                    Must be signed in to access chat
+                                    functionality
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            {/* </BionaryContainer> */}
+                            {/* <StyledText>
                             <p
                               style={{
                                 color: archetype.color,
@@ -846,11 +888,11 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                               )}
                             </p>
                           </StyledText> */}
-                        </div>
-                      </Modal>
-                    </div>
-                    <div style={styles.imageContainer}>
-                      {/* <img
+                          </div>
+                        </Modal>
+                      </div>
+                      <div style={styles.imageContainer}>
+                        {/* <img
                         src={archetypeStones[archetype.name]}
                         alt={`${archetype.name} Stone`}
                         style={{
@@ -860,7 +902,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                           color: getTextColor(archetype.color),
                         }}
                       /> */}
-                      <img
+                        {/* <img
                         src={archetypeImages[archetype.name]}
                         alt={`${archetype.name}`}
                         style={{
@@ -869,25 +911,47 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                           backgroundColor: darken(0.3, archetype.color),
                           color: getTextColor(archetype.color),
                         }}
-                      />
+                      /> */}
+                        <div style={styles.rotatingImageWrapper}>
+                          {/* Static Circle */}
+                          <div
+                            style={{
+                              ...styles.staticCircle,
+                              borderColor: archetype.color,
+                              backgroundColor: darken(0.3, archetype.color),
+                              borderWidth: "1px",
+                              borderStyle: "solid",
+                            }}
+                          />
+                          {/* Rotating Image */}
+                          <img
+                            src={archetypeStones[archetype.name]}
+                            alt={`${archetype.name}`}
+                            style={styles.rotatingImage(
+                              isRotating,
+                              randomDuration
+                            )}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div style={styles.cardInfo}>
-                    <p>Order: {archetype.order}</p>
-                    <p>Third Eye: {archetype.thirdEye}</p>
-                  </div>
-                  <div style={styles.cardInfo}>
-                    <p>
-                      Gaia Timestamp:{" "}
-                      {new Date(archetype.timestamp).toLocaleString()}
-                    </p>
-                    <p>ID: {archetype.id}</p>
+                    <div style={styles.cardInfo}>
+                      <p>Order: {archetype.order}</p>
+                      <p>Third Eye: {archetype.thirdEye}</p>
+                    </div>
+                    <div style={styles.cardInfo}>
+                      <p>
+                        Gaia Timestamp:{" "}
+                        {new Date(archetype.timestamp).toLocaleString()}
+                      </p>
+                      <p>ID: {archetype.id}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

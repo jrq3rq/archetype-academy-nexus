@@ -25,3 +25,12 @@ textarea {
   height: 100vh; /* Make App fill the viewport height */
   overflow: hidden; /* Prevent scrolling within the App if necessary */
 }
+
+@keyframes rotateY360 {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

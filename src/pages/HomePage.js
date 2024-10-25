@@ -14,7 +14,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       flexDirection: "column",
       minHeight: "100vh",
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff",
-      color: isDarkMode ? "#ffffff" : "#000000",
+      color: isDarkMode ? "#ffffff" : "#1F2124",
       fontFamily: "Arial, sans-serif",
       padding: "0 20px",
       boxSizing: "border-box",
@@ -94,14 +94,14 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       fontSize: "26px",
       fontWeight: "bold",
       marginBottom: "20px",
-      color: isDarkMode ? "#ffffff" : "#000000",
+      color: isDarkMode ? "#ffffff" : "#2E3136",
       "@media (max-width: 768px)": {
         fontSize: "22px",
       },
     },
     featureDescription: {
       fontSize: "16px",
-      color: isDarkMode ? "#b9bbbe" : "#000000",
+      color: isDarkMode ? "#b9bbbe" : "#2E3136",
       marginBottom: "25px",
       lineHeight: "1.6",
       textAlign: "left", // Align text to the left
@@ -116,8 +116,8 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
     },
     ctaButton: {
       display: "inline-block",
-      backgroundColor: isDarkMode ? "#ffffff" : "#2f3136",
-      color: isDarkMode ? "#000000" : "#ffffff",
+      backgroundColor: isDarkMode ? "#ffffff" : "#2E3136",
+      color: isDarkMode ? "#1F2124" : "#ffffff",
       padding: "14px 28px",
       borderRadius: "5px",
       textDecoration: "none",
@@ -151,7 +151,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       color: "#b9bbbe",
       marginTop: "auto",
       padding: "20px 0",
-      borderTop: "1px solid #40444b",
+      borderTop: "1px solid #2E3136",
       marginBottom: "20px",
       width: "100%",
       "@media (max-width: 768px)": {
@@ -163,6 +163,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
       display: "block",
       margin: "0 auto 10px",
       fontSize: "3rem", // Set icon size to be larger
+      color: "#2E3136",
     },
   };
 

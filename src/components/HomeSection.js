@@ -112,14 +112,14 @@ const FeatureCard = styled.div`
 const Icon = styled.div`
   font-size: 3rem;
   margin-bottom: 20px;
-  color: ${(props) => (props.isDarkMode ? "#333333" : "#ffffff")};
+  color: ${(props) => (props.isDarkMode ? "#1F2124" : "#ffffff")};
 `;
 
 const FeatureTitle = styled.h2`
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: ${(props) => (props.isDarkMode ? "#000000" : "#ffffff")};
+  color: ${(props) => (props.isDarkMode ? "#1F2124" : "#ffffff")};
 `;
 
 const FeatureDescription = styled.p`

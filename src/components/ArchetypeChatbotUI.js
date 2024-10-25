@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import ChatbotContext from "../state/ChatbotContext";
+import styled, { keyframes, css } from "styled-components";
+import { lighten, darken } from "polished";
 
 // Simulating environment variable
 const BASE_URL = process.env.REACT_APP_ARCHETYPES_API_URL;
@@ -23,6 +25,21 @@ const getAllArchetypes = async () => {
     console.error("Error fetching data:", error);
     return [];
   }
+};
+
+const archetypePlanetaryBackground = {
+  Caregiver: "/images/CaregiverBG.png",
+  Creator: "/images/CreatorBG.png",
+  Everyman: "/images/EverymanBG.png",
+  Explorer: "/images/ExplorerBG.png",
+  Hero: "/images/HeroBG.png",
+  Innocent: "/images/InnocentBG.png",
+  Joker: "/images/JokerBG.png",
+  Lover: "/images/LoverBG.png",
+  Magician: "/images/MagicianBG.png",
+  Rebel: "/images/RebelBG.png",
+  Ruler: "/images/RulerBG.png",
+  Sage: "/images/SageBG.png",
 };
 
 const categories = {
@@ -88,7 +105,7 @@ const getTextColor = (bgColor) => {
   return brightness > 128 ? "#000000" : "#ffffff";
 };
 
-const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
+const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
   const { state, dispatch } = useContext(ChatbotContext);
   const [message, setMessage] = useState("");
   const [showArchetypeSelector, setShowArchetypeSelector] = useState(false);
@@ -112,6 +129,53 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
   // New state for the AI model selection
   const [selectedModel, setSelectedModel] = useState(""); // Empty string for initial state
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const float = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
+  const FloatingCircle = styled.div`
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: ${(props) => props.color || "#282b30"};
+    /* animation: ${float} 3s ease-in-out infinite; */
+    pointer-events: none; /* Prevents the circle from blocking any clicks */
+    /* border: 1px solid ${(props) =>
+      lighten(0.1, props.color || "#2e3136")}; */
+    border: 1px solid #2e3136;
+    margin-bottom: 10px;
+  `;
+
+  const FloatingTriangle = styled.div`
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 20px solid ${(props) => props.color || "#282b30"};
+
+    pointer-events: none; /* Prevents the triangle from blocking any clicks */
+    margin-bottom: 10px;
+    border-top-color: ${(props) =>
+      props.color || "#282b30"}; /* Main triangle color */
+    border-bottom: none; /* No bottom border since we're creating an upside-down triangle */
+    border-top: 20px solid ${(props) => lighten(0, props.color || "#2e3136")}; /* Optionally lighten/darken the triangle */
+  `;
+
+  const MessageContainer = styled.div`
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 100%;
+    position: relative;
+  `;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -246,14 +310,53 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
       border: "1px solid #2E3136",
     },
     chatWindow: {
-      backgroundColor: isDarkMode ? "#2f3136" : "#f0f0f0", // Change chat window color
-      borderRadius: "5px",
+      position: "relative", // Ensure the circle is positioned relative to this container
       padding: "15px",
-      marginBottom: "20px",
+      boxSizing: "border-box", // Ensure padding does not affect element size
+      marginBottom: "8px",
+      backgroundImage: state.selectedArchetype
+        ? `url(${archetypePlanetaryBackground[state.selectedArchetype]})`
+        : isDarkMode
+        ? "none"
+        : "#f0f0f0", // Fallback color
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      borderRadius: "5px",
       height: "300px",
       overflowY: "auto",
-      boxSizing: "border-box",
       border: "1px solid #2E3136",
+    },
+    arcCircle: {
+      position: "absolute",
+      top: "-10px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      backgroundColor: state.selectedColor || "#282b30",
+      border: "2px solid red", // Red border for debugging
+      zIndex: 1000,
+    },
+    squareBox: {
+      position: "absolute",
+      top: "10px", // Adjust the position as needed
+      left: "50%",
+      transform: "translateX(-50%)", // Center horizontally
+      width: "40px", // Define the size of the square
+      height: "40px",
+      backgroundColor: state.selectedColor || "#282b30", // Use the archetype's color
+      zIndex: 1000, // Ensures it appears above the chat window
+      border: "2px solid #2E3136", // Optional: add a border to match the chat window
+    },
+    smallCircle: {
+      display: "inline-block",
+      width: "50px",
+      height: "50px",
+      backgroundColor: state.selectedColor || "#282b30", // Default color
+      // borderRadius: "50%",
+      marginLeft: "5px", // Space between the text and the circle
     },
     message: {
       borderRadius: "5px",
@@ -453,6 +556,7 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
   const renderContent = () => (
     <>
       {/* Include ToggleSwitch */}
+
       <div style={styles.chatWindow} ref={chatWindowRef}>
         {state.messages.map((msg, index) => (
           <div
@@ -461,13 +565,16 @@ const ArchetypeChatbotUI = ({ isDarkMode, toggleTheme }) => {
               ...styles.message,
               backgroundColor: msg.color,
               color: msg.textColor,
-              alignSelf: msg.sender === "Maker" ? "flex-end" : "flex-start",
             }}
           >
             <strong>{msg.sender}:</strong> {msg.content}
+            {/* Conditionally render the floating gem after the welcome message */}
           </div>
         ))}
       </div>
+      <MessageContainer>
+        <FloatingCircle color={state.selectedColor} />
+      </MessageContainer>
       <select
         style={styles.dropdown}
         value={state.selectedArchetype}
