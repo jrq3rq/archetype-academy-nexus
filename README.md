@@ -51,8 +51,13 @@ AlphaV3/
 │ │ ├── ArchetypeChatbotPage.js
 │ │ ├── ArchetypeLibraryPage.js
 │ │ ├── EnhancedPersonalityTest.js
+│ │ ├── KioskPersonalityTest.js
 │ │ ├── HomePage.js
+│ │ ├── SignInPage.js
 │ │ ├── UserProfilePage.js
+│ │ └── ...
+│ ├── routes/
+│ │ ├── ProtectedRoute.js
 │ │ └── ...
 │ ├── services/ // API integration and services
 │ │ ├── archetypeService.js

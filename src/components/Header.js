@@ -385,7 +385,7 @@ const Header = ({ isDarkMode }) => {
       cursor: "pointer",
       backgroundColor: "transparent",
       border: "none",
-      padding: "21px 10px 21px 10px",
+      padding: "21px 0px 21px 20px", // Add padding-left here
       width: "40px",
       borderRadius: "4px",
     },
