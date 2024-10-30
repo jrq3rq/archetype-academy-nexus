@@ -222,7 +222,7 @@ const EnhancedPersonalityTest = ({ isDarkMode, toggleTheme }) => {
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
-      padding: "20px",
+      padding: "30px 20px 20px 20px",
       boxSizing: "border-box",
       alignItems: "center",
       overflowY: "auto",

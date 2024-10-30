@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -12,9 +13,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import { ChatbotProvider } from "./state/ChatbotContext";
 import Footer from "./components/Footer";
 import EnhancedPersonalityTest from "./pages/EnhancedPersonalityTest";
-import ArchetypeLibraryPage from "./pages/ArchetypeLibraryPage"; // Import your other pages here
+import ArchetypeLibraryPage from "./pages/ArchetypeLibraryPage";
 import Header from "./components/Header";
 import MuseumQuestionsTest from "./pages/MuseumQuestionsPage";
+import SignInPage from "./pages/SignInPage";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -31,37 +35,56 @@ const App = () => {
   };
 
   return (
-    <ChatbotProvider>
-      <Router>
-        <div style={appStyles}>
-          <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-          <ScrollToTop />
-          <Layout>
-            <Switch>
-              <Route exact path="/">
-                <HomePage isDarkMode={isDarkMode} />
-              </Route>
-              <Route path="/chatbot">
-                <ArchetypeChatbotUI isDarkMode={isDarkMode} />
-              </Route>
-              <Route path="/library">
-                <ArchetypeLibraryPage isDarkMode={isDarkMode} />
-              </Route>
-              <Route path="/assessment">
-                <EnhancedPersonalityTest isDarkMode={isDarkMode} />
-              </Route>
-              <Route path="/museum-assessment">
-                <MuseumQuestionsTest isDarkMode={isDarkMode} />
-              </Route>
-              <Route path="*">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
-          </Layout>
-          <Footer isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-        </div>
-      </Router>
-    </ChatbotProvider>
+    <AuthProvider>
+      <ChatbotProvider>
+        <Router>
+          <div style={appStyles}>
+            <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            <ScrollToTop />
+            <Layout>
+              <Switch>
+                <Route exact path="/">
+                  <HomePage isDarkMode={isDarkMode} />
+                </Route>
+                <Route path="/library">
+                  <ArchetypeLibraryPage isDarkMode={isDarkMode} />
+                </Route>
+                {/* <Route path="/chatbot">
+                  <ArchetypeChatbotUI isDarkMode={isDarkMode} />
+                </Route> */}
+                <ProtectedRoute
+                  path="/chatbot"
+                  component={ArchetypeChatbotUI}
+                  requiredRole="user" // Example role restriction
+                  redirectPath="/signin"
+                  isDarkMode={isDarkMode}
+                />
+                <Route path="/assessment">
+                  <EnhancedPersonalityTest isDarkMode={isDarkMode} />
+                </Route>
+                {/* <Route path="/museum-assessment">
+                  <MuseumQuestionsTest isDarkMode={isDarkMode} />
+                </Route> */}
+                <ProtectedRoute
+                  path="/museum-assessment"
+                  component={MuseumQuestionsTest}
+                  requiredRole="user" // Example role restriction
+                  redirectPath="/signin"
+                  isDarkMode={isDarkMode}
+                />
+                <Route path="/signin">
+                  <SignInPage isDarkMode={isDarkMode} />
+                </Route>
+                <Route path="*">
+                  <Redirect to="/" />
+                </Route>
+              </Switch>
+            </Layout>
+            <Footer isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+          </div>
+        </Router>
+      </ChatbotProvider>
+    </AuthProvider>
   );
 };
 

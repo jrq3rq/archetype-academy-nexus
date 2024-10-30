@@ -272,7 +272,7 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       fontFamily: "Arial, sans-serif",
-      padding: "20px",
+      padding: "30px 20px 20px 20px",
       boxSizing: "border-box",
       // borderTop: "1px solid #2E3136", // Keep top border
       // borderLeft: "1px solid #2E3136", // Keep left border
@@ -303,7 +303,7 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
     mobileContainer: {
       backgroundColor: isDarkMode ? "#1e2124" : "#ffffff", // Change based on theme
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
-      padding: "20px",
+      padding: "30px 20px 20px 20px",
       fontFamily: "Arial, sans-serif",
       maxWidth: "100%",
       margin: "0 auto",
@@ -373,7 +373,7 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
       color: isDarkMode ? "#ffffff" : "#000000", // Change text color
       border: "none",
       borderRadius: "5px",
-      marginBottom: "10px",
+      margin: "10px 0 10px 0",
       resize: "vertical",
       boxSizing: "border-box",
       fontSize: "16px", // Prevents zooming on mobile devices
@@ -468,6 +468,7 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
       backgroundPosition: "calc(100% - 10px) center",
       paddingRight: "30px",
       border: "1px solid #2E3136",
+      // marginBottom: "10px",
     },
 
     dropdown2: {
@@ -587,6 +588,20 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
           </option>
         ))}
       </select>
+      <textarea
+        style={styles.input}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Your message"
+        rows={4}
+      />
+      <button style={styles.sendButton} onClick={handleSendMessage}>
+        Send
+      </button>
+
+      <button style={styles.button} onClick={handleClearChat}>
+        Clear Chat
+      </button>
       <select
         style={styles.dropdownModelsSector}
         value={selectedModel}
@@ -636,24 +651,11 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
           ))}
         </select>
       )}
-      <textarea
-        style={styles.input}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Your message"
-        rows={4}
-      />
-      <button style={styles.sendButton} onClick={handleSendMessage}>
-        Send
-      </button>
       <button
         style={styles.button}
         onClick={() => setShowArchetypeSelector(!showArchetypeSelector)}
       >
         {showArchetypeSelector ? "Hide Trait Adjuster" : "Show Trait Adjuster"}
-      </button>
-      <button style={styles.button} onClick={handleClearChat}>
-        Clear Chat
       </button>
       {showArchetypeSelector && (
         <div style={styles.archetypeSelector}>
