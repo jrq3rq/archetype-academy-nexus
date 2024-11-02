@@ -19,6 +19,7 @@ import MuseumQuestionsTest from "./pages/MuseumQuestionsPage";
 import SignInPage from "./pages/SignInPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import UserProfile from "./pages/UserProfile";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -52,10 +53,11 @@ const App = () => {
                 {/* <Route path="/chatbot">
                   <ArchetypeChatbotUI isDarkMode={isDarkMode} />
                 </Route> */}
+
                 <ProtectedRoute
                   path="/chatbot"
                   component={ArchetypeChatbotUI}
-                  requiredRole="user" // Example role restriction
+                  requiredRole="user" // Ensure role consistency
                   redirectPath="/signin"
                   isDarkMode={isDarkMode}
                 />
@@ -68,12 +70,15 @@ const App = () => {
                 <ProtectedRoute
                   path="/museum-assessment"
                   component={MuseumQuestionsTest}
-                  requiredRole="user" // Example role restriction
+                  requiredRole="user" // Ensure role consistency
                   redirectPath="/signin"
                   isDarkMode={isDarkMode}
                 />
                 <Route path="/signin">
                   <SignInPage isDarkMode={isDarkMode} />
+                </Route>
+                <Route path="/page">
+                  <UserProfile isDarkMode={isDarkMode} />
                 </Route>
                 <Route path="*">
                   <Redirect to="/" />

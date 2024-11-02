@@ -1,33 +1,31 @@
-// src/components/ProtectedRoute.js
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({
   component: Component,
   redirectPath = "/signin",
   requiredRole,
+  isDarkMode,
   ...rest
 }) => {
-  const { isAuthenticated, user, isLoading } = useContext(AuthContext);
+  const { user, isLoading } = useAuth();
 
-  // Show a loading state while authentication status is being checked
   if (isLoading) {
-    return <div className="loading-spinner">Loading...</div>; // Optional: use a spinner here for better UX
+    return <div className="loading-spinner">Loading...</div>; // Optional spinner
   }
 
-  // Redirect to sign-in if user is not authenticated
-  if (!isAuthenticated) {
+  if (!user) {
+    // Redirect to sign-in page if not authenticated
     return <Redirect to={redirectPath} />;
   }
 
-  // Redirect to an unauthorized page if the user's role does not match the requiredRole
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Redirect to="/unauthorized" />;
-  }
-
-  // Render the component if authentication and role checks pass
-  return <Route {...rest} render={(props) => <Component {...props} />} />;
+  return (
+    <Route
+      {...rest}
+      render={(props) => <Component {...props} isDarkMode={isDarkMode} />}
+    />
+  );
 };
 
 export default ProtectedRoute;

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import IMG_7839 from "../images/IMG_7839.png"; // Adjust the path based on your folder structure
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Correct import of useAuth
 
 const Wrapper = styled.div`
   display: flex;
@@ -119,6 +122,7 @@ const Button = styled.button`
 `;
 
 const SignInPage = ({ isDarkMode }) => {
+  const { user, signIn } = useAuth(); // Access signIn from AuthContext
   const [formData, setFormData] = useState({
     locationName: "",
     contactPerson: "",
@@ -130,6 +134,16 @@ const SignInPage = ({ isDarkMode }) => {
     billingCycle: "",
     billingAddress: "",
   });
+
+  const history = useHistory();
+
+  // Redirect to homepage on successful sign-in
+  useEffect(() => {
+    if (user) {
+      console.log("Redirecting user:", user); // Log user data when redirecting
+      history.push("/"); // Redirects to the homepage
+    }
+  }, [user, history]);
 
   const [errors, setErrors] = useState({});
 
@@ -146,7 +160,7 @@ const SignInPage = ({ isDarkMode }) => {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -163,138 +177,149 @@ const SignInPage = ({ isDarkMode }) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      console.log("Form submitted:", formData);
+      try {
+        await signIn(formData); // Pass formData as additionalData
+        console.log("Form submitted and user signed in:", formData);
+      } catch (error) {
+        console.error("Error during form submission:", error);
+      }
     }
   };
 
   return (
-    <Wrapper isDarkMode={isDarkMode}>
-      <Container isDarkMode={isDarkMode}>
-        <Title isDarkMode={isDarkMode}>Partnership Location</Title>
-        <SubTitle isDarkMode={isDarkMode}> Sign-Up</SubTitle>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <div>
-              <Label htmlFor="locationName">Location Name</Label>
-              <Input
-                type="text"
-                id="locationName"
-                name="locationName"
-                placeholder={
-                  errors.locationName ||
-                  "e.g., Downtown Museum, City Art Gallery"
-                }
-                value={formData.locationName}
-                onChange={handleChange}
-                hasError={!!errors.locationName}
-              />
-            </div>
-            <div>
-              <Label htmlFor="contactPerson">Primary Contact Person</Label>
-              <Input
-                type="text"
-                id="contactPerson"
-                name="contactPerson"
-                placeholder={errors.contactPerson || "e.g., John Doe"}
-                value={formData.contactPerson}
-                onChange={handleChange}
-                hasError={!!errors.contactPerson}
-              />
-            </div>
-          </FormGroup>
+    !user && (
+      <Wrapper isDarkMode={isDarkMode}>
+        <Container isDarkMode={isDarkMode}>
+          <Title isDarkMode={isDarkMode}>Partnership Location</Title>
+          <SubTitle isDarkMode={isDarkMode}> Sign-Up</SubTitle>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <div>
+                <Label htmlFor="locationName">Location Name</Label>
+                <Input
+                  type="text"
+                  id="locationName"
+                  name="locationName"
+                  placeholder={
+                    errors.locationName ||
+                    "e.g., Downtown Museum, City Art Gallery"
+                  }
+                  value={formData.locationName}
+                  onChange={handleChange}
+                  hasError={!!errors.locationName}
+                />
+              </div>
+              <div>
+                <Label htmlFor="contactPerson">Primary Contact Person</Label>
+                <Input
+                  type="text"
+                  id="contactPerson"
+                  name="contactPerson"
+                  placeholder={errors.contactPerson || "e.g., John Doe"}
+                  value={formData.contactPerson}
+                  onChange={handleChange}
+                  hasError={!!errors.contactPerson}
+                />
+              </div>
+            </FormGroup>
 
-          <FormGroup>
-            <div style={{ gridColumn: "1 / -1" }}>
-              <Label htmlFor="locationAddress">Location Address</Label>
-              <Input
-                type="text"
-                id="locationAddress"
-                name="locationAddress"
-                placeholder={
-                  errors.locationAddress ||
-                  "e.g., 1234 Museum Lane, Springfield"
-                }
-                value={formData.locationAddress}
-                onChange={handleChange}
-                hasError={!!errors.locationAddress}
-              />
-            </div>
-            <div>
-              <Label htmlFor="locationType">Location Type</Label>
-              <Select
-                id="locationType"
-                name="locationType"
-                value={formData.locationType}
-                onChange={handleChange}
-                hasError={!!errors.locationType}
-              >
-                <option value="" disabled>
-                  {errors.locationType || "Select Type"}
-                </option>
-                <option value="museum">Museum</option>
-                <option value="exhibit">Exhibit</option>
-                <option value="gallery">Gallery</option>
-                <option value="historical_site">Historical Site</option>
-                <option value="other">Other</option>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
-              <Select
-                id="subscriptionPlan"
-                name="subscriptionPlan"
-                value={formData.subscriptionPlan}
-                onChange={handleChange}
-                hasError={!!errors.subscriptionPlan}
-              >
-                <option value="" disabled>
-                  {errors.subscriptionPlan || "Select Plan"}
-                </option>
-                <option value="basic">Basic Access</option>
-                <option value="premium">Premium Access</option>
-                <option value="enterprise">Enterprise Suite</option>
-              </Select>
-            </div>
-          </FormGroup>
+            <FormGroup>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <Label htmlFor="locationAddress">Location Address</Label>
+                <Input
+                  type="text"
+                  id="locationAddress"
+                  name="locationAddress"
+                  placeholder={
+                    errors.locationAddress ||
+                    "e.g., 1234 Museum Lane, Springfield"
+                  }
+                  value={formData.locationAddress}
+                  onChange={handleChange}
+                  hasError={!!errors.locationAddress}
+                />
+              </div>
+              <div>
+                <Label htmlFor="locationType">Location Type</Label>
+                <Select
+                  id="locationType"
+                  name="locationType"
+                  value={formData.locationType}
+                  onChange={handleChange}
+                  hasError={!!errors.locationType}
+                >
+                  <option value="" disabled>
+                    {errors.locationType || "Select Type"}
+                  </option>
+                  <option value="museum">Museum</option>
+                  <option value="exhibit">Exhibit</option>
+                  <option value="gallery">Gallery</option>
+                  <option value="historical_site">Historical Site</option>
+                  <option value="other">Other</option>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
+                <Select
+                  id="subscriptionPlan"
+                  name="subscriptionPlan"
+                  value={formData.subscriptionPlan}
+                  onChange={handleChange}
+                  hasError={!!errors.subscriptionPlan}
+                >
+                  <option value="" disabled>
+                    {errors.subscriptionPlan || "Select Plan"}
+                  </option>
+                  <option value="basic">Free Temporary Access</option>
+                  {/* <option value="basic">Basic Access</option> */}
+                  <option value="premium">Premium Suite</option>
+                  {/* <option value="premium">Premium Access</option> */}
+                  {/* <option value="enterprise">Enterprise Suite</option> */}
+                </Select>
+              </div>
+            </FormGroup>
 
-          <FormGroup>
-            <div>
-              <Label htmlFor="billingCycle">Billing Cycle</Label>
-              <Select
-                id="billingCycle"
-                name="billingCycle"
-                value={formData.billingCycle}
-                onChange={handleChange}
-                hasError={!!errors.billingCycle}
-              >
-                <option value="" disabled>
-                  {errors.billingCycle || "Select Cycle"}
-                </option>
-                <option value="monthly">Monthly</option>
-                <option value="annual">Annual (Save 10%)</option>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="billingAddress">Billing Address</Label>
-              <Input
-                type="text"
-                id="billingAddress"
-                name="billingAddress"
-                placeholder={
-                  errors.billingAddress ||
-                  "e.g., Billing Department, PO Box 567, Springfield"
-                }
-                value={formData.billingAddress}
-                onChange={handleChange}
-                hasError={!!errors.billingAddress}
-              />
-            </div>
-          </FormGroup>
+            <FormGroup>
+              <div>
+                <Label htmlFor="billingCycle">Billing Cycle</Label>
+                <Select
+                  id="billingCycle"
+                  name="billingCycle"
+                  value={formData.billingCycle}
+                  onChange={handleChange}
+                  hasError={!!errors.billingCycle}
+                >
+                  <option value="" disabled>
+                    {errors.billingCycle || "Select Cycle"}
+                  </option>
+                  <option value="monthly">Monthly</option>
+                  <option value="annual">Annual (Save 10%)</option>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="billingAddress">Billing Address</Label>
+                <Input
+                  type="text"
+                  id="billingAddress"
+                  name="billingAddress"
+                  placeholder={
+                    errors.billingAddress ||
+                    "e.g., Billing Department, PO Box 567, Springfield"
+                  }
+                  value={formData.billingAddress}
+                  onChange={handleChange}
+                  hasError={!!errors.billingAddress}
+                />
+              </div>
+            </FormGroup>
 
-          <Button type="submit">Create Account</Button>
-        </Form>
-      </Container>
-    </Wrapper>
+            <Button onClick={signIn} type="submit">
+              Create Account
+            </Button>
+          </Form>
+        </Container>
+      </Wrapper>
+    )
   );
 };
 
