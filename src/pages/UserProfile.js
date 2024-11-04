@@ -1,6 +1,8 @@
 // src/components/UserProfile.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { firestore } from "../services/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 import styled from "styled-components";
 
 const ProfileWrapper = styled.div`
@@ -52,9 +54,29 @@ const FieldLabel = styled.span`
 `;
 
 const UserProfile = ({ isDarkMode }) => {
-  const { user, userData, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [loadingData, setLoadingData] = useState(true);
 
-  if (isLoading) {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(firestore, "locations", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          setUserData(userDocSnap.data());
+        } else {
+          console.log("No user data found!");
+        }
+        setLoadingData(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  if (isLoading || loadingData) {
     return <ProfileWrapper isDarkMode={isDarkMode}>Loading...</ProfileWrapper>;
   }
 

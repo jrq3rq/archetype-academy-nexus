@@ -1,9 +1,10 @@
 // src/services/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
 import {
-  initializeFirestore,
   enableIndexedDbPersistence,
+  initializeFirestore,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -23,11 +24,12 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
+// Initialize Firestore
 export const firestore = initializeFirestore(app, {
-  // Remove this if you don’t face any network issues
   experimentalForceLongPolling: true,
 });
 
+// Enable offline persistence
 enableIndexedDbPersistence(firestore).catch((err) => {
   if (err.code === "failed-precondition") {
     console.log("Persistence can only be enabled in one tab at a time.");

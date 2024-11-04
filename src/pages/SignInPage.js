@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import IMG_7839 from "../images/IMG_7839.png"; // Adjust the path based on your folder structure
-import { useEffect } from "react";
+import IMG_7839 from "../images/IMG_7839.png";
 import { useHistory } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Correct import of useAuth
+import { useAuth } from "../context/AuthContext";
+import { firestore } from "../services/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,31 +23,27 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4%;
-  background-color: rgba(255, 255, 255, 0.1); // Light translucent white
-  backdrop-filter: blur(50px); // Blurs the background behind the container
-  border-radius: 12px; // Rounded corners
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(50px);
   color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#1F2124")};
   font-family: Arial, sans-serif;
   width: 100%;
   max-width: 800px;
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.2); // Subtle border to match the frosted effect
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); // Soft shadow for depth
-  margin: 0px 20px 0px 20px;
-  /* border: 1px solid #2e3136; */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin: 0px 20px;
 `;
 
 const Title = styled.h1`
   font-size: clamp(1.5rem, 2.5vw, 2rem);
   color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#2E3136")};
   text-align: center;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 0px 30px 0px;
 `;
 
 const SubTitle = styled.h3`
-  display: flex;
-  flex-direction: column;
-  margin: 0px 0px 20px 0px;
+  margin: 0px 0px 20px;
   font-size: 14px;
   text-transform: uppercase;
 `;
@@ -64,7 +61,7 @@ const FormGroup = styled.div`
   gap: 12px;
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr; // Two columns on larger screens
+    grid-template-columns: 1fr 1fr;
   }
 `;
 
@@ -99,7 +96,7 @@ const Select = styled.select`
 const Label = styled.p`
   font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: bold;
-  margin-bottom: 10px; // Increased space between label and input
+  margin-bottom: 10px;
 `;
 
 const Button = styled.button`
@@ -122,36 +119,45 @@ const Button = styled.button`
 `;
 
 const SignInPage = ({ isDarkMode }) => {
-  const { user, signIn } = useAuth(); // Access signIn from AuthContext
+  const { user, signIn } = useAuth();
   const [formData, setFormData] = useState({
     locationName: "",
     contactPerson: "",
-    email: "",
-    password: "",
-    locationAddress: "",
+    address: "",
     locationType: "",
     subscriptionPlan: "",
     billingCycle: "",
     billingAddress: "",
   });
-
   const history = useHistory();
-
-  // Redirect to homepage on successful sign-in
-  useEffect(() => {
-    if (user) {
-      console.log("Redirecting user:", user); // Log user data when redirecting
-      history.push("/"); // Redirects to the homepage
-    }
-  }, [user, history]);
-
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (user && isSubmitting) {
+      const saveData = async () => {
+        try {
+          const userDocRef = doc(firestore, "locations", user.uid);
+          await setDoc(userDocRef, {
+            ...formData,
+            email: user.email, // Use the email from Google sign-in
+            createdAt: new Date(),
+          });
+          console.log("Data saved successfully:", formData);
+          setIsSubmitting(false);
+          history.push("/"); // Redirect to home after save
+        } catch (error) {
+          console.error("Error saving data:", error);
+          setIsSubmitting(false);
+        }
+      };
+      saveData();
+    }
+  }, [user, isSubmitting, formData, history]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
-    // Reset specific field error on input change
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
@@ -162,7 +168,6 @@ const SignInPage = ({ isDarkMode }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newErrors = {};
     for (let field in formData) {
       if (!formData[field]) {
@@ -170,156 +175,134 @@ const SignInPage = ({ isDarkMode }) => {
       }
     }
 
-    if (formData.email && !validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       try {
-        await signIn(formData); // Pass formData as additionalData
-        console.log("Form submitted and user signed in:", formData);
+        setIsSubmitting(true);
+        await signIn();
       } catch (error) {
-        console.error("Error during form submission:", error);
+        console.error("Error during sign-in:", error);
+        setIsSubmitting(false);
       }
     }
   };
 
   return (
-    !user && (
-      <Wrapper isDarkMode={isDarkMode}>
-        <Container isDarkMode={isDarkMode}>
-          <Title isDarkMode={isDarkMode}>Partnership Location</Title>
-          <SubTitle isDarkMode={isDarkMode}> Sign-Up</SubTitle>
-          <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <div>
-                <Label htmlFor="locationName">Location Name</Label>
-                <Input
-                  type="text"
-                  id="locationName"
-                  name="locationName"
-                  placeholder={
-                    errors.locationName ||
-                    "e.g., Downtown Museum, City Art Gallery"
-                  }
-                  value={formData.locationName}
-                  onChange={handleChange}
-                  hasError={!!errors.locationName}
-                />
-              </div>
-              <div>
-                <Label htmlFor="contactPerson">Primary Contact Person</Label>
-                <Input
-                  type="text"
-                  id="contactPerson"
-                  name="contactPerson"
-                  placeholder={errors.contactPerson || "e.g., John Doe"}
-                  value={formData.contactPerson}
-                  onChange={handleChange}
-                  hasError={!!errors.contactPerson}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <div style={{ gridColumn: "1 / -1" }}>
-                <Label htmlFor="locationAddress">Location Address</Label>
-                <Input
-                  type="text"
-                  id="locationAddress"
-                  name="locationAddress"
-                  placeholder={
-                    errors.locationAddress ||
-                    "e.g., 1234 Museum Lane, Springfield"
-                  }
-                  value={formData.locationAddress}
-                  onChange={handleChange}
-                  hasError={!!errors.locationAddress}
-                />
-              </div>
-              <div>
-                <Label htmlFor="locationType">Location Type</Label>
-                <Select
-                  id="locationType"
-                  name="locationType"
-                  value={formData.locationType}
-                  onChange={handleChange}
-                  hasError={!!errors.locationType}
-                >
-                  <option value="" disabled>
-                    {errors.locationType || "Select Type"}
-                  </option>
-                  <option value="museum">Museum</option>
-                  <option value="exhibit">Exhibit</option>
-                  <option value="gallery">Gallery</option>
-                  <option value="historical_site">Historical Site</option>
-                  <option value="other">Other</option>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
-                <Select
-                  id="subscriptionPlan"
-                  name="subscriptionPlan"
-                  value={formData.subscriptionPlan}
-                  onChange={handleChange}
-                  hasError={!!errors.subscriptionPlan}
-                >
-                  <option value="" disabled>
-                    {errors.subscriptionPlan || "Select Plan"}
-                  </option>
-                  <option value="basic">Free Temporary Access</option>
-                  {/* <option value="basic">Basic Access</option> */}
-                  <option value="premium">Premium Suite</option>
-                  {/* <option value="premium">Premium Access</option> */}
-                  {/* <option value="enterprise">Enterprise Suite</option> */}
-                </Select>
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <div>
-                <Label htmlFor="billingCycle">Billing Cycle</Label>
-                <Select
-                  id="billingCycle"
-                  name="billingCycle"
-                  value={formData.billingCycle}
-                  onChange={handleChange}
-                  hasError={!!errors.billingCycle}
-                >
-                  <option value="" disabled>
-                    {errors.billingCycle || "Select Cycle"}
-                  </option>
-                  <option value="monthly">Monthly</option>
-                  <option value="annual">Annual (Save 10%)</option>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="billingAddress">Billing Address</Label>
-                <Input
-                  type="text"
-                  id="billingAddress"
-                  name="billingAddress"
-                  placeholder={
-                    errors.billingAddress ||
-                    "e.g., Billing Department, PO Box 567, Springfield"
-                  }
-                  value={formData.billingAddress}
-                  onChange={handleChange}
-                  hasError={!!errors.billingAddress}
-                />
-              </div>
-            </FormGroup>
-
-            <Button onClick={signIn} type="submit">
-              Create Account
-            </Button>
-          </Form>
-        </Container>
-      </Wrapper>
-    )
+    <Wrapper isDarkMode={isDarkMode}>
+      <Container isDarkMode={isDarkMode}>
+        <Title isDarkMode={isDarkMode}>Experience Setup</Title>
+        {/* <SubTitle isDarkMode={isDarkMode}>for Partnered Venues</SubTitle> */}
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <div>
+              <Label htmlFor="locationName">Location Name</Label>
+              <Input
+                type="text"
+                id="locationName"
+                name="locationName"
+                placeholder={errors.locationName || "e.g., Downtown Museum"}
+                value={formData.locationName}
+                onChange={handleChange}
+                hasError={!!errors.locationName}
+              />
+            </div>
+            <div>
+              <Label htmlFor="contactPerson">Primary Contact Person</Label>
+              <Input
+                type="text"
+                id="contactPerson"
+                name="contactPerson"
+                placeholder={errors.contactPerson || "e.g., John Doe"}
+                value={formData.contactPerson}
+                onChange={handleChange}
+                hasError={!!errors.contactPerson}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <Label htmlFor="address">Location Address</Label>
+              <Input
+                type="text"
+                id="address"
+                name="address"
+                placeholder={errors.address || "e.g., 1234 Museum Lane"}
+                value={formData.address}
+                onChange={handleChange}
+                hasError={!!errors.address}
+              />
+            </div>
+            <div>
+              <Label htmlFor="locationType">Location Type</Label>
+              <Select
+                id="locationType"
+                name="locationType"
+                value={formData.locationType}
+                onChange={handleChange}
+                hasError={!!errors.locationType}
+              >
+                <option value="" disabled>
+                  {errors.locationType || "Select Type"}
+                </option>
+                <option value="museum">Museum</option>
+                <option value="exhibit">Exhibit</option>
+                <option value="gallery">Gallery</option>
+                <option value="historical_site">Historical Site</option>
+                <option value="other">Other</option>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
+              <Select
+                id="subscriptionPlan"
+                name="subscriptionPlan"
+                value={formData.subscriptionPlan}
+                onChange={handleChange}
+                hasError={!!errors.subscriptionPlan}
+              >
+                <option value="" disabled>
+                  {errors.subscriptionPlan || "Select Plan"}
+                </option>
+                <option value="basic">Free Temporary Access</option>
+                <option value="premium">Premium Suite</option>
+              </Select>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div>
+              <Label htmlFor="billingCycle">Billing Cycle</Label>
+              <Select
+                id="billingCycle"
+                name="billingCycle"
+                value={formData.billingCycle}
+                onChange={handleChange}
+                hasError={!!errors.billingCycle}
+              >
+                <option value="" disabled>
+                  {errors.billingCycle || "Select Cycle"}
+                </option>
+                <option value="monthly">Monthly</option>
+                <option value="annual">Annual (Save 10%)</option>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="billingAddress">Billing Address</Label>
+              <Input
+                type="text"
+                id="billingAddress"
+                name="billingAddress"
+                placeholder={errors.billingAddress || "e.g., Billing Dept"}
+                value={formData.billingAddress}
+                onChange={handleChange}
+                hasError={!!errors.billingAddress}
+              />
+            </div>
+          </FormGroup>
+          <Button type="submit">Create Account</Button>
+        </Form>
+      </Container>
+    </Wrapper>
   );
 };
 

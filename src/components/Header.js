@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../App.css";
 import {
   FaBars,
   FaTimes,
@@ -10,17 +11,27 @@ import {
   FaGraduationCap,
   FaTicketAlt,
 } from "react-icons/fa";
-// import { margin } from "polished";
 
 const Header = ({ isDarkMode }) => {
   const { user, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); // New state for handling animation
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const history = useHistory();
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => {
+    if (menuOpen) {
+      setIsAnimating(true); // Start slide-out animation
+      setTimeout(() => {
+        setMenuOpen(false); // Hide menu after animation completes
+        setIsAnimating(false);
+      }, 300); // Match the duration of the slide-out transition
+    } else {
+      setMenuOpen(true); // Open the menu instantly
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,8 +51,13 @@ const Header = ({ isDarkMode }) => {
       history.push("/signin");
     } else {
       history.push(to);
-      if (isMobile) setMenuOpen(false); // Close menu on navigation for mobile
+      if (isMobile) toggleMenu(); // Close menu on navigation for mobile
     }
+  };
+
+  const handleSignOut = () => {
+    signOut(); // Sign out the user, which will trigger LocationList to clear data
+    history.push("/signin"); // Redirect to signin page
   };
 
   const links = [
@@ -85,7 +101,7 @@ const Header = ({ isDarkMode }) => {
       left: 0,
       right: 0,
       zIndex: 1000,
-      height: "60px", // Consistent height for both mobile and desktop
+      height: "60px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -100,7 +116,7 @@ const Header = ({ isDarkMode }) => {
     },
     linkContainer: {
       display: isMobile ? "none" : "flex",
-      justifyContent: "space-around", // Evenly spaces out links
+      justifyContent: "space-around",
       alignItems: "center",
       width: "100%",
       padding: "0px 10px",
@@ -120,6 +136,23 @@ const Header = ({ isDarkMode }) => {
       cursor: "pointer",
     },
     disabledLink: { pointerEvents: "none", opacity: 0.5 },
+    disabledMobileLink: { pointerEvents: "none", opacity: 0.5 }, // New style for mobile
+    mobileLink: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "10px",
+      color: isDarkMode ? "#ffffff" : "#40444b",
+      fontSize: "14px",
+      textDecoration: "none",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      transition: "background-color 0.3s, border 0.3s",
+      width: "80%",
+      border: `1px solid transparent`,
+      cursor: "pointer",
+      marginBottom: "15px", // Added spacing between items in mobile view
+    },
     activeLink: {
       backgroundColor: isDarkMode ? "#40444b" : "#dcdcdc",
       border: "1px solid #2E3136",
@@ -139,38 +172,25 @@ const Header = ({ isDarkMode }) => {
       height: "100vh",
       width: "100%",
       backgroundColor: isDarkMode ? "#2f3136" : "#ffffff",
-      display: menuOpen ? "flex" : "none",
+      display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      transform:
+        menuOpen || isAnimating ? "translateX(0)" : "translateX(-100%)",
+      transition: "transform 0.3s ease-in-out", // Smooth transition for open and close
       zIndex: 999,
-      // padding: "10px 0px",
     },
     closeIcon: {
       position: "absolute",
-      top: "20px",
-      right: "20px",
+      top: "50%", // Center vertically
+      right: "20px", // Position slightly inside from the right edge
+      transform: "translateY(-50%)", // Adjust for exact centering
       fontSize: "24px",
       color: isDarkMode ? "#ffffff" : "#40444b",
       cursor: "pointer",
       backgroundColor: "transparent",
       border: "none",
-    },
-    mobileLink: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-      color: isDarkMode ? "#ffffff" : "#40444b",
-      fontSize: "14px",
-      textDecoration: "none",
-      padding: "10px 20px",
-      borderRadius: "5px",
-      transition: "background-color 0.3s, border 0.3s",
-      width: "80%",
-      border: `1px solid transparent`,
-      cursor: "pointer",
-      marginBottom: "15px", // Added spacing between items in mobile view
     },
     authButtonContainer: {
       position: "relative",
@@ -190,7 +210,7 @@ const Header = ({ isDarkMode }) => {
     modal: {
       display: showModal ? "flex" : "none",
       position: "absolute",
-      top: "60px", // Adjusted to be right below the button
+      top: "60px",
       right: "0",
       backgroundColor: "#ffffff",
       borderRadius: "8px",
@@ -248,16 +268,19 @@ const Header = ({ isDarkMode }) => {
           style={styles.authButtonContainer}
         >
           <button
-            style={styles.authButton}
-            onClick={() => (user ? signOut() : history.push("/signin"))}
+            onClick={user ? handleSignOut : () => history.push("/signin")}
+            aria-label={user ? "Sign Out" : "Sign In"}
+            style={{
+              ...styles.authButton,
+            }}
           >
-            {/* {user ? "Logged In" : "Log In"} */}
+            {/* {user ? "Log Out" : "Log In"} */}
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      {menuOpen && (
+      {(menuOpen || isAnimating) && (
         <div style={styles.mobileMenu}>
           <button
             style={styles.closeIcon}
@@ -272,8 +295,7 @@ const Header = ({ isDarkMode }) => {
               onClick={() => handleLinkClick(link.to, link.restricted)}
               style={{
                 ...styles.mobileLink,
-                ...(location.pathname === link.to ? styles.activeLink : {}),
-                ...(link.restricted && !user ? styles.disabledLink : {}),
+                ...(link.restricted && !user ? styles.disabledMobileLink : {}),
               }}
             >
               {link.icon}

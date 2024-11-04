@@ -1,6 +1,7 @@
 // Footer.js
 import React from "react";
 import ToggleSwitch from "./ToggleSwitch"; // Import the ToggleSwitch component
+import LocationList from "./LocationList";
 
 const Footer = ({ isDarkMode, toggleTheme }) => {
   const footerStyles = {
@@ -9,7 +10,7 @@ const Footer = ({ isDarkMode, toggleTheme }) => {
     alignItems: "center",
     justifyContent: "center",
     marginTop: "auto",
-    padding: "20px 0",
+    padding: "40px 0",
     width: "100%",
   };
   const textStyles = {
@@ -25,14 +26,17 @@ const Footer = ({ isDarkMode, toggleTheme }) => {
   };
 
   return (
-    <div style={footerStyles}>
-      <p style={textStyles}>
-        {/* Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
-        Personality */}
+    <>
+      <LocationList isDarkMode={isDarkMode} />
+      <div style={footerStyles}>
+        {/* <p style={textStyles}>
+        Welcome to Archetype Academy Nexus: Where Learning Meets Your Unique
+        Personality |
         Where Learning Meets Your Unique Personality
-      </p>
-      <ToggleSwitch isDarkMode={isDarkMode} toggleTheme={toggleTheme} />{" "}
-    </div>
+      </p> */}
+        <ToggleSwitch isDarkMode={isDarkMode} toggleTheme={toggleTheme} />{" "}
+      </div>
+    </>
   );
 };
 

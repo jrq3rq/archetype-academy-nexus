@@ -3,6 +3,7 @@ import { FaUserCircle, FaPuzzlePiece, FaChartLine } from "react-icons/fa";
 import { Link } from "react-router-dom"; // <-- Add this import
 import styled from "styled-components";
 import BackgroundImageComponent from "./BackgroundImageComponent";
+import LocationList from "./LocationList";
 
 // Styled components
 const Container = styled.div`
@@ -33,7 +34,7 @@ const Title = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 700;
   /* text-transform: uppercase; */
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   /* background-color: ${(props) =>
     props.isDarkMode ? "#ffffff" : "#2E3136"}; */
   color: ${(props) => (props.isDarkMode ? "#ffffff" : "#2E3136")};
@@ -79,7 +80,6 @@ const FeaturesContainer = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 30px;
-
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center; /* Ensure the cards are centered */
@@ -156,6 +156,9 @@ const HomeSection = ({ isDarkMode }) => {
           <HighlightedWord isDarkMode={isDarkMode}>Archetype</HighlightedWord>{" "}
           Academy
         </Title>
+
+        {/* <LocationList isDarkMode={isDarkMode} /> */}
+
         {/* <BackgroundImageComponent /> */}
         <Description isDarkMode={isDarkMode}>
           The Archetype Academy is a cutting-edge, subscription-based engagement
