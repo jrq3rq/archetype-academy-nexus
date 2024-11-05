@@ -60,6 +60,17 @@ const Header = ({ isDarkMode }) => {
     history.push("/signin"); // Redirect to signin page
   };
 
+  // New function to handle the click on the sign-in/sign-out button
+  const handleAuthButtonClick = () => {
+    if (user) {
+      // Redirect to the protected dashboard for sign-out
+      history.push("/dashboard");
+    } else {
+      // Redirect to the sign-in page
+      history.push("/signin");
+    }
+  };
+
   const links = [
     {
       to: "/",
@@ -268,13 +279,11 @@ const Header = ({ isDarkMode }) => {
           style={styles.authButtonContainer}
         >
           <button
-            onClick={user ? handleSignOut : () => history.push("/signin")}
-            aria-label={user ? "Sign Out" : "Sign In"}
-            style={{
-              ...styles.authButton,
-            }}
+            onClick={handleAuthButtonClick}
+            aria-label={user ? "Account Dashboard" : "Sign In"}
+            style={styles.authButton}
           >
-            {/* {user ? "Log Out" : "Log In"} */}
+            {/* {user ? "Go to Dashboard" : "Sign In"} */}
           </button>
         </div>
       </nav>

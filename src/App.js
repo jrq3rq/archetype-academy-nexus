@@ -21,6 +21,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import UserProfile from "./pages/UserProfile";
 import LocationList from "./components/LocationList";
+import ProtectedDashboard from "./pages/ProtectedDashboard";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -80,6 +81,15 @@ const App = () => {
                 <Route path="/archedex-demo">
                   <ArchetypeChatbotUI isDarkMode={isDarkMode} />
                 </Route>
+                <ProtectedRoute
+                  path="/dashboard"
+                  component={() => (
+                    <ProtectedDashboard isDarkMode={isDarkMode} />
+                  )}
+                  requiredRole="user"
+                  redirectPath="/signin"
+                  isDarkMode={isDarkMode}
+                />
                 <Route path="/page">
                   <UserProfile isDarkMode={isDarkMode} />
                 </Route>
