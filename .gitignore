@@ -17,13 +17,12 @@
 # Firebase Service Account Key
 **/service-account-key.json
 
-
-# Environment variables (sensitive information)
-.env*
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Ignore all environment variable files globally
+**/.env*
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
 
 # Logs
 npm-debug.log*
