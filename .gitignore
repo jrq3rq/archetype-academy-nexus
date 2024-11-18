@@ -13,7 +13,9 @@
 /.firebaserc
 /firebase-debug.log*
 /.firebasehosting.*
-/service-account-key.json
+
+# Firebase Service Account Key
+**/service-account-key.json
 
 
 # Environment variables (sensitive information)
