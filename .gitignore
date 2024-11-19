@@ -14,8 +14,11 @@
 /firebase-debug.log*
 /.firebasehosting.*
 
-# Firebase Service Account Key
+# Exclude Firebase Service Account Key
 **/service-account-key.json
+
+# Allow specific files
+!backend-functions/testCustomClaims.js
 
 # Ignore all environment variable files globally
 **/.env*
