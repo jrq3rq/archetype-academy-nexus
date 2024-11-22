@@ -11,70 +11,77 @@ AlphaV3/
 │ ├── logo512.png
 │ ├── manifest.json
 │ └── ...
-├── src/
-│ ├── assets/ // Static files like images, fonts, etc.
-│ │ ├── 64x64carlxiiLogo.ico
-│ │ ├── favicon.ico
-│ │ ├── logo192.png
-│ │ ├── logo512.png
-│ │ └── ...
-│ ├── components/ // Reusable components
-│ │ ├── ArchetypeCard.jsx
-│ │ ├── ArchetypeChatbotUI.js
-│ │ ├── CardGrid.js
-│ │ ├── ColorCyclingContainer.js
-│ │ ├── ErrorMessage.jsx
-│ │ ├── Footer.js
-│ │ ├── Header.js
-│ │ ├── Layout.js
-│ │ ├── LikertScale.js
-│ │ ├── LoadingSpinner.jsx
-│ │ ├── NavigationButtons.jsx
-│ │ ├── OptionCard.js
-│ │ ├── QrCodeGenerator.js
-│ │ ├── QuestionSection.jsx
-│ │ ├── ResultsModal.jsx
-│ │ ├── ScrollToTop.js
-│ │ ├── ToggleSwitch.js
-│ │ └── ...
-│ ├── data/
-│ │ ├── archetypes.js
-│ │ └── ...
-│ ├── hooks/ // Custom hooks
-│ │ ├── useFetchQuestions.js
-│ │ └── ...
-│ ├── images/ // Image files
-│ │ ├── index.js
-│ │ ├── index.css
-│ │ └── ...
-│ ├── pages/ // Page components
-│ │ ├── ArchetypeChatbotPage.js
-│ │ ├── ArchetypeLibraryPage.js
-│ │ ├── EnhancedPersonalityTest.js
-│ │ ├── KioskPersonalityTest.js
-│ │ ├── HomePage.js
-│ │ ├── SignInPage.js
-│ │ ├── UserProfilePage.js
-│ │ └── ...
-│ ├── routes/
-│ │ ├── ProtectedRoute.js
-│ │ └── ...
-│ ├── services/ // API integration and services
-│ │ ├── archetypeService.js
-│ │ └── ...
-│ ├── state/ // State management
-│ │ ├── ChatbotContext.js
-│ │ └── ...
-│ ├── utils/ // Utility functions
-│ │ ├── colorUtils.js
-│ │ └── ...
-│ ├── App.js
-│ ├── App.css
-│ ├── index.js
-│ ├── index.css
-│ └── ...
-├── test/
-│ └── ...
+src/
+├── assets/
+│   └── (static files like images and icons)
+├── components/
+│   ├── AdminPanel.js
+│   ├── ArchetypeCard.jsx
+│   ├── ArchetypeChatbotUI.js
+│   ├── assignAdminRole.js
+│   ├── BackgroundImageComponent.js
+│   ├── CardGrid.js
+│   ├── CheckRole.js
+│   ├── ColorCyclingContainer.js
+│   ├── Dashboard.js
+│   ├── ErrorBoundary.js
+│   ├── ErrorMessage.jsx
+│   ├── Footer.js
+│   ├── Header.js
+│   ├── HomeSection.js
+│   ├── Layout.js
+│   ├── LikertScale.js
+│   ├── LoadingSpinner.jsx
+│   ├── LocationList.js
+│   ├── NavigationButtons.jsx
+│   ├── OptionCard.js
+│   ├── PasswordSetupModal.js
+│   ├── QrCodeGenerator.js
+│   ├── QuestionSection.jsx
+│   ├── ReCaptchaComponent.css
+│   ├── RecaptchaGate.js
+│   ├── ResultsModal.jsx
+│   ├── RoleManager.js
+│   ├── ScrollToTop.js
+│   ├── SectionSeparator.js
+│   ├── SetUserRoleComponent.js
+│   ├── Toast.js
+│   ├── ToggleSwitch.js
+│   ├── UserAdminDashboard.js
+│   └── UserAdminProfile.js
+├── context/
+│   └── AuthContext.js
+├── data/
+│   └── archetypes.js
+├── hooks/
+│   └── useFetchQuestions.js
+├── images/
+│   ├── AcademyARVR.png
+│   ├── IMG_7839.png
+│   └── SQUARE.png
+├── pages/
+│   ├── ArchetypeChatbotPage.js
+│   ├── ArchetypeLibraryPage.js
+│   ├── EnhancedPersonalityTest.js
+│   ├── HomePage.js
+│   ├── MuseumQuestionsPage.js
+│   ├── ProtectedDashboard.js
+│   ├── SignInPage.js
+│   └── UserProfile.js
+├── routes/
+│   └── ProtectedRoute.js
+├── services/
+│   ├── archetypeService.js
+│   └── firebaseConfig.js
+├── state/
+│   └── ChatbotContext.js
+├── utils/
+│   └── colorUtils.js
+├── App.css
+├── App.js
+├── index.css
+├── index.js
+└── test/
 ├── .env // Environment variables
 ├── .gitignore
 ├── firebase.json
