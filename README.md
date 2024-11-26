@@ -4,6 +4,12 @@
 
 ```markdown
 AlphaV3/
+├── backend-functions/
+│ ├── .env
+│ ├── index.js
+│ ├── package.json
+│ ├── testCustomClaims.js
+│ └── ...
 ├── public/
 │ ├── index.html
 │ ├── favicon.ico
