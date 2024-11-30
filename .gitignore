@@ -104,3 +104,10 @@ config.json
 *.map
 *.gzip
 *.tgz
+
+# Backend functions-specific rules
+/backend-functions/node_modules/
+/backend-functions/.env
+/backend-functions/service-account-key.json
+/backend-functions/package-lock.json
+/backend-functions/*.log
