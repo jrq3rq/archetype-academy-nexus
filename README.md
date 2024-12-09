@@ -79,6 +79,11 @@ src/
 ├── services/
 │   ├── archetypeService.js
 │   └── firebaseConfig.js
+└── test/                    // Unit/Integration tests for app logic
+│   ├── firestore.test.js    // Firestore query tests
+│   ├── auth.test.js         // Authentication tests
+│   ├── roleManager.test.js  // Role management tests
+│   └── ...
 ├── state/
 │   └── ChatbotContext.js
 ├── utils/
@@ -87,7 +92,11 @@ src/
 ├── App.js
 ├── index.css
 ├── index.js
-└── test/
+├── test/                        // Integration/Emulator tests
+│   ├── emulator-setup.js        // Setup for Firebase Emulator testing
+│   ├── firestore-rules.test.js  // Firestore security rules testing
+│   ├── functions.test.js        // Firebase Functions integration tests
+│   └── ...
 ├── .env // Environment variables
 ├── .gitignore
 ├── firebase.json
