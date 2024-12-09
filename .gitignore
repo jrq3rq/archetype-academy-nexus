@@ -17,7 +17,7 @@
 # Exclude Firebase Service Account Key
 **/service-account-key.json
 
-# Allow specific files
+# Allow specific files (e.g., backend functions test file)
 !backend-functions/testCustomClaims.js
 
 # Ignore all environment variable files globally
@@ -42,6 +42,15 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 ehthumbs.db
+
+# Testing files (ignore all by default)
+**/test/**
+!src/test/firestore.test.js
+!src/test/auth.test.js
+!src/test/roleManager.test.js
+!test/emulator-setup.js
+!test/firestore-rules.test.js
+!test/functions.test.js
 
 # Testing coverage
 /coverage
