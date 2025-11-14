@@ -9,9 +9,11 @@ const ProfileWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 20px;
-  background-color: ${({ isDarkMode }) => (isDarkMode ? "#1e2124" : "#ffffff")};
+  border-radius: 12px;
+  background-color: ${({ isDarkMode }) => (isDarkMode ? "#404449" : "#F0F0F0")};
+  border: 1px solid #2e3136;
 `;
 
 const ProfileCard = styled.div`
@@ -22,9 +24,9 @@ const ProfileCard = styled.div`
   max-width: 500px;
   width: 100%;
   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); */
   text-align: center;
-  border: 1px solid #2e3136;
+  /* border: 1px solid #2e3136; */
 `;
 
 const ProfileHeader = styled.h2`
@@ -55,7 +57,7 @@ const FieldLabel = styled.span`
   color: ${({ isDarkMode }) => (isDarkMode ? "#F5F5F5" : "#2E3136")};
 `;
 
-const UserProfile = ({ isDarkMode }) => {
+const UserAdminProfile = ({ isDarkMode }) => {
   const { user, isLoading } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
@@ -146,4 +148,4 @@ const UserProfile = ({ isDarkMode }) => {
   );
 };
 
-export default UserProfile;
+export default UserAdminProfile;

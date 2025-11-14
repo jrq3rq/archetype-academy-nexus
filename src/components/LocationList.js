@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../services/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import styled from "styled-components";
@@ -11,17 +11,16 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
 `;
 
 const Container = styled.div`
   width: 100%;
   max-width: 800px;
   backdrop-filter: blur(50px);
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid #2e3136;
+  text-transform: uppercase;
 `;
 
 const Title = styled.h2`
@@ -31,11 +30,20 @@ const Title = styled.h2`
   color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#2E3136")};
 `;
 
-const LocationItem = styled.div`
-  background-color: ${({ isDarkMode }) => (isDarkMode ? "#40444b" : "#f0f0f0")};
+const LocationItem = styled.p`
+  background-color: ${({ isDarkMode }) => (isDarkMode ? "#2E3136" : "#f0f0f0")};
   padding: 1.2rem;
   border-radius: 8px;
   border: 1px solid #2e3136;
+  color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#1F2124")};
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    background-color: ${({ isDarkMode }) =>
+      isDarkMode ? "rgba(64, 68, 75, 0.8)" : "rgba(240, 240, 240, 0.5)"};
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const LocationName = styled.p`
@@ -56,24 +64,6 @@ const TypeAndPlan = styled.p`
   color: ${({ isDarkMode }) => (isDarkMode ? "#dcdcdc" : "#333")};
 `;
 
-const DashboardButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  width: 100%;
-  background-color: ${({ isDarkMode }) => (isDarkMode ? "#F5F5F5" : "#2E3136")};
-  color: ${({ isDarkMode }) => (isDarkMode ? "#333" : "#dcdcdc")};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: ${({ isDarkMode }) =>
-      isDarkMode ? "#7289da" : "#40444b"};
-  }
-`;
-
 const LocationList = ({ isDarkMode }) => {
   const { user, isLoading } = useAuth();
   const [location, setLocation] = useState(null);
@@ -82,28 +72,27 @@ const LocationList = ({ isDarkMode }) => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-      if (user) {
-        console.log("User ID from AuthContext:", user.uid);
-        try {
-          const docRef = doc(firestore, "locations", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            console.log(
-              "Document data retrieved successfully:",
-              docSnap.data()
-            );
-            setLocation(docSnap.data());
-          } else {
-            console.warn("No document found for user ID:", user.uid);
-          }
-        } catch (error) {
-          console.error("Error fetching location data:", error);
-        } finally {
-          setLoadingData(false);
-        }
-      } else {
-        // Clear location data when user is signed out
+      if (!user) {
+        setLoadingData(false);
         setLocation(null);
+        return;
+      }
+
+      try {
+        console.log("User ID from AuthContext:", user.uid);
+        const docRef = doc(firestore, "locations", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          console.log("Document data retrieved successfully:", docSnap.data());
+          setLocation(docSnap.data());
+        } else {
+          console.warn("No document found for user ID:", user.uid);
+          setLocation(null);
+        }
+      } catch (error) {
+        console.error("Error fetching location data:", error);
+      } finally {
         setLoadingData(false);
       }
     };
@@ -135,26 +124,18 @@ const LocationList = ({ isDarkMode }) => {
   return (
     <Wrapper isDarkMode={isDarkMode}>
       <Container>
-        <LocationItem isDarkMode={isDarkMode}>
+        <LocationItem isDarkMode={isDarkMode} onClick={handleDashboardAccess}>
           <LocationName isDarkMode={isDarkMode}>
             {location.locationName}
           </LocationName>
           <LocationDetails isDarkMode={isDarkMode}>
-            {/* Address: {location.address}
-            <br /> */}
             <TypeAndPlan isDarkMode={isDarkMode}>
               Membership Subscription: {location.subscriptionPlan}
             </TypeAndPlan>
           </LocationDetails>
-          <DashboardButton
-            isDarkMode={isDarkMode}
-            onClick={handleDashboardAccess}
-          >
-            Dashboard
-          </DashboardButton>
-          {/* <TypeAndPlan isDarkMode={isDarkMode}>
+          <TypeAndPlan isDarkMode={isDarkMode}>
             Type: {location.locationType}
-          </TypeAndPlan> */}
+          </TypeAndPlan>
         </LocationItem>
       </Container>
     </Wrapper>

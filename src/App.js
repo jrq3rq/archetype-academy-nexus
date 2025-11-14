@@ -22,6 +22,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import UserProfile from "./pages/UserProfile";
 import LocationList from "./components/LocationList";
 import ProtectedDashboard from "./pages/ProtectedDashboard";
+import AdminPanel from "./components/AdminPanel";
+import RoleManager from "./components/RoleManager";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -90,15 +92,20 @@ const App = () => {
                   redirectPath="/signin"
                   isDarkMode={isDarkMode}
                 />
-                <Route path="/page">
+                <Route path="/profile">
                   <UserProfile isDarkMode={isDarkMode} />
+                </Route>
+                <Route path="/admin">
+                  <AdminPanel isDarkMode={isDarkMode} />
+                </Route>
+                <Route path="/role-manager">
+                  <RoleManager isDarkMode={isDarkMode} />
                 </Route>
                 <Route path="*">
                   <Redirect to="/" />
                 </Route>
               </Switch>
             </Layout>
-
             <Footer isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
           </div>
         </Router>

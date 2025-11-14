@@ -32,7 +32,7 @@ const FloatingImage = styled.img`
   animation: ${float} 3s ease-in-out infinite;
 `;
 
-const FloatingGEM = styled.img`
+const FloatingCharacter = styled.img`
   width: 100px;
   height: 100px;
   /* border-radius: 50%; */
@@ -49,7 +49,7 @@ const ContentContainer = styled.div`
     getTextColor(bgColor)}; // Dynamic text color based on the background
   border: 1px solid #2e3136;
   border-radius: 50px;
-  padding: 20px 20px 20px 20px;
+  padding: 10px 20px 10px 20px;
   width: 80%;
   max-width: 700px;
   max-height: 80vh;
@@ -58,7 +58,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  margin-top: 20px;
   @media (max-width: 480px) {
     /* padding-top: 40px; */
     width: 90%;
@@ -453,7 +453,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
       // boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
       fontSize: "12px",
     },
-
     modalContent: {
       backgroundColor: "transparent", // Dark background
       color: "#ffffff", // Light text for readability
@@ -690,6 +689,13 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                             &times;
                           </button>
                           <div style={styles.modalContent}>
+                            <FloatingCharacter
+                              src={archetypeImages[archetype.name]}
+                              alt={`${archetype.name}`}
+                              style={{
+                                borderColor: archetype.color,
+                              }}
+                            />
                             <p style={{ marginBottom: "10px" }}>
                               <b
                                 style={{
@@ -701,14 +707,6 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                               </b>{" "}
                               Student ID:
                             </p>
-                            <FloatingGEM
-                              src={archetypeImages[archetype.name]}
-                              alt={`${archetype.name}`}
-                              style={{
-                                borderColor: archetype.color,
-                              }}
-                            />
-
                             <ContentContainer bgColor={archetype.color}>
                               <StyledNormalText>
                                 <StyledParagraph
@@ -718,6 +716,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                                 </StyledParagraph>
                               </StyledNormalText>
                             </ContentContainer>
+
                             {/* <p style={styles.modalText}>
                             More information about{" "}
                             <b style={{ color: archetype.color }}>
@@ -725,11 +724,12 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                             </b>{" "}
                             and its characteristics will be displayed here.
                           </p> */}
+
                             <div
                               style={{
                                 padding: "20px",
                                 borderRadius: "10px",
-                                marginTop: "20px",
+                                // marginTop: "20px",
                               }}
                             >
                               {archetype.motivations && (
@@ -851,6 +851,7 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                                 </div>
                               )}
                             </div>
+
                             <div>
                               {/* Chat icon container */}
                               <div
@@ -869,12 +870,14 @@ const ArchetypeLibraryPage = ({ isDarkMode, toggleTheme }) => {
                                 {/* Conditionally render the message below the chat icon */}
                                 {isNotSignedIn && (
                                   <div style={styles.message}>
-                                    Must be signed in to access chat
-                                    functionality
+                                    {/* Must be signed in to access chat
+                                    functionality */}
+                                    No connection! Must be signed in.
                                   </div>
                                 )}
                               </div>
                             </div>
+
                             {/* </BionaryContainer> */}
                             {/* <StyledText>
                             <p

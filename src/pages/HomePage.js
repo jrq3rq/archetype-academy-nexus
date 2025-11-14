@@ -6,6 +6,7 @@ import MagazineLayout from "../components/MagazineLayout";
 import BackgroundImageComponent from "../components/BackgroundImageComponent";
 import HomeSection from "../components/HomeSection";
 import SectionSeparator from "../components/SectionSeparator";
+import LocationListViewer from "../components/LocationListViewer";
 
 const HomePage = ({ isDarkMode, toggleTheme }) => {
   const styles = {
@@ -170,6 +171,7 @@ const HomePage = ({ isDarkMode, toggleTheme }) => {
   return (
     <>
       <HomeSection isDarkMode={isDarkMode} />
+      <LocationListViewer isDarkMode={isDarkMode} />
       <SectionSeparator isDarkMode={isDarkMode} angle={0} />
       <div style={styles.container}>
         <div style={styles.contentWrapper}>

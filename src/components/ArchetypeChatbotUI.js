@@ -611,13 +611,15 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
         <option value="" disabled>
           Select Model
         </option>
-
-        <option value="Grok-1">Grok-1</option>
+        <option value="Grok">Grok</option>
         <option value="Grok-2">Grok-2</option>
-        <option value="GPT-3">GPT-3</option>
-        <option value="GPT-4">GPT-4</option>
+        <option value="Grok-3">Grok-3</option>
+        <option value="GPT-4o">GPT-4o</option>
+        <option value="GPT-4">GPT-4 Turbo</option>
         <option value="Claude">Claude</option>
         <option value="LLaMA">LLaMA</option>
+        <option value="DeepSeek">DeepSeek-Coder-33B-Instruct</option>
+        <option value="NVIDIA">Llama-3.1-Nemotron-70B-Instruct</option>
       </select>
       <div style={styles.categoryButtons}>
         {Object.keys(categories).map((category) => (
@@ -717,12 +719,15 @@ const ArchetypeChatbotUI = ({ isDarkMode = false, toggleTheme }) => {
           <option value="" disabled>
             Select Model
           </option>
-          <option value="Grok-1">Grok-1</option>
+          <option value="Grok">Grok</option>
           <option value="Grok-2">Grok-2</option>
-          <option value="GPT-3">GPT-3</option>
-          <option value="GPT-4">GPT-4</option>
+          <option value="Grok-3">Grok-3</option>
+          <option value="GPT-4o">GPT-4o</option>
+          <option value="GPT-4">GPT-4 Turbo</option>
           <option value="Claude">Claude</option>
           <option value="LLaMA">LLaMA</option>
+          <option value="DeepSeek">DeepSeek-Coder-33B-Instruct</option>
+          <option value="NVIDIA">Llama-3.1-Nemotron-70B-Instruct</option>
         </select>
       </div>
       <div style={styles.desktopMainContent}>

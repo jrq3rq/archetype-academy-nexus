@@ -1,12 +1,9 @@
-// src/services/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 
-import {
-  enableIndexedDbPersistence,
-  initializeFirestore,
-} from "firebase/firestore";
-
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -20,22 +17,28 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication and set up provider
+// Initialize Firebase Services
 export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider(); // Ensure this is exported
+export const firestore = getFirestore(app);
+export const functions = getFunctions(app);
 
-// Initialize Firestore
-export const firestore = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-});
+// Enable IndexedDB Persistence (skip during testing)
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "test") {
+  enableIndexedDbPersistence(firestore).catch((err) => {
+    if (err.code === "failed-precondition") {
+      console.error(
+        "Failed precondition: multiple tabs open, persistence unavailable."
+      );
+    } else if (err.code === "unimplemented") {
+      console.error("Persistence is not available in this browser.");
+    }
+  });
+}
 
-// Enable offline persistence
-enableIndexedDbPersistence(firestore).catch((err) => {
-  if (err.code === "failed-precondition") {
-    console.log("Persistence can only be enabled in one tab at a time.");
-  } else if (err.code === "unimplemented") {
-    console.log(
-      "The current browser does not support all of the features required to enable persistence."
-    );
-  }
-});
+// Connect Functions Emulator for Local Development
+if (window.location.hostname === "localhost") {
+  connectFunctionsEmulator(functions, "localhost", 5001);
+}
+
+export default app;
