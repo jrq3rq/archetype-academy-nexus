@@ -1,5 +1,5 @@
 <!-- [![Carl-XII](https://img.shields.io/badge/-Carl--XII-blue?style=for-the-badge)](https://carl-xii.web.app/) -->
-
+<!--
 ## The Archetype Character Academy
 
 ```text
@@ -449,4 +449,71 @@ ArcheOS/
 - [ ] Grok 3 system prompt samples (one per agent)
 - [ ] Fine-tuning plan for Grok 3 (data format + structure)
 
+--- -->
+
+<div align="center">
+  <h1>The Archetype Academy Nexus</h1>
+  <p><strong>AI-Powered Jungian Immersive Experiences</strong></p>
+  <p>© 2025 James R. Santos • <a href="mailto:james@studiovoice2fly.com">Contact for Licensing</a></p>
+</div>
+
+<!-- > **Proprietary Software. Not Open Source.** -->
+
+
+```text
+                     ┌────────────────────┐
+                     │      Visitor       │
+                     └─────────┬──────────┘
+                               ▼
+                     ┌────────────────────┐
+                     │   MindPulse150     │
+                     └─────────┬──────────┘
+                               ▼
+                     ┌──────────────────────────────────┐
+                     │        Archetype Profile         │
+                     └──────┬────────────────────┬──────┘
+                            ▼                    ▼
+               ┌────────────────────┐   ┌────────────────────┐
+               │  Archédex AI Guide │   │ @archetype-academy │
+               └───────┬────────────┘   │       /engine      │
+                       ▼                └──────────┬─────────┘
+               ┌─────────────────────┐             ▼
+               │ Personalized Journey│  ┌─────────────────────┐
+               └───────┬─────────────┘  │ LLM + Memory + Rules│
+                       ▼                └──────────┬──────────┘
+               ┌────────────────────┐              ▲
+               │ VR Campus / Exhibit│◄─────────────┘
+               │       / App        │
+               └────────────────────┘
+```
+
+
+### Live Systems
+
+| System | Link |
+|-------|------|
+| **MVP** | [archetype-academy-nexus.web.app](https://archetype-academy-nexus.web.app) |
+| **Archetype API** | [API Docs](https://us-central1-archetype-builder-api.cloudfunctions.net/api/archetypes) |
+
 ---
+
+### Core Features
+
+- **MindPulse150**: Personality → Archetype mapping
+- **Archédex**: Your AI guide, powered by Jungian psychology
+- **Personalized Journeys**: Quests, stories, VR-ready
+- **Coming 2026**: VR Campus, Custom AI Companions
+
+---
+
+### For Partners & Investors
+
+- White-label experiences
+- Museum & education integrations
+- API licensing
+- Contact: [james@studiovoice2fly.com](mailto:james@studiovoice2fly.com)
+
+---
+
+> **This repo contains public documentation only.**
+> Full source code is maintained in a **private repository**.
